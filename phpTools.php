@@ -11,16 +11,15 @@
  */
 
 spl_autoload_register(function($className) {
-    $path = str_replace('\\', DIRECTORY_SEPARATOR, $className);
-    $path = str_replace('phpTools/', '', $path);
-    require 'class/' . $path . '.class.php';
+    if (strstr($className, 'phpTools\\')) {
+        require dirname(__FILE__) . '/class/' . str_replace('phpTools\\', '', $className) . '.class.php';
+    }
 });
 
-defined('PHPTOOLS_CHARSET')  OR define('PHPTOOLS_CHARSET', 'UTF-8');
+defined('PHPTOOLS_CHARSET') OR define('PHPTOOLS_CHARSET', 'UTF-8');
 defined('PHPTOOLS_ROOT_TPL') OR define('PHPTOOLS_ROOT_TPL', 'tpl/');
 
-defined('PHPTOOLS_DB_HOST')  OR define('PHPTOOLS_DB_HOST', 'localhost');
-defined('PHPTOOLS_DB_USER')  OR define('PHPTOOLS_DB_USER', 'root');
-defined('PHPTOOLS_DB_PWD')   OR define('PHPTOOLS_DB_PWD', '');
-defined('PHPTOOLS_DB_BASE')  OR define('PHPTOOLS_DB_BASE', '');
-
+defined('PHPTOOLS_DB_HOST') OR define('PHPTOOLS_DB_HOST', 'localhost');
+defined('PHPTOOLS_DB_USER') OR define('PHPTOOLS_DB_USER', 'root');
+defined('PHPTOOLS_DB_PWD') OR define('PHPTOOLS_DB_PWD', '');
+defined('PHPTOOLS_DB_BASE') OR define('PHPTOOLS_DB_BASE', '');
