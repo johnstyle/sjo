@@ -21,7 +21,7 @@ abstract class Tpl
      */
     public static function header()
     {
-        self::inc(PHPTOOLS_ROOT_TPL . '/header.php');
+        self::inc('header');
     }
 
     /**
@@ -31,7 +31,7 @@ abstract class Tpl
      */
     public static function footer()
     {
-        self::inc(PHPTOOLS_ROOT_TPL . '/footer.php');
+        self::inc('footer');
     }
 
     /**
@@ -39,10 +39,11 @@ abstract class Tpl
      *
      * @return void
      */
-    public static function inc($file)
+    public static function inc($filename)
     {
-        if (file_exists($file)) {
-            require $file;
+        $path = PHPTOOLS_ROOT_TPL . '/' . $filename . '.php';
+        if (file_exists($path)) {
+            require $path;
         }
     }
 }
