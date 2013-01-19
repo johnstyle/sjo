@@ -59,15 +59,9 @@ abstract class Str
     public static function stripslashes($str)
     {
         if (is_array($str)) {
-            $str = array_map(array(
-                'Str',
-                'stripslashes'
-            ), $str);
+            $str = array_map(__NAMESPACE__ . '\Str::stripslashes', $str);
         } elseif (is_object($str)) {
-            $str = (object)array_map(array(
-                'Str',
-                'stripslashes'
-            ), (array)$str);
+            $str = (object)array_map(__NAMESPACE__ . '\Str::stripslashes', (array) $str);
         } else {
             $str = str_replace('\"', '"', $str);
             $str = str_replace("\'", "'", $str);
