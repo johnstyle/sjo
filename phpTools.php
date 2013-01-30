@@ -12,7 +12,7 @@
 
 spl_autoload_register(function($className) {
     if (strstr($className, 'phpTools\\')) {
-        require dirname(__FILE__) . '/class/' . str_replace('phpTools\\', '', $className) . '.class.php';
+        require dirname(__FILE__) . '/class/' . str_replace('phpTools\\', '', $className) . '.php';
     }
 });
 
