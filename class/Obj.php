@@ -12,15 +12,14 @@
 
 namespace phpTools;
 
-abstract class obj
+abstract class Obj
 {
     public static function tree(&$obj, $tree, $value = false)
     {
         $tree = is_array($tree) && count($tree) == 1 ? $tree[0] : $tree;
         if (is_array($tree)) {
             self::tree($obj->{array_shift($tree)}, $tree, $value);
-        }
-        else {
+        } else {
             $obj->{$tree} = $value;
         }
         return $obj;

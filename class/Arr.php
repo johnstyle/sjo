@@ -19,7 +19,7 @@ abstract class Arr
      */
     public static function explode($sep, $array)
     {
-        if($array) {
+        if ($array) {
             return array_map('trim', explode($sep, $array));
         }
         return false;

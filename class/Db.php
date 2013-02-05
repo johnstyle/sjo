@@ -49,13 +49,15 @@ abstract class Db
     {
         self::connect();
         $results = false;
-        $request = mysql_query($query, self::$resource) or die("Erreur SQL : " . mysql_error() . "\n" . $query . "\n");
+        $request = mysql_query($query, self::$resource)
+            or die("Erreur SQL : " . mysql_error() . "\n" . $query . "\n");
         if ($type) {
             if ($request) {
                 switch($type) {
                     case 'gets':
-                        while ($item = mysql_fetch_object($request))
+                        while ($item = mysql_fetch_object($request)) {
                             $results[] = $item;
+                        }
                         break;
                     case 'get':
                         $results = mysql_fetch_object($request);
@@ -67,17 +69,20 @@ abstract class Db
             }
         }
         self::$hits++;
-        if ($type)
+        if ($type) {
             return $results;
-        else
+        } else {
             return $request;
+        }
     }
 
     private static function connect()
     {
         if (!self::$resource) {
-            self::$resource = mysql_connect(PHPTOOLS_DB_HOST, PHPTOOLS_DB_USER, PHPTOOLS_DB_PWD) or die("Fatal ERROR SERVER : Check the connection script.\n");
-            mysql_select_db(PHPTOOLS_DB_BASE, self::$resource) or die("Fatal ERROR DATABASE : Check the connection script.\n");
+            self::$resource = mysql_connect(PHPTOOLS_DB_HOST, PHPTOOLS_DB_USER, PHPTOOLS_DB_PWD)
+                or die("Fatal ERROR SERVER : Check the connection script.\n");
+            mysql_select_db(PHPTOOLS_DB_BASE, self::$resource)
+                or die("Fatal ERROR DATABASE : Check the connection script.\n");
             switch(PHPTOOLS_CHARSET) {
                 case 'UTF-8':
                     mysql_query('SET NAMES "utf8"', self::$resource) or die("Erreur SQL : " . mysql_error() . "\n");
@@ -85,5 +90,4 @@ abstract class Db
             }
         }
     }
-
 }
