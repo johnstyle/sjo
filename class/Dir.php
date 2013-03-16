@@ -29,12 +29,12 @@ abstract class Dir
 
     public static function getFiles($path, $regexp = false, $limit = false)
     {
-        return self::open('is_dir', $path, $regexp, $limit);
+        return self::open('is_file', $path, $regexp, $limit);
     }
 
     public static function gets($path, $regexp = false, $limit = false)
     {
-        return self::open('is_file', $path, $regexp, $limit);
+        return self::open('is_dir', $path, $regexp, $limit);
     }
     
     private static function open($type, $path, $regexp = false, $limit = false)
@@ -51,8 +51,12 @@ abstract class Dir
                         && $type($path . '/' . $file)
                         && (!$regexp || ($regexp && preg_match($regexp, $file, $match)))
                     ) {
+                        $title = $file;
+                        if($type == 'is_file') {
+                            $title = substr($file, 0, strpos($file, '.'));
+                        }
                         $items[] = (object) array(
-                            'title' => Str::beautify($file),
+                            'title' => $title,
                             'name'  => $file,
                             'dir'   => $path,
                             'path'  => $path . '/' . $file,
