@@ -20,7 +20,7 @@ defined('PHPTOOLS_DB_BASE') OR define('PHPTOOLS_DB_BASE', '');
 spl_autoload_register(
     function ($className) {
         if (strstr($className, 'phpTools\\')) {
-            require dirname(__FILE__) . '/class/' . str_replace('phpTools\\', '', $className) . '.php';
+            require realpath(__DIR__) . '/class/' . str_replace('phpTools\\', '', $className) . '.php';
         }
     }
 );
