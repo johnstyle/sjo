@@ -1,16 +1,16 @@
 <?php
 /**
- * phpTools
+ * PHPTools
  *
  * PHP version 5
  *
- * @package  phpTools
+ * @package  PHPTools
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/phpTools
+ * @link     https://github.com/johnstyle/PHPTools.git
  */
 
-namespace phpTools;
+namespace PHPTools;
 
 abstract class Arr
 {
