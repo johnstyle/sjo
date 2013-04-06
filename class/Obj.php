@@ -24,4 +24,21 @@ abstract class Obj
         }
         return $obj;
     }
+    
+    public static function toArray(&$obj)
+    {
+        foreach($obj as &$item) {
+            $item = (array) $item;
+        }        
+    }
+
+    /**
+     * Tri un tableau
+     */
+    public static function sort(&$obj, $key, $order = SORT_DESC)
+    {
+        self::toArray($obj);
+        Arr::sort($obj, $key, $order);
+        Arr::toObject($obj);      
+    }    
 }
