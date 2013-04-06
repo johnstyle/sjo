@@ -14,6 +14,8 @@ namespace PHPTools;
 
 abstract class Tpl
 {
+    private static $globals;
+    
     /**
      * Inclusion du header
      *
@@ -43,7 +45,22 @@ abstract class Tpl
     {
         $path = PHPTOOLS_ROOT_TPL . '/' . $filename . '.php';
         if (file_exists($path)) {
+            if(self::$globals) {
+                foreach(self::$globals as $global) {
+                    global ${$global};
+                }
+            }            
             require $path;
         }
     }
+
+    /**
+     * Déclaration des variables ou objets accessibles dans le template
+     *
+     * @return void
+     */
+    public static function setGlobal($name)
+    {
+        self::$globals[] = $name;
+    }    
 }
