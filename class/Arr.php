@@ -52,4 +52,23 @@ abstract class Arr
         }
         return $array;
     }
+    
+    public static function toObject(&$array)
+    {
+        foreach($array as &$item) {
+            $item = (object) $item;
+        }        
+    }    
+
+    /**
+     * Tri un tableau
+     */
+    public static function sort(&$array, $key, $order = SORT_DESC)
+    {
+        $tmp = array();
+        foreach($array as $item) {
+            $tmp[] = $item[$key];
+        }
+        array_multisort($tmp, $order, $array);
+    }    
 }
