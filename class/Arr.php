@@ -65,10 +65,12 @@ abstract class Arr
      */
     public static function sort(&$array, $key, $order = SORT_DESC)
     {
-        $tmp = array();
-        foreach($array as $item) {
-            $tmp[] = $item[$key];
+        if($array) {
+            $tmp = array();
+            foreach($array as $item) {
+                $tmp[] = $item[$key];
+            }
+            array_multisort($tmp, $order, $array);
         }
-        array_multisort($tmp, $order, $array);
     }    
 }

@@ -37,8 +37,10 @@ abstract class Obj
      */
     public static function sort(&$obj, $key, $order = SORT_DESC)
     {
-        self::toArray($obj);
-        Arr::sort($obj, $key, $order);
-        Arr::toObject($obj);      
+        if($obj) {
+            self::toArray($obj);
+            Arr::sort($obj, $key, $order);
+            Arr::toObject($obj);
+        }     
     }    
 }
