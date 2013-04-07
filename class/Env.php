@@ -83,7 +83,7 @@ abstract class Env
      */
     public static function g($attr, $default, &$var)
     {
-        if($attr) {
+        if($attr !== false) {
             if (isset($var[$attr]) && !empty($var[$attr])) {
                 return Str::stripslashes($var[$attr]);
             }
