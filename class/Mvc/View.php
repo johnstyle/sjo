@@ -10,12 +10,12 @@
  * @link     https://github.com/johnstyle/PHPTools.git
  */
 
-namespace PHPTools;
+namespace PHPTools\Mvc;
 
-abstract class Tpl
+class View
 {
-    private static $globals;
-    
+    private static $View;
+
     /**
      * Inclusion du header
      *
@@ -45,22 +45,20 @@ abstract class Tpl
     {
         $path = PHPTOOLS_ROOT_TPL . '/' . $filename . '.php';
         if (file_exists($path)) {
-            if(self::$globals) {
-                foreach(self::$globals as $global) {
-                    global ${$global};
-                }
-            }            
             require $path;
         }
     }
 
     /**
-     * Déclaration des variables ou objets accessibles dans le template
+     * Déclaration d'objets accessibles dans le template
      *
      * @return void
      */
-    public static function setGlobal($name)
+    public static function setObject($name, &$obj)
     {
-        self::$globals[] = $name;
-    }    
+        if (!self::$View) {
+            self::$View = new \stdClass();
+        }
+        self::$View->{$name} = $obj;
+    }
 }
