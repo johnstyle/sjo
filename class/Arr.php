@@ -16,11 +16,21 @@ abstract class Arr
 {
     public static function getTree($array, $tree, $value = false)
     {
+        if(is_object($array)) {
+            $array = (array) $array;
+        }
         $tree = is_array($tree) && count($tree) == 1 ? $tree[0] : $tree;
         if (is_array($tree)) {
+            $optional = false;
             $name = array_shift($tree);
+            if(preg_match("#^\((.+)\)$#", $name, $match)) {
+                $name = $match[1];
+                $optional = true;
+            }
             if (isset($array[$name])) {
                 return self::getTree($array[$name], $tree, $value);
+            } elseif($optional) {
+                return self::getTree($array, $tree, $value);
             }
         } else {
             $name = $tree;
