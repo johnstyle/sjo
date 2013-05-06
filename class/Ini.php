@@ -35,7 +35,7 @@ abstract class Ini
     public static function load($paths)
     {
         foreach (Arr::to($paths) as $path) {
-            $files = Dir::getFiles($path, "#^(.+)\.ini$#");
+            $files = Dir::getFiles($path, "^(.+)\.ini$");
             if ($files) {
                 foreach ($files as $file) {
                     self::$data[$file->title] = parse_ini_file($file->path, true);
