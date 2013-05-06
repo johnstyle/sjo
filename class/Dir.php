@@ -36,7 +36,7 @@ abstract class Dir
     {
         return self::open('is_dir', $path, $regexp, $limit);
     }
-    
+
     private static function open($type, $path, $regexp = false, $limit = false)
     {
         $i = 0;
@@ -49,18 +49,19 @@ abstract class Dir
                            $file != '..'
                         && $file != '.'
                         && $type($path . '/' . $file)
-                        && (!$regexp || ($regexp && preg_match($regexp, $file, $match)))
+                        && (!$regexp || ($regexp && preg_match("#" . $regexp . "#", $file, $match)))
                     ) {
                         $title = $file;
                         if($type == 'is_file') {
                             $title = substr($file, 0, strpos($file, '.'));
                         }
                         $items[] = (object) array(
-                            'title' => $title,
-                            'name'  => $file,
-                            'dir'   => $path,
-                            'path'  => $path . '/' . $file,
-                            'match' => $match
+                            'title'         => $title,
+                            'name'          => $file,
+                            'parentname'    => basename($path),
+                            'dir'           => $path,
+                            'path'          => $path . '/' . $file,
+                            'match'         => $match
                         );
                         if ($limit && $i >= $limit) {
                             break;
