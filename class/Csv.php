@@ -19,9 +19,11 @@ class Csv
     private $handle;
     private $rawHeader;
     private $rawLine;
+    private $rawLines;
 
     private $header;
     private $line;
+    private $lines;
 
     private $options;
 
@@ -42,13 +44,24 @@ class Csv
         ), $options);
     }
 
+    /**
+     * Destruction de la connexion avec le fichier
+     * 
+     * @return void
+     */
     public function __destruct()
     {
         if ($this->handle) {
             fclose($this->handle);
         }
     }
-
+    
+    /**
+     * Initialisation du chargement du fichier
+     * 
+     * @param string chemin du fichier
+     * @return void
+     */
     public function loadFile($file)
     {
         $this->file = $file;
@@ -57,6 +70,11 @@ class Csv
         }
     }
 
+    /**
+     * Rechargement du fichier avec récupération du header
+     * 
+     * @return void
+     */
     public function reload()
     {
         if ($this->file) {
@@ -73,6 +91,11 @@ class Csv
         }
     }
 
+    /**
+     * Parcours de chaque ligne du fichier
+     * 
+     * @return boolean
+     */
     public function loop()
     {
         if ($this->handle) {
@@ -85,16 +108,51 @@ class Csv
         return false;
     }
 
+    /**
+     * Retourne la ligne courante
+     * 
+     * @return object
+     */
     public function getLine()
     {
         return $this->line;
     }
 
+    /**
+     * Retourne le groupe de lignes courantes
+     * 
+     * @return object
+     */
+    public function getLines()
+    {
+        return $this->lines;
+    }
+
+    /**
+     * Retourne la ligne courante au format CSV
+     * 
+     * @return string
+     */
     public function getRawLine()
     {
         return $this->rawLine;
     }
 
+    /**
+     * Retourne le groupe de lignes courantes au format CSV
+     * 
+     * @return string
+     */
+    public function getRawLines()
+    {
+        return $this->rawLines;
+    }    
+
+    /**
+     * Transforme la ligne CSV en objet
+     * 
+     * @return Csv
+     */
     public function toObject()
     {
         if ($this->handle) {
@@ -141,19 +199,36 @@ class Csv
         return $this;
     }
 
+    /**
+     * Ajoute plusieurs lignes de données
+     * 
+     * @return void
+     */
     public function addLines($items)
     {
+        $this->lines = false;
+        $this->rawLines = false;
         if ($this->handle) {
             if ($items) {
                 foreach ($items as $item) {
-                    $this->addLine($item);
+                    if($this->addLine($item)) {
+                        $this->lines[] = $this->line;
+                        $this->rawLines .= self::toRaw($this->line);
+                    }
                 }
             }
         }
     }
 
+    /**
+     * Ajoute une ligne de données
+     * 
+     * @return object
+     */
     public function addLine($item)
     {
+        $this->line = false;
+        $this->rawLine = false;
         if ($this->handle) {
             if ($item) {
     
@@ -172,7 +247,7 @@ class Csv
                                 $this->header[] = $name;
                             }
                         }
-                        $this->rawHeader = self::toRaw($this->header);
+                        $this->rawHeader = self::toRaw($this->header, false);
                     } else {
                         foreach ($item as $name => $value) {
                             if (is_int($name)) {
@@ -181,7 +256,7 @@ class Csv
                                 $this->header[] = $name;
                             }
                         }
-                        $this->rawHeader = self::toRaw($this->header);
+                        $this->rawHeader = self::toRaw($this->header, false);
                     }
     
                     /** Constitution de la ligne */
@@ -204,7 +279,6 @@ class Csv
                                 break;
                         }
                     }
-    
                     fseek($this->handle, 0);
                     fwrite($this->handle, $this->rawHeader . str_pad(" ", self::MAX_SIZE - strlen($this->rawHeader)) . "\n");
                 } else {
@@ -216,8 +290,40 @@ class Csv
                 fwrite($this->handle, $this->rawLine);
             }
         }
+        return $this->line;
     }
 
+    /**
+     * Affiche le CSV
+     * 
+     * @return void
+     */
+    public function display()
+    {
+        $this->reload();
+        echo $this->rawHeader."\n";
+        while($this->loop()) {
+            echo $this->rawLine."\n";
+        }
+    }
+
+    /**
+     * Supprime le fichier
+     * 
+     * @return void
+     */
+    public function remove()
+    {
+        if(file_exists($this->file)) {
+            unlink($this->file);
+        }
+    }   
+
+    /**
+     * Converti une ligne CSV en tableau de données
+     * 
+     * @return array
+     */
     public static function fromRaw($line)
     {
         $data = false;
@@ -236,14 +342,19 @@ class Csv
         return $data;
     }
 
-    public static function toRaw($line)
+    /**
+     * Converti un tableau de données en ligne CSV
+     * 
+     * @return array
+     */
+    public static function toRaw($line, $break = "\n")
     {
         $rawLine = false;
         if ($line) {
             foreach ($line as $key => $val) {
                 $rawLine[] = self::CONTAINER . $val . self::CONTAINER;
             }
-            $rawLine = implode(self::SEPARATOR, $rawLine) . "\n";
+            $rawLine = implode(self::SEPARATOR, $rawLine) . $break;
         }
         return $rawLine;
     }
