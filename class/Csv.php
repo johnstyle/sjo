@@ -57,7 +57,20 @@ class Csv
     }
     
     /**
-     * Initialisation du chargement du fichier
+     * Création du fichier
+     * 
+     * @param string chemin du fichier
+     * @return void
+     */
+    public function createFile($file)
+    {
+        $this->file = $file;
+        $this->remove();
+        $this->reload();
+    }
+
+    /**
+     * Chargement du fichier
      * 
      * @param string chemin du fichier
      * @return void
@@ -258,6 +271,7 @@ class Csv
                         }
                         $this->rawHeader = self::toRaw($this->header, false);
                     }
+                    $this->prepend($this->rawHeader);
     
                     /** Constitution de la ligne */
                     $this->line = new \stdClass();
@@ -279,18 +293,26 @@ class Csv
                                 break;
                         }
                     }
-                    fseek($this->handle, 0);
-                    fwrite($this->handle, $this->rawHeader . str_pad(" ", self::MAX_SIZE - strlen($this->rawHeader)) . "\n");
                 } else {
                     $this->line = $item;
                 }
-    
                 $this->rawLine = self::toRaw($this->line);
-                fseek($this->handle, 0, SEEK_END);
-                fwrite($this->handle, $this->rawLine);
+                $this->append($this->rawLine);
             }
         }
         return $this->line;
+    }
+
+    public function prepend($str)
+    {
+        fseek($this->handle, 0);
+        fwrite($this->handle, $str . str_pad(" ", self::MAX_SIZE - strlen($str)) . "\n");
+    }
+
+    public function append($str)
+    {
+        fseek($this->handle, 0, SEEK_END);
+        fwrite($this->handle, $str);
     }
 
     /**
@@ -298,13 +320,15 @@ class Csv
      * 
      * @return void
      */
-    public function display()
+    public function display($filename)
     {
-        $this->reload();
-        echo $this->rawHeader."\n";
-        while($this->loop()) {
-            echo $this->rawLine."\n";
-        }
+        header('Content-Type:text/csv;charset:UTF-8;name="'.$filename.'"');
+        header('Content-Transfer-Encoding:binary');
+        header('Content-Disposition: attachment;filename="'.$filename.'"');
+        header('Expires: 0');
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Pragma: no-cache');
+        readfile($this->file);
     }
 
     /**
