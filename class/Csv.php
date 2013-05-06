@@ -14,18 +14,18 @@ namespace PHPTools;
 
 class Csv
 {
-    private $file;
+    protected $file;
 
-    private $handle;
-    private $rawHeader;
-    private $rawLine;
-    private $rawLines;
+    protected $handle;
+    protected $rawHeader;
+    protected $rawLine;
+    protected $rawLines;
 
-    private $header;
-    private $line;
-    private $lines;
+    protected $header;
+    protected $line;
+    protected $lines;
 
-    private $options;
+    protected $options;
 
     const SEPARATOR = ';';
     const CONTAINER = '"';
@@ -46,7 +46,7 @@ class Csv
 
     /**
      * Destruction de la connexion avec le fichier
-     * 
+     *
      * @return void
      */
     public function __destruct()
@@ -55,58 +55,56 @@ class Csv
             fclose($this->handle);
         }
     }
-    
+
     /**
      * Création du fichier
-     * 
+     *
      * @param string chemin du fichier
-     * @return void
+     * @return object
      */
-    public function createFile($file)
+    public function create($file)
     {
         $this->file = $file;
-        $this->remove();
-        $this->reload();
+        $this->delete();
+        return $this->handle();
     }
 
     /**
-     * Chargement du fichier
-     * 
+     * Ouverture du fichier
+     *
      * @param string chemin du fichier
-     * @return void
+     * @return object
      */
-    public function loadFile($file)
+    public function open($file)
     {
         $this->file = $file;
-        if (!$this->handle) {
-            $this->reload();
-        }
+        return $this->handle();
     }
 
     /**
      * Rechargement du fichier avec récupération du header
-     * 
-     * @return void
+     *
+     * @return object
      */
-    public function reload()
+    public function handle()
     {
         if ($this->file) {
             if (!file_exists($this->file)) {
                 touch($this->file);
             }
-            $this->handle = fopen($this->file, 'r+');
-            if($this->handle) {
+            if ($this->handle = fopen($this->file, 'r+')) {
                 if ($this->options['hasHeader']) {
                     $this->rawHeader = stream_get_line($this->handle, 0, "\n");
                     $this->header = self::fromRaw($this->rawHeader);
                 }
             }
         }
+        return $this->handle;
     }
 
     /**
      * Parcours de chaque ligne du fichier
-     * 
+     *
      * @return boolean
      */
     public function loop()
@@ -123,7 +121,7 @@ class Csv
 
     /**
      * Retourne la ligne courante
-     * 
+     *
      * @return object
      */
     public function getLine()
@@ -133,7 +131,7 @@ class Csv
 
     /**
      * Retourne le groupe de lignes courantes
-     * 
+     *
      * @return object
      */
     public function getLines()
@@ -143,7 +141,7 @@ class Csv
 
     /**
      * Retourne la ligne courante au format CSV
-     * 
+     *
      * @return string
      */
     public function getRawLine()
@@ -153,17 +151,17 @@ class Csv
 
     /**
      * Retourne le groupe de lignes courantes au format CSV
-     * 
+     *
      * @return string
      */
     public function getRawLines()
     {
         return $this->rawLines;
-    }    
+    }
 
     /**
      * Transforme la ligne CSV en objet
-     * 
+     *
      * @return Csv
      */
     public function toObject()
@@ -214,7 +212,7 @@ class Csv
 
     /**
      * Ajoute plusieurs lignes de données
-     * 
+     *
      * @return void
      */
     public function addLines($items)
@@ -224,7 +222,7 @@ class Csv
         if ($this->handle) {
             if ($items) {
                 foreach ($items as $item) {
-                    if($this->addLine($item)) {
+                    if ($this->addLine($item)) {
                         $this->lines[] = $this->line;
                         $this->rawLines .= self::toRaw($this->line);
                     }
@@ -235,7 +233,7 @@ class Csv
 
     /**
      * Ajoute une ligne de données
-     * 
+     *
      * @return object
      */
     public function addLine($item)
@@ -244,9 +242,9 @@ class Csv
         $this->rawLine = false;
         if ($this->handle) {
             if ($item) {
-    
+
                 $item = (array)$item;
-    
+
                 /** Ajout des nouveaux éléments au header */
                 if ($this->options['hasHeader']) {
                     $headerType = 'string';
@@ -272,7 +270,7 @@ class Csv
                         $this->rawHeader = self::toRaw($this->header, false);
                     }
                     $this->prepend($this->rawHeader);
-    
+
                     /** Constitution de la ligne */
                     $this->line = new \stdClass();
                     foreach ($this->header as $i => $header) {
@@ -317,35 +315,46 @@ class Csv
 
     /**
      * Affiche le CSV
-     * 
+     *
      * @return void
      */
     public function display($filename)
     {
-        header('Content-Type:text/csv;charset:UTF-8;name="'.$filename.'"');
-        header('Content-Transfer-Encoding:binary');
-        header('Content-Disposition: attachment;filename="'.$filename.'"');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Content-Description: File Transfer');
+        header('Content-Type: text/csv; charset: UTF-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Content-Transfer-Encoding: binary');
         header('Expires: 0');
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Pragma: no-cache');
+        header('Pragma: public');
         readfile($this->file);
     }
 
     /**
      * Supprime le fichier
-     * 
+     *
      * @return void
      */
-    public function remove()
+    public function delete()
     {
-        if(file_exists($this->file)) {
+        if (file_exists($this->file)) {
             unlink($this->file);
         }
-    }   
+    }
+
+    /**
+     * Insertion rapide dans un fichier de log
+     */
+    public static function log($file, $line)
+    {
+        $csv = new self();
+        $csv->open($file);
+        $csv->addLine($line);
+    }
 
     /**
      * Converti une ligne CSV en tableau de données
-     * 
+     *
      * @return array
      */
     public static function fromRaw($line)
@@ -368,7 +377,7 @@ class Csv
 
     /**
      * Converti un tableau de données en ligne CSV
-     * 
+     *
      * @return array
      */
     public static function toRaw($line, $break = "\n")
