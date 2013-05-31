@@ -14,31 +14,55 @@ namespace PHPTools;
 
 abstract class Arr
 {
-    public static function getTree($array, $tree, $value = false)
+    public static function getTree($array, $items = false)
     {
-        if(is_object($array)) {
-            $array = (array) $array;
+        if (is_object($array)) {
+            $array = (array)$array;
         }
-        $tree = is_array($tree) && count($tree) == 1 ? $tree[0] : $tree;
-        if (is_array($tree)) {
+        $items = is_array($items) && count($items) == 1 ? $items[0] : $items;
+        if (!$items) {
+            return $array;
+        } elseif (is_array($items)) {
             $optional = false;
-            $name = array_shift($tree);
-            if(preg_match("#^\((.+)\)$#", $name, $match)) {
+            $name = array_shift($items);
+            if (preg_match("#^\((.+)\)$#", $name, $match)) {
                 $name = $match[1];
                 $optional = true;
             }
-            if (isset($array[$name])) {
-                return self::getTree($array[$name], $tree, $value);
-            } elseif($optional) {
-                return self::getTree($array, $tree, $value);
+            if (isset($array[$name]) && $array[$name] !== false) {
+                return self::getTree($array[$name], $items);
+            } elseif ($optional) {
+                return self::getTree($array, $items);
             }
         } else {
-            $name = $tree;
-            if (isset($array[$name])) {
+            $name = $items;
+            if (isset($array[$name]) && $array[$name] !== false) {
                 return $array[$name];
             }
         }
         return false;
+    }
+
+    public static function setTree(&$array, $items)
+    {
+        if ($items) {
+            if (is_array($items)) {
+                foreach ($items as $key => $item) {
+                    if (!is_int($key)) {
+                        if (isset($array[$key])) {
+                            self::setTree($array[$key], $item);
+                        } else {
+                            $array[$key] = $item;
+                        }
+                    } else {
+                        $array[] = $item;
+                    }
+                }
+            } else {
+                $array = $items;
+            }
+        }
+        return $array;
     }
 
     /**
@@ -62,25 +86,25 @@ abstract class Arr
         }
         return $array;
     }
-    
+
     public static function toObject(&$array)
     {
-        foreach($array as &$item) {
-            $item = (object) $item;
-        }        
-    }    
+        foreach ($array as &$item) {
+            $item = (object)$item;
+        }
+    }
 
     /**
      * Tri un tableau
      */
     public static function sort(&$array, $key, $order = SORT_DESC)
     {
-        if($array) {
+        if ($array) {
             $tmp = array();
-            foreach($array as $item) {
+            foreach ($array as $item) {
                 $tmp[] = $item[$key];
             }
             array_multisort($tmp, $order, $array);
         }
-    }    
+    }
 }

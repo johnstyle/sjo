@@ -12,18 +12,28 @@
 
 namespace PHPTools;
 
-abstract class Ini
+class Ini
 {
     /**
      * Tableau des valeurs des fichiers .ini
      *
      * @var private
      */
-    private static $data;
+    private $data = array();
 
-    public static function __callStatic($method, $args = false)
+    public function __construct(&$default = array())
     {
-        return self::_get($method, $args);
+        $this->data =& $default;
+    }
+
+    public function get($args = false)
+    {
+        return Arr::getTree($this->data, $args);
+    }
+
+    public function gets()
+    {
+        return $this->data;
     }
 
     /**
@@ -32,28 +42,33 @@ abstract class Ini
      * @param string Chemin des fichiers .ini
      * @return void
      */
-    public static function load($paths)
+    public function loadPath($paths, $regexp = false, $method = '<name>')
     {
+        $regexp = $regexp ? $regexp : "^(.+)\.ini$";
         foreach (Arr::to($paths) as $path) {
-            $files = Dir::getFiles($path, "^(.+)\.ini$");
+            $files = Dir::getFiles($path, $regexp);
             if ($files) {
                 foreach ($files as $file) {
-                    self::$data[$file->title] = parse_ini_file($file->path, true);
+                    $name = str_replace('-', '_', $file->match[1]);
+                    $name = $file->parentname == $name ? $name : str_replace('<name>', $name, $method);
+                    $this->loadFile($file->path, $name);
                 }
             }
         }
+        return $this->data;
     }
 
-    /**
-     * Retourne une valeur
-     *
-     * @return string
-     */
-    private static function _get($method, $args = false)
+    public function loadFile($file, $name = false)
     {
-        if (isset(self::$data[$method])) {
-            return Arr::getTree(self::$data[$method], $args);
+        if ($name) {
+            if (!isset($this->data[$name])) {
+                $this->data[$name] = array();
+            }
+            Arr::setTree($this->data[$name], parse_ini_file($file, true));
+            return $this->data[$name];
+        } else {
+            Arr::setTree($this->data, parse_ini_file($file, true));
+            return $this->data;
         }
-        return false;
     }
 }
