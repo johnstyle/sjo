@@ -48,7 +48,7 @@ abstract class Arr
         if ($items) {
             if (is_array($items)) {
                 foreach ($items as $key => $item) {
-                    if (!is_int($key)) {
+                    if (!is_int($key) || max(array_keys($items)) != (count($items) - 1)) {
                         if (isset($array[$key])) {
                             self::setTree($array[$key], $item);
                         } else {
