@@ -73,4 +73,27 @@ abstract class Dir
         }
         return $items;
     }
+
+    public static function lastModifiedFile($path, $return='mtime')
+    {
+        $file   = false;
+        $mtime  = 0;
+        foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path)) as $fileinfo) {
+            if ($fileinfo->isFile()) {
+                if ($fileinfo->getMTime() > $mtime) {
+                    $file   = $fileinfo->getFilename();
+                    $mtime  = $fileinfo->getMTime();
+                }
+            }
+        }
+        switch($return) {
+            case 'mtime':
+                return $mtime;
+                break;
+            case 'file':
+                return $file;
+                break;
+        }
+        return false;
+    }
 }
