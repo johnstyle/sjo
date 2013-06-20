@@ -15,6 +15,7 @@ namespace PHPTools;
 class Csv
 {
     protected $file;
+    protected $fileMv;
     protected $handle;
     protected $rawHeader;
     protected $rawLine;
@@ -58,7 +59,9 @@ class Csv
      */
     public function __destruct ()
     {
-        if ($this->handle) {
+        //$this->mv();
+
+        if (is_resource($this->handle)) {
             fclose($this->handle);
         }
     }
@@ -71,7 +74,8 @@ class Csv
      */
     public function create ($file)
     {
-        $this->file = $file;
+        $this->fileMv = $file;
+        $this->file = sys_get_temp_dir() . '/' . md5($file);
         $this->delete();
         return $this->handle();
     }
@@ -128,7 +132,7 @@ class Csv
      */
     public function loop ()
     {
-        if ($this->handle) {
+        if (is_resource($this->handle)) {
             $feof = !feof($this->handle);
             $this->line = false;
             if ($this->rawLine = stream_get_line($this->handle, 0, "\n")) {
@@ -185,7 +189,7 @@ class Csv
      */
     public function toObject ()
     {
-        if ($this->handle) {
+        if (is_resource($this->handle)) {
             $data = self::fromRaw($this->rawLine);
             if ($this->header) {
                 foreach ($this->header as $i => $header) {
@@ -238,7 +242,7 @@ class Csv
     {
         $this->lines = false;
         $this->rawLines = false;
-        if ($this->handle) {
+        if (is_resource($this->handle)) {
             if ($items) {
                 foreach ($items as $item) {
                     if ($this->addLine($item)) {
@@ -259,7 +263,7 @@ class Csv
     {
         $this->line = false;
         $this->rawLine = false;
-        if ($this->handle) {
+        if (is_resource($this->handle)) {
             if ($item) {
 
                 $item = (array)$item;
@@ -356,10 +360,32 @@ class Csv
      */
     public function delete ()
     {
-        if (file_exists($this->file)) {
-            unlink($this->file);
+        if ($this->fileMv) {
+            $file = $this->fileMv;
+        } else {
+            $file = $this->file;
+        }
+
+        if (file_exists($file)) {
+            unlink($file);
         }
     }
+
+    /**
+     * Ferme proprement le fichier
+     *
+     * @return void
+     */
+    public function close ()
+    {
+        if ($this->fileMv) {
+            rename($this->file, $this->fileMv);
+        }
+
+        if (is_resource($this->handle)) {
+            fclose($this->handle);
+        }        
+    }    
 
     /**
      * Insertion rapide dans un fichier de log
