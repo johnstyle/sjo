@@ -14,10 +14,13 @@ namespace PHPTools;
 
 abstract class Arr
 {
-    public static function getTree($array, $items = false)
+    public static function getTree ($array, $items = false)
     {
         if (is_object($array)) {
             $array = (array)$array;
+        }
+        if (!is_array($items) && strstr($items, '.')) {
+            $items = explode('.', $items);
         }
         $items = is_array($items) && count($items) == 1 ? $items[0] : $items;
         if (!$items) {
@@ -43,7 +46,7 @@ abstract class Arr
         return false;
     }
 
-    public static function setTree(&$array, $items)
+    public static function setTree (&$array, $items)
     {
         if ($items) {
             if (is_array($items)) {
@@ -68,7 +71,7 @@ abstract class Arr
     /**
      * Remplacement des espaces
      */
-    public static function explode($sep, $array)
+    public static function explode ($sep, $array)
     {
         if ($array) {
             return array_map('trim', explode($sep, $array));
@@ -79,7 +82,7 @@ abstract class Arr
     /**
      * Convertit une chaine en tableau
      */
-    public static function to($array)
+    public static function to ($array)
     {
         if (!is_array($array)) {
             return array($array);
@@ -87,7 +90,7 @@ abstract class Arr
         return $array;
     }
 
-    public static function toObject(&$array)
+    public static function toObject (&$array)
     {
         foreach ($array as &$item) {
             $item = (object)$item;
@@ -97,7 +100,7 @@ abstract class Arr
     /**
      * Tri un tableau
      */
-    public static function sort(&$array, $key, $order = SORT_DESC)
+    public static function sort (&$array, $key, $order = SORT_DESC)
     {
         if ($array) {
             $tmp = array();
@@ -107,4 +110,5 @@ abstract class Arr
             array_multisort($tmp, $order, $array);
         }
     }
+
 }
