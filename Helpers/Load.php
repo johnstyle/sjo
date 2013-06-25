@@ -2,7 +2,7 @@
 
 namespace PHPTools\Helpers;
 
-function autoload($path)
+function Autoload($path)
 {
 	spl_autoload_register(
 	    function ($className) use ($path) {
