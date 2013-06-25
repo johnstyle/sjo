@@ -10,6 +10,7 @@
  * @link     https://github.com/johnstyle/phpTools
  */
 
+ /** Configuration */
 defined('PHPTOOLS_CHARSET') OR define('PHPTOOLS_CHARSET', 'UTF-8');
 defined('PHPTOOLS_ROOT_TPL') OR define('PHPTOOLS_ROOT_TPL', 'tpl/');
 defined('PHPTOOLS_DB_HOST') OR define('PHPTOOLS_DB_HOST', 'localhost');
