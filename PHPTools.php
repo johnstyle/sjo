@@ -17,6 +17,7 @@ defined('PHPTOOLS_DB_USER') OR define('PHPTOOLS_DB_USER', 'root');
 defined('PHPTOOLS_DB_PWD') OR define('PHPTOOLS_DB_PWD', '');
 defined('PHPTOOLS_DB_BASE') OR define('PHPTOOLS_DB_BASE', '');
 
+/** Classes */
 spl_autoload_register(
     function ($className) {
         if (strstr($className, 'PHPTools\\')) {
@@ -26,3 +27,8 @@ spl_autoload_register(
         }
     }
 );
+
+/** Helpers */
+foreach(PHPTools\Dir::getFiles(realpath(__DIR__) . '/Helpers') as $helpers) {
+	include $helpers->path;
+}
