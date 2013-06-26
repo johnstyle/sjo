@@ -73,6 +73,11 @@ abstract class Env
         }
     }
 
+    public static function request($attr, $default = false)
+    {
+        return self::g($attr, self::g($attr, $default, $_GET), $_POST);
+    }
+
     /**
      * Récupération d'une valeur
      *
