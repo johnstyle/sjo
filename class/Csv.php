@@ -337,11 +337,12 @@ class Csv
     }
 
     /**
-     * Affiche le CSV
+     * Headers du fichier CSV
      *
+     * @param string $filename Nom du fichier à envoyer au navigateur
      * @return void
      */
-    public function display ($filename)
+    public static function headers ($filename)
     {
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Content-Description: File Transfer');
@@ -350,6 +351,16 @@ class Csv
         header('Content-Transfer-Encoding: binary');
         header('Expires: 0');
         header('Pragma: public');
+    }
+
+    /**
+     * Affiche le CSV
+     *
+     * @return void
+     */
+    public function display ($filename)
+    {
+        self::headers($filename);
         readfile($this->file);
     }
 
