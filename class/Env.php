@@ -14,6 +14,8 @@ namespace PHPTools;
 
 abstract class Env
 {
+	private static $opt = array();
+	
     /**
      * Gestion des différents tableaux de variables d'environement
      *
@@ -63,7 +65,7 @@ abstract class Env
                         return self::g($attr, $value, $$var);
                         break;
                     case 'Exists':
-                        return self::e($attr, $$var);
+                        return self::e($attr, $value, $$var);
                         break;
                     case 'Set':
                         self::s($attr, $value, $$var);
@@ -73,10 +75,66 @@ abstract class Env
         }
     }
 
-    public static function request($attr, $default = false)
+    /**
+     * Récupération d'une valeur REQUEST (mlodifié)
+     *
+     * @param string $attr Clé du tableau
+     * @param string $default Valeurs par défaut
+     * @return mixte
+     */
+    public static function request($attr = false, $default = false)
     {
         return self::g($attr, self::g($attr, $default, $_GET), $_POST);
     }
+
+    /**
+     * Récupération d'une option phpcli
+     *
+     * @param string $attr Clé du tableau
+     * @param string $default Valeurs par défaut
+     * @return mixte
+     */
+    public static function opt($attr = false, $default = false)
+    {
+        return self::g($attr, $default, self::$opt);
+	}
+
+    /**
+     * Vérification de l'existance d'une option phpcli
+     *
+     * @param string $attr Clé du tableau
+     * @param boolean $empty Autorise ou non que la valeur soit vide
+     * @return boolean
+     */
+    public static function optExists($attr, $empty = false)
+    {
+        return self::e($attr, $empty, self::$opt);
+	}
+
+    /**
+     * Définition d'options phpcli
+     *
+     * @param mixte $attr Liste des options
+     * @return mixte
+     */
+    public static function optSet($attr)
+    {
+    	if($attr) {
+	    	$options = '';
+	    	$longopts = array();
+	    	if(!is_array($attr)) {
+	    		$attr = array($attr);
+	    	}
+			foreach($attr as $item) {
+				if(strlen(str_replace(':', '', $item)) == 1) {
+					$options .= $item;
+				} else {
+					array_push($longopts, $item);
+				}
+			}
+			self::$opt = array_merge(self::$opt, getopt($options, $longopts));
+		}
+	}	
 
     /**
      * Récupération d'une valeur
@@ -101,13 +159,14 @@ abstract class Env
     /**
      * Vérification de l'existance d'une valeur
      *
-     * @param string $attr Clé du tableau
-     * @param string $var  Tableau de données
-     * @return boolean
+     * @param string $attr   Clé du tableau
+     * @param boolean $empty Autorise ou non que la valeur soit vide
+     * @param string $var    Tableau de données
+	 * @return boolean
      */
-    public static function e($attr, &$var)
+    public static function e($attr, $empty = false, &$var)
     {
-        if (isset($var[$attr]) && !empty($var[$attr])) {
+        if (isset($var[$attr]) && ((!$empty && !empty($var[$attr])) || $empty)) {
             return true;
         }
         return false;
