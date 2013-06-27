@@ -25,9 +25,9 @@ class Csv
     protected $lines;
     protected $options;
 
-    private static $separator = ';';
-    private static $container = '"';
-    private static $max_size = 1024;
+    protected $separator = ';';
+    protected $container = '"';
+    protected $max_size = 1024;
 
     public function __construct ($options = array())
     {
@@ -41,15 +41,15 @@ class Csv
             'limit'         => 0,
             'start'         => 0,
             'filter'        => false,
-            'separator'     => self::$separator,
-            'container'     => self::$container,
-            'max_size'      => self::$max_size            
+            'separator'     => $this->separator,
+            'container'     => $this->container,
+            'max_size'      => $this->max_size
         ), $options);
         /** @formatter:on */
 
-        self::$separator = $this->options['separator'];
-        self::$container = $this->options['container'];
-        self::$max_size = $this->options['max_size'];
+        $this->separator = $this->options['separator'];
+        $this->container = $this->options['container'];
+        $this->max_size = $this->options['max_size'];
     }
 
     /**
@@ -59,8 +59,6 @@ class Csv
      */
     public function __destruct ()
     {
-        //$this->mv();
-
         if (is_resource($this->handle)) {
             fclose($this->handle);
         }
@@ -327,7 +325,7 @@ class Csv
     public function prepend ($str)
     {
         fseek($this->handle, 0);
-        fwrite($this->handle, $str . str_pad(" ", self::$max_size - strlen($str)) . "\n");
+        fwrite($this->handle, $str . str_pad(" ", $this->max_size - strlen($str)) . "\n");
     }
 
     public function append ($str)
@@ -395,17 +393,7 @@ class Csv
 
         if (is_resource($this->handle)) {
             fclose($this->handle);
-        }        
-    }    
-
-    /**
-     * Insertion rapide dans un fichier de log
-     */
-    public static function log ($file, $line)
-    {
-        $csv = new self ();
-        $csv->open($file);
-        $csv->addLine($line);
+        }
     }
 
     /**
@@ -413,17 +401,17 @@ class Csv
      *
      * @return array
      */
-    public static function fromRaw ($line)
+    public function fromRaw ($line)
     {
         $data = false;
         $line = trim($line);
         if (!empty($line)) {
-            if (self::$container) {
-                $first = strpos($line, self::$container) + 1;
-                $last = strrpos($line, self::$container) - 1;
+            if ($this->container) {
+                $first = strpos($line, $this->container) + 1;
+                $last = strrpos($line, $this->container) - 1;
                 $line = substr($line, $first, $last);
             }
-            $items = explode(self::$container . self::$separator . self::$container, $line);
+            $items = explode($this->container . $this->separator . $this->container, $line);
             foreach ($items as $item) {
                 $data[] = $item;
             }
@@ -436,15 +424,37 @@ class Csv
      *
      * @return array
      */
-    public static function toRaw ($line, $break = "\n")
+    public function toRaw ($line, $break = "\n")
     {
         $rawLine = false;
         if ($line) {
             foreach ($line as $key => $val) {
-                $rawLine[] = self::$container . $val . self::$container;
+                $rawLine[] = $this->container . $val . $this->container;
             }
-            $rawLine = implode(self::$separator, $rawLine) . $break;
+            $rawLine = implode($this->separator, $rawLine) . $break;
         }
         return $rawLine;
     }
+
+    /**
+     * Insertion rapide dans un fichier de log
+     */
+    public static function log ($file, $line)
+    {
+        $csv = new self ();
+        $csv->open($file);
+        $csv->addLine($line);
+    } 
+
+    public static function arrayToRaw ($line, $break = "\n")
+    {
+        $csv = new self ();
+        return $csv->toRaw($line, $break = "\n");
+    } 
+
+    public static function arrayFromRaw ($line)
+    {
+        $csv = new self ();
+        return $csv->fromRaw($line);
+    } 
 }
