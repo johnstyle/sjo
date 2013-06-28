@@ -48,7 +48,7 @@ abstract class Arr
 
     public static function setTree (&$array, $items)
     {
-        if ($items) {
+        if ($items !== false) {
             if (is_array($items)) {
                 foreach ($items as $key => $item) {
                     if (!is_int($key) || max(array_keys($items)) != (count($items) - 1)) {
