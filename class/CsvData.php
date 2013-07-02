@@ -86,7 +86,8 @@ class CsvData extends Csv
         if($this->update) {
             if($this->lines){
                 if($this->header) {
-                    $lines = self::toRaw($this->header);
+                    $str = self::toRaw($this->header, false);
+                    $lines = $str . str_pad(" ", $this->max_size - strlen($str)) . "\n";
                 } else {
                     $lines = false;
                 }
