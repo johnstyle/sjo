@@ -43,7 +43,7 @@ class View
      */
     public static function inc($filename)
     {
-        $path = PHPTOOLS_ROOT_TPL . '/' . $filename . '.php';
+        $path = PHPTOOLS_ROOT_VIEWS . '/' . $filename . '.php';
         if (file_exists($path)) {
             require $path;
         }
