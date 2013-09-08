@@ -10,11 +10,34 @@
  * @link     https://github.com/johnstyle/PHPTools.git
  */
 
-namespace PHPTools\Mvc;
+namespace PHPTools;
 
 class View
 {
-    private static $View;
+   /**
+    * Core references
+    *
+    * @var object
+    */
+    public static $Core;
+
+   /**
+    * Controller references
+    *
+    * @var object
+    */
+    public static $Controller;
+
+   /**
+    * Constructor
+    *
+    * @return void
+    */
+    public function __construct(&$instance)
+    {
+        self::$Controller =& $instance;
+        self::$Core =& $instance->Core;
+    }
 
     /**
      * Inclusion du header
@@ -43,9 +66,9 @@ class View
      */
     public static function inc($filename)
     {
-        $path = PHPTOOLS_ROOT_VIEWS . '/' . $filename . '.php';
+        $path = PHPTOOLS_ROOT_VIEW . '/' . $filename . '.php';
         if (file_exists($path)) {
-            require $path;
+            include $path;
         }
     }
 
@@ -54,11 +77,12 @@ class View
      *
      * @return void
      */
-    public static function setObject($name, &$obj)
+    public static function htmlClasses()
     {
-        if (!self::$View) {
-            self::$View = new \stdClass();
+        $classes =  'c-' . str_replace('/', '-', strtolower(CONTROLLER));
+        if(METHOD) {
+            $classes =  ' m-' . strtolower(METHOD);
         }
-        self::$View->{$name} = $obj;
+        return $classes;
     }
 }

@@ -10,7 +10,7 @@
  * @link     https://github.com/johnstyle/PHPTools.git
  */
 
-namespace PHPTools;
+namespace PHPTools\Libraries;
 
 abstract class Env
 {
@@ -58,7 +58,7 @@ abstract class Env
             $action = isset($match[2]) ? $match[2] : false;
             $attr   = self::g(0, false, $args);
             $value  = self::g(1, false, $args);
-            global $$var;
+            global $$var, $_SERVER;
             if (isset($$var)) {
                 switch ($action) {
                     default:
@@ -183,5 +183,12 @@ abstract class Env
     public static function s($attr, $value, &$var)
     {
         $var[$attr] = $value;
+    }
+
+    public static function sessionStart()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
     }
 }

@@ -10,7 +10,7 @@
  * @link     https://github.com/johnstyle/PHPTools.git
  */
 
-namespace PHPTools;
+namespace PHPTools\Libraries;
 
 class CsvData extends Csv
 {

@@ -4,39 +4,39 @@ namespace PHPTools;
 
 class Alert
 {
-    private static $alerts;
+    private $alerts;
 
     public function __construct()
     {
-        session_start();
+        Libraries\Env::sessionStart();
 
-        if(Env::session('alerts')) {
-            self::$alerts = json_decode(self::$alerts);
+        if(Libraries\Env::session('alerts')) {
+            $this->alerts = json_decode($this->alerts);
         }
     }
 
     public function __destruct()
     {
-        Env::sessionSet('alerts', json_encode(self::$alerts));
+        Libraries\Env::sessionSet('alerts', json_encode($this->alerts));
     }
 
-    public static function add($message, $type = 'danger')
+    public function add($message, $type = 'danger')
     {
-        self::$alerts[$type][] = $message;
+        $this->alerts[$type][] = $message;
     }
 
-    public static function exists()
+    public function exists()
     {
-        if(self::$alerts) {
+        if($this->alerts) {
             return true;
         }
         return false;
     }
 
-    public static function display()
+    public function display()
     {
-        if(self::exists()) {
-            foreach(self::$alerts as $type=>$alerts) {
+        if($this->exists()) {
+            foreach($this->alerts as $type=>$alerts) {
                 echo '<div class="alert alert-'.$type.'">';
                 if(count($alerts) > 1) {
                     echo '<ol>';
@@ -53,7 +53,7 @@ class Alert
             }
         }
 
-        Env::sessionSet('alerts');
-        self::$alerts = NULL;
+        Libraries\Env::sessionSet('alerts');
+        $this->alerts = NULL;
     }
 }

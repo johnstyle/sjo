@@ -10,7 +10,7 @@
  * @link     https://github.com/johnstyle/PHPTools.git
  */
 
-namespace PHPTools;
+namespace PHPTools\Libraries;
 
 class Csv
 {
@@ -452,9 +452,14 @@ class Csv
         return $csv->toRaw($line, $break = "\n");
     } 
 
-    public static function arrayFromRaw ($line)
+    public static function arrayFromRaw ($lines, $options = array())
     {
-        $csv = new self ();
-        return $csv->fromRaw($line);
+        $data = array();
+        $lines = explode("\n", $lines);
+        $csv = new self ($options);
+        foreach($lines as $line) {
+            $data[] = $csv->fromRaw($line);
+        }        
+        return $data;
     } 
 }

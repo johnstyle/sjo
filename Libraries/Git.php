@@ -10,7 +10,7 @@
  * @link     https://github.com/johnstyle/PHPTools.git
  */
 
-namespace PHPTools;
+namespace PHPTools\Libraries;
 
 abstract class Git
 {
