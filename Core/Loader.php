@@ -63,27 +63,31 @@ class Loader
             switch(Libraries\Env::get('content_type')) {
                 case 'json' :
                     header('Content-type:application/json; charset=' . PHPTOOLS_CHARSET);
-                    if (method_exists($className, METHOD)) {
-                        if($this->instance->Core->Request->hasToken()) {
-                            echo json_encode($this->instance->{METHOD}());
-                        } else {
-                            http_response_code(401);
-                            header('Content-type:text/html; charset=' . PHPTOOLS_CHARSET);
-                            echo 'Warning ! Prohibited queries.';
+                        if (method_exists($className, METHOD)) {
+                            try {
+                                if($this->instance->Core->Request->hasToken()) {
+                                    echo json_encode($this->instance->{METHOD}());
+                                } else {
+                                    throw new Exception('Warning ! Prohibited queries.');
+                                }
+                            } catch(Exception $Exception) {
+                                $Exception->showError();
+                            }
                         }
-                    }
                     exit ;
                     break;
                 default :
                     header('Content-type:text/html; charset=' . PHPTOOLS_CHARSET);
                     if (method_exists($className, METHOD)) {
-                        if($this->instance->Core->Request->hasToken()) {
-                            $this->instance->{METHOD}();
-                        } else {
-                            http_response_code(401);
-                            echo 'Warning ! Prohibited queries.';
-                            exit;
-                        }
+                        try {
+                            if($this->instance->Core->Request->hasToken()) {
+                                $this->instance->{METHOD}();
+                            } else {
+                                throw new Exception('Warning ! Prohibited queries.');
+                            }
+                        } catch(Exception $Exception) {
+                            $Exception->showError();
+                        }    
                     }
                     break;
             }
