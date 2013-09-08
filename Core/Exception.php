@@ -11,6 +11,6 @@ class Exception extends \Exception
 
     public function showError()
     {
-        echo '<div style="color:red">' . $this->getMessage() . '</div>';
+        die('<div style="color:red">' . $this->getMessage() . '</div>');
     }
 }
