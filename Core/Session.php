@@ -18,7 +18,7 @@ class Session
     {
         Libraries\Env::sessionStart();
 
-        if(CONTROLLER != PHPTOOLS_CONTROLLER_AUTH) {echo 'ok';exit;
+        if(CONTROLLER != PHPTOOLS_CONTROLLER_AUTH) {
             if(!$this->isActive()) {
                 if(Libraries\Env::get('token')) {
                     $this->isActive(Libraries\Env::get('token'));
@@ -27,7 +27,7 @@ class Session
                     $this->redirect('./?' . PHPTOOLS_CONTROLLER_NAME . '=' . PHPTOOLS_CONTROLLER_AUTH . '&redirect=' . urlencode('/?' . Libraries\Env::server('QUERY_STRING')));
                 }
             }
-        } elseif($this->isActive()) {                    
+        } elseif($this->isActive() && !METHOD) {                    
             $this->redirect();
         }
     }
