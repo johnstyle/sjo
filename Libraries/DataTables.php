@@ -42,7 +42,7 @@ class DataTables
             }
         }
         $this->data = array(
-            'sEcho'                 => \PHPTools\Env::request('sEcho'),
+            'sEcho'                 => Env::request('sEcho'),
             'iTotalRecords'         => count($aaData),
             'iTotalDisplayRecords'  => count($aaData),
             'aaData'                => $aaData
@@ -57,8 +57,8 @@ class DataTables
     public function display()
     {
         header('Content-type:application/json; charset=utf-8');
-        if(\PHPTools\Env::get('callback')) {
-            echo \PHPTools\Env::get('callback') . '(' . json_encode($this->data) . ');';
+        if(Env::get('callback')) {
+            echo Env::get('callback') . '(' . json_encode($this->data) . ');';
         } else {
             echo json_encode($this->data);
         }
