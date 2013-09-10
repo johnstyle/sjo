@@ -8,7 +8,7 @@ class Alert
 
     public function __construct()
     {
-        Libraries\Env::sessionStart();
+        Session::start();
 
         if(Libraries\Env::session('alerts')) {
             $this->alerts = json_decode($this->alerts);

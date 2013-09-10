@@ -15,12 +15,25 @@ namespace PHPTools;
 class Loader
 {
     private $instance;
-    
-    public function __construct ()
-    {
-        defined('CONTROLLER') OR define('CONTROLLER', Libraries\Env::request(PHPTOOLS_CONTROLLER_NAME, PHPTOOLS_CONTROLLER_DEFAULT));
-        defined('METHOD') OR define('METHOD', Libraries\Env::request(PHPTOOLS_METHOD_NAME, PHPTOOLS_METHOD_DEFAULT));
 
+    public function __construct ($controller = false, $method = false)
+    {
+        if(!$controller) {
+            $controller = Libraries\Env::request(PHPTOOLS_CONTROLLER_NAME, PHPTOOLS_CONTROLLER_DEFAULT);
+            $controller = trim($controller, '/');
+            $controller = str_replace('/', '\\', $controller);
+        }
+
+        if(!$method) {
+            $method = Libraries\Env::request(PHPTOOLS_METHOD_NAME, PHPTOOLS_METHOD_DEFAULT);
+        }
+
+        define('CONTROLLER', $controller);
+        define('METHOD', $method);
+    }
+
+    public function display ()
+    {
         if (CONTROLLER) {
 
             \PHPTools\Helpers\Autoload(PHPTOOLS_ROOT_APP);
@@ -60,36 +73,38 @@ class Loader
                 $this->instance->__load();
             }
 
-            switch(Libraries\Env::get('content_type')) {
-                case 'json' :
-                    header('Content-type:application/json; charset=' . PHPTOOLS_CHARSET);
+            if(METHOD) {
+                switch(Libraries\Env::get('content_type')) {
+                    case 'json' :
+                        header('Content-type:application/json; charset=' . PHPTOOLS_CHARSET);
+                            if (method_exists($className, METHOD)) {
+                                try {
+                                    if($this->instance->Core->Request->hasToken()) {
+                                        echo json_encode($this->instance->{METHOD}());
+                                    } else {
+                                        throw new Exception('Warning ! Prohibited queries.');
+                                    }
+                                } catch(Exception $Exception) {
+                                    $Exception->showError();
+                                }
+                            }
+                        exit ;
+                        break;
+                    default :
+                        header('Content-type:text/html; charset=' . PHPTOOLS_CHARSET);
                         if (method_exists($className, METHOD)) {
                             try {
                                 if($this->instance->Core->Request->hasToken()) {
-                                    echo json_encode($this->instance->{METHOD}());
+                                    $this->instance->{METHOD}();
                                 } else {
                                     throw new Exception('Warning ! Prohibited queries.');
                                 }
                             } catch(Exception $Exception) {
                                 $Exception->showError();
-                            }
+                            }    
                         }
-                    exit ;
-                    break;
-                default :
-                    header('Content-type:text/html; charset=' . PHPTOOLS_CHARSET);
-                    if (method_exists($className, METHOD)) {
-                        try {
-                            if($this->instance->Core->Request->hasToken()) {
-                                $this->instance->{METHOD}();
-                            } else {
-                                throw new Exception('Warning ! Prohibited queries.');
-                            }
-                        } catch(Exception $Exception) {
-                            $Exception->showError();
-                        }    
-                    }
-                    break;
+                        break;
+                }
             }
             return true;
         }

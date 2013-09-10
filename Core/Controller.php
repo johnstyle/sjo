@@ -53,7 +53,9 @@ abstract class Controller
     */
     public function __restrictedAccess ()
     {
-        $this->Core->Session->check();
+        if(PHPTOOLS_FULL_RESTRICTED_ACCESS) {
+            $this->Core->Session->check();
+        }
     }
 
    /**

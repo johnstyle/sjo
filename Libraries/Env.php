@@ -184,11 +184,4 @@ abstract class Env
     {
         $var[$attr] = $value;
     }
-
-    public static function sessionStart()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-    }
 }

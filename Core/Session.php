@@ -14,9 +14,16 @@ namespace PHPTools;
 
 class Session
 {
+    public static function start()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+
     public function check()
     {
-        Libraries\Env::sessionStart();
+        self::start();
 
         if(CONTROLLER != PHPTOOLS_CONTROLLER_AUTH) {
             if(!$this->isActive()) {

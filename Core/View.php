@@ -64,11 +64,23 @@ class View
      *
      * @return void
      */
-    public static function inc($filename)
+    public static function inc($filename, $vars = false)
     {
+        $filename = str_replace('\\', '/', $filename);
         $path = PHPTOOLS_ROOT_VIEW . '/' . $filename . '.php';
         if (file_exists($path)) {
+            if($vars) {
+                foreach($vars as $var=>$value) {
+                    global $$var;
+                    $$var = $value;
+                }
+            }
             include $path;
+            if($vars) {
+                foreach($vars as $var=>$value) {
+                    unset($$var);
+                }
+            }            
         }
     }
 
