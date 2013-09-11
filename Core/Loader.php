@@ -30,104 +30,111 @@ class Loader
 
         define('CONTROLLER', $controller);
         define('METHOD', $method);
+
+        try {
+            if (CONTROLLER) {
+
+                \PHPTools\Helpers\Autoload(PHPTOOLS_ROOT_APP);
+
+                try {
+                    $className = '\\Controller\\' . CONTROLLER;
+
+                    if (class_exists($className)) {
+                        $this->instance = new $className ();
+                        $this->_initModel();
+                    } else {
+                        throw new Exception('Controller <b>\\Controller\\' . CONTROLLER . '</b> do not extsist.');
+                    }                
+                } catch(Exception $Exception) {
+                    $Exception->showError();
+                }
+            } else {
+                throw new Exception('CONTROLLER is undefined.');
+            }
+        } catch(Exception $Exception) {
+            $Exception->showError();
+        }
+    }
+
+    public function event ($event, $options = false)
+    {
+        $event = '__' . $event;
+
+        if (method_exists($this->instance, $event)) {
+            $this->instance->{$event}($options);
+        }
     }
 
     public function display ()
     {
-        if (CONTROLLER) {
-
-            \PHPTools\Helpers\Autoload(PHPTOOLS_ROOT_APP);
-
-            try {
-                if($this->initController()) {
-                    View::inc(CONTROLLER);
-                } else {
-                    throw new Exception('Controller <b>\\Controller\\' . CONTROLLER . '</b> do not extsist.');
-                }
-            } catch(Exception $Exception) {
-                $Exception->showError();
-            }
-        }
-    }
-
-    private function initController ()
-    {
         $className = '\\Controller\\' . CONTROLLER;
         
-        if (class_exists($className)) {
+        $this->_initCore('Session');
+        $this->_initCore('Request');
+        $this->_initCore('Alert');
 
-            $this->instance = new $className ();
+        $this->_initView();
 
-            $this->initCore('Session');
-            $this->initCore('Request');
-            $this->initCore('Alert');
+        $this->event('restrictedAccess');
+        $this->event('load');
 
-            $this->initModel();
-            $this->initView();
-
-            if (method_exists($this->instance, '__restrictedAccess')) {
-                $this->instance->__restrictedAccess();
-            }
-
-            if (method_exists($this->instance, '__load')) {
-                $this->instance->__load();
-            }
-
-            if(METHOD) {
-                switch(Libraries\Env::get('content_type')) {
-                    case 'json' :
-                        header('Content-type:application/json; charset=' . PHPTOOLS_CHARSET);
-                            if (method_exists($className, METHOD)) {
-                                try {
-                                    if($this->instance->Core->Request->hasToken()) {
-                                        echo json_encode($this->instance->{METHOD}());
-                                    } else {
-                                        throw new Exception('Warning ! Prohibited queries.');
-                                    }
-                                } catch(Exception $Exception) {
-                                    $Exception->showError();
-                                }
-                            }
-                        exit ;
-                        break;
-                    default :
-                        header('Content-type:text/html; charset=' . PHPTOOLS_CHARSET);
+        if(METHOD) {
+            switch(Libraries\Env::get('content_type')) {
+                case 'json' :
+                    header('Content-type:application/json; charset=' . PHPTOOLS_CHARSET);
                         if (method_exists($className, METHOD)) {
                             try {
                                 if($this->instance->Core->Request->hasToken()) {
-                                    $this->instance->{METHOD}();
+                                    echo json_encode($this->instance->{METHOD}());
                                 } else {
                                     throw new Exception('Warning ! Prohibited queries.');
                                 }
                             } catch(Exception $Exception) {
                                 $Exception->showError();
-                            }    
+                            }
                         }
-                        break;
-                }
+                    exit ;
+                    break;
+                default :
+                    header('Content-type:text/html; charset=' . PHPTOOLS_CHARSET);
+                    if (method_exists($className, METHOD)) {
+                        try {
+                            if($this->instance->Core->Request->hasToken()) {
+                                $this->instance->{METHOD}();
+                            } else {
+                                throw new Exception('Warning ! Prohibited queries.');
+                            }
+                        } catch(Exception $Exception) {
+                            $Exception->showError();
+                        }    
+                    }
+                    break;
             }
-            return true;
         }
-        return false;
+
+        View::inc(CONTROLLER);
     }
 
-    private function initModel ()
+    private function _initModel ()
     {
-        $className = 'Model\\' . CONTROLLER;
+        $className = '\\Model\\' . CONTROLLER;
 
         if (class_exists($className)) {
             $this->instance->Model = new $className ();
         }
     }
 
-    private function initView ()
-    {
-        $View = new View($this->instance);
-    }
-
-    private function initCore ($class)
+    private function _initCore ($class)
     {
         $className = '\\PHPTools\\' . $class;
-        $this->instance->Core->{$class} = new $className ();
-    }     
+
+        if (class_exists($className)) {
+            $this->instance->Core->{$class} = new $className ();
+        }
+    }
+
+    private function _initView ()
+    {
+        $View = new View($this->instance);
+    }    
 }
