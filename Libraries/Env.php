@@ -146,9 +146,10 @@ abstract class Env
      */
     public static function g($attr, $default, &$var)
     {
-        if($attr !== false) {
-            if (isset($var[$attr]) && !empty($var[$attr])) {
-                return Str::stripslashes($var[$attr]);
+        if($attr !== false) {            
+            $value = Arr::getTree($var, $attr);
+            if ($value !== false && $value !== '') {
+                return Str::stripslashes($value);
             }
         } else {
             return $var;
