@@ -114,4 +114,19 @@ abstract class Str
         }
         return $str;
     }
+
+    public static function isFloat($str)
+    {
+        return preg_match("#^([0-9]+|[0-9]+\.[0-9]+)$#", $str);
+    }
+
+    public static function isInt($str)
+    {
+        return preg_match("#^[0-9]+$#", $str);
+    }
+
+    public static function isUrl($str)
+    {
+        return preg_match("#^https?://(www\.)?[a-z0-9\.\-]+\.[a-z]{2,4}(/.+|$)#i", $str);
+    }  
 }
