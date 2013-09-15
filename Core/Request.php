@@ -24,4 +24,10 @@ class Request
     {
         return Libraries\Arr::getTree(Libraries\Env::get('filters'), $key);
     }
+
+    public static function redirect($url = false)
+    {
+        header('Location:' . ($url ? $url : './'));
+        exit;
+    }    
 }
