@@ -70,10 +70,30 @@ class CsvData extends Csv
     public function removeValue($key, $val){
         if($this->lines){
             foreach($this->lines as $i=>$line){
-                if(isset($line->{$key}) && $line->{$key} == $val) $this->removeLine($i);
+                if(isset($line->{$key}) && $line->{$key} == $val) {
+                    $this->removeLine($i);
+                }
             }
         }
     }
+
+    public function updateValue($matches, $data){
+        if($this->lines){
+            foreach($this->lines as $i=>&$line){
+                $match = true;
+                foreach($matches as $key=>$val){
+                    if(!isset($line->{$key}) || $line->{$key} != $val) {
+                        $match = false;
+                    }
+                }
+                if($match) {
+                    $line = (object) array_merge((array) $line, $data);
+                    $this->update = true;
+                }
+            }
+        }
+    }
+    
 
     public function removeLine($i){
         if(isset($this->lines[$i])) {
