@@ -23,7 +23,7 @@ abstract class Arr
             $items = explode('.', $items);
         }
         $items = is_array($items) && count($items) == 1 ? $items[0] : $items;
-        if (!$items) {
+        if ($items === false) {
             return $array;
         } elseif (is_array($items)) {
             $optional = false;
