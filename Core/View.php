@@ -84,17 +84,20 @@ class View
         }
     }
 
-    /**
-     * Déclaration d'objets accessibles dans le template
-     *
-     * @return void
-     */
     public static function htmlClasses()
     {
         $classes =  'c-' . str_replace('/', '-', strtolower(CONTROLLER));
         if(METHOD) {
-            $classes =  ' m-' . strtolower(METHOD);
+            $classes .=  ' m-' . strtolower(METHOD);
         }
-        return $classes;
+        echo $classes;
     }
+
+    public static function htmlStylesheet()
+    {
+        $filename = str_replace('/', '-', strtolower(CONTROLLER)) . '.css';
+        if(file_exists(PHPTOOLS_ROOT_PUBLIC_HTML . '/css/' . $filename)) {
+            echo '<link href="css/' . $filename . '" rel="stylesheet" media="screen" />';
+        }
+    }    
 }
