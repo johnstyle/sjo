@@ -16,10 +16,12 @@ include realpath(__DIR__) . '/__deprecated.php';
 /** Configuration */
 defined('PHPTOOLS_CHARSET') OR define('PHPTOOLS_CHARSET', 'UTF-8');
 
-defined('PHPTOOLS_ROOT_APP') OR define('PHPTOOLS_ROOT_MODEL', 'App');
+defined('PHPTOOLS_ROOT') OR define('PHPTOOLS_ROOT', '..');
+defined('PHPTOOLS_ROOT_APP') OR define('PHPTOOLS_ROOT_APP', PHPTOOLS_ROOT . '/App');
 defined('PHPTOOLS_ROOT_MODEL') OR define('PHPTOOLS_ROOT_MODEL', PHPTOOLS_ROOT_APP . '/Model');
 defined('PHPTOOLS_ROOT_VIEW') OR define('PHPTOOLS_ROOT_VIEW', PHPTOOLS_ROOT_APP . '/View');
 defined('PHPTOOLS_ROOT_CONTROLLER') OR define('PHPTOOLS_ROOT_CONTROLLER', PHPTOOLS_ROOT_APP . '/Controller');
+defined('PHPTOOLS_ROOT_PUBLIC_HTML') OR define('PHPTOOLS_ROOT_PUBLIC_HTML', PHPTOOLS_ROOT . '/public_html');
 
 defined('PHPTOOLS_DB_HOST') OR define('PHPTOOLS_DB_HOST', 'localhost');
 defined('PHPTOOLS_DB_USER') OR define('PHPTOOLS_DB_USER', 'root');
