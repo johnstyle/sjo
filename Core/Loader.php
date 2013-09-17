@@ -41,10 +41,18 @@ class Loader
 
                     if (class_exists($className)) {
                         $this->instance = new $className ();
-                        $this->_initModel();
+                        try {
+                            if(get_parent_class($this->instance) == 'PHPTools\Controller') {
+                                $this->_initModel();
+                            } else {
+                                throw new Exception('Controller <b>\\Controller\\' . CONTROLLER . '</b> is not extended to <b>\\PHPTools\\Controller</b>.');
+                            }
+                        } catch(Exception $Exception) {
+                            $Exception->showError();
+                        }                        
                     } else {
                         throw new Exception('Controller <b>\\Controller\\' . CONTROLLER . '</b> do not extsist.');
-                    }                
+                    }
                 } catch(Exception $Exception) {
                     $Exception->showError();
                 }
@@ -129,7 +137,12 @@ class Loader
         $className = '\\PHPTools\\' . $class;
 
         if (class_exists($className)) {
-            $this->instance->Core->{$class} = new $className ();
+            $hookName = '\\Hooks\\' . $class;
+            if (class_exists($hookName)) {
+                $this->instance->Core->{$class} = new $hookName ();
+            } else {
+                $this->instance->Core->{$class} = new $className ();
+            }
         }
     }
 
