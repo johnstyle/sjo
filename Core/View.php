@@ -95,7 +95,7 @@ class View
 
     public static function htmlStylesheet()
     {
-        $filename = str_replace('/', '-', strtolower(CONTROLLER)) . '.css';
+        $filename = str_replace('\\', '-', strtolower(CONTROLLER)) . '.css';
         if(file_exists(PHPTOOLS_ROOT_PUBLIC_HTML . '/css/' . $filename)) {
             echo '<link href="css/' . $filename . '" rel="stylesheet" media="screen" />';
         }
