@@ -88,6 +88,19 @@ abstract class Env
     }
 
     /**
+     * Définition d'un cookie
+     *
+     * @param string $name  Nom
+     * @param string $value Valeur
+     * @return void
+     */
+    public static function cookieSet($name = false, $value = false, $expire = false, $path = '/', $domain = false, $secure = false, $httponly = false)
+    {
+        setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
+        $_COOKIE[$name] = $value;
+    }    
+
+    /**
      * Récupération d'une option phpcli
      *
      * @param string $attr Clé du tableau
