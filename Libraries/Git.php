@@ -19,10 +19,11 @@ abstract class Git
     /**
      * Récupère la branche active du projet courant
      *
-     * @param string $module Nom du sous-module, par défaut le projet principal est sélectionné
+     * @param string $module Nom du sous-module, par défaut le projet principal
+     * est sélectionné
      * @return string Nom de la branche
      */
-    public static function branch($module = false)
+    public static function branch ($module = false)
     {
         if (!isset(self::$HEAD[$module])) {
             $file = ROOT . '/.git/' . ($module ? 'modules/' . $module . '/' : '') . 'HEAD';
@@ -35,6 +36,8 @@ abstract class Git
             $HEAD = file_get_contents($file);
             if (preg_match("#refs/heads/(.+)$#", $HEAD, $match)) {
                 self::$HEAD[$module] = trim($match[1]);
+            } else {
+                self::$HEAD[$module] = 'no branch';
             }
         }
         return self::$HEAD[$module];
