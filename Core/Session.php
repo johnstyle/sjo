@@ -39,10 +39,10 @@ class Session
         }
     }
 
-    public function signin ($token)
+    public function signin ($token, $url = './')
     {
         Libraries\Env::sessionSet('token', $token);
-        $this->redirect();
+        $this->redirect($url);
     }
 
     public function signout ($url = './')
