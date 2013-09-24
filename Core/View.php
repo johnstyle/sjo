@@ -93,11 +93,19 @@ class View
         echo $classes;
     }
 
-    public static function htmlStylesheet()
+    public static function htmlStylesheet($root = './')
     {
         $filename = str_replace('\\', '-', strtolower(CONTROLLER)) . '.css';
         if(file_exists(PHPTOOLS_ROOT_PUBLIC_HTML . '/css/' . $filename)) {
-            echo '<link href="css/' . $filename . '" rel="stylesheet" media="screen" />';
+            echo '<link href="' . $root . 'css/' . $filename . '" rel="stylesheet" media="screen" />';
         }
-    }    
+    }
+
+    public static function htmlScript($root = './')
+    {
+        $filename = str_replace('\\', '-', strtolower(CONTROLLER)) . '.js';
+        if(file_exists(PHPTOOLS_ROOT_PUBLIC_HTML . '/js/' . $filename)) {
+            echo '<script type="text/javascript" src="' . $root . 'js/' . $filename . '"></script>';
+        }
+    }
 }
