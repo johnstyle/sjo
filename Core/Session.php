@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHPTools
  *
@@ -14,14 +15,14 @@ namespace PHPTools;
 
 class Session
 {
-    public static function start ()
+    public static function start()
     {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
     }
 
-    public function check ()
+    public function check()
     {
         self::start();
 
@@ -31,7 +32,7 @@ class Session
                     $this->isActive(Libraries\Env::get('token'));
                 } else {
                     http_response_code(401);
-                    $this->redirect('./?' . PHPTOOLS_CONTROLLER_NAME . '=' . PHPTOOLS_CONTROLLER_AUTH . '&redirect=' . urlencode('/?' . Libraries\Env::server('QUERY_STRING')));
+                    $this->redirect('./?' . PHPTOOLS_CONTROLLER_NAME . '=' . PHPTOOLS_CONTROLLER_AUTH . '&redirect=' . urlencode(Libraries\Env::server('REQUEST_URI')));
                 }
             }
         } elseif ($this->isActive() && !METHOD) {
@@ -39,33 +40,34 @@ class Session
         }
     }
 
-    public function signin ($token, $url = './')
+    public function signin($token, $url = './')
     {
         Libraries\Env::sessionSet('token', $token);
         $this->redirect($url);
     }
 
-    public function signout ($url = './')
+    public function signout($url = './')
     {
-        if (ini_get('session.use_cookies')) {
-            $params = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        if (Libraries\Env::cookie()) {
+            foreach(Libraries\Env::cookie() as $name=>$value) {
+                Libraries\Env::cookieSet($name);
+            }
         }
         session_destroy();
         $this->redirect($url);
     }
 
-    public function redirect ($url = './')
+    public function redirect($url = './')
     {
-        if (Libraries\Env::get('redirect')) {
-            header('Location:.' . Libraries\Env::get('redirect'));
+        if (preg_match("#^(\./|/)#", Libraries\Env::get('redirect'))) {
+            header('Location:' . Libraries\Env::get('redirect'));
         } else {
             header('Location:' . $url);
         }
-        exit ;
+        exit;
     }
 
-    public function isActive ()
+    public function isActive()
     {
         if (Libraries\Env::session('token')) {
             return true;
@@ -73,4 +75,14 @@ class Session
         return false;
     }
 
+    public static function getToken($options = false)
+    {
+        return md5(
+                PHPTOOLS_SALT
+                . Libraries\Env::server('REMOTE_ADDR')
+                . Libraries\Env::server('HTTP_USER_AGENT')
+                . Libraries\Env::server('HTTP_HOST')
+                . $options
+        );
+    }
 }

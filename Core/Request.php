@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * PHPTools
+ *
+ * PHP version 5
+ *
+ * @package  PHPTools
+ * @author   Jonathan Sahm <contact@johnstyle.fr>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @link     https://github.com/johnstyle/PHPTools.git
+ */
+
 namespace PHPTools;
 
 class Request
@@ -8,13 +19,13 @@ class Request
     {
         Session::start();
 
-        return md5(session_id() . PHPTOOLS_SALT . $method);
+        return Session::getToken(session_id() . $method);
     }
 
     public function hasToken()
     {
         $controller = str_replace('\\', '/', CONTROLLER);
-        if(Libraries\Env::request('token') == $this->getToken($controller . PHPTOOLS_CONTROLLER_METHOD_SEPARATOR . METHOD)) {
+        if (Libraries\Env::request('token') == $this->getToken($controller . PHPTOOLS_CONTROLLER_METHOD_SEPARATOR . METHOD)) {
             return true;
         }
         return false;
@@ -29,5 +40,5 @@ class Request
     {
         header('Location:' . ($url ? $url : './'));
         exit;
-    }    
+    }
 }
