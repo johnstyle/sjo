@@ -108,4 +108,9 @@ class View
             echo '<script type="text/javascript" src="' . $root . 'js/' . $filename . '"></script>';
         }
     }
+
+    public static function basehref()
+    {
+        return PHPTOOLS_BASEHREF;
+    }    
 }

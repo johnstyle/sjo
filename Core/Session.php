@@ -32,7 +32,7 @@ class Session
                     $this->isActive(Libraries\Env::get('token'));
                 } else {
                     http_response_code(401);
-                    $this->redirect('./?' . PHPTOOLS_CONTROLLER_NAME . '=' . PHPTOOLS_CONTROLLER_AUTH . '&redirect=' . urlencode(Libraries\Env::server('REQUEST_URI')));
+                    $this->redirect(PHPTOOLS_BASEHREF . '/' . PHPTOOLS_CONTROLLER_AUTH . '/?redirect=' . urlencode(Libraries\Env::server('REQUEST_URI')));
                 }
             }
         } elseif ($this->isActive() && !METHOD) {
@@ -40,13 +40,13 @@ class Session
         }
     }
 
-    public function signin($token, $url = './')
+    public function signin($token, $url = PHPTOOLS_BASEHREF)
     {
         Libraries\Env::sessionSet('token', $token);
         $this->redirect($url);
     }
 
-    public function signout($url = './')
+    public function signout($url = PHPTOOLS_BASEHREF)
     {
         if (Libraries\Env::cookie()) {
             foreach(Libraries\Env::cookie() as $name=>$value) {
@@ -57,7 +57,7 @@ class Session
         $this->redirect($url);
     }
 
-    public function redirect($url = './')
+    public function redirect($url = PHPTOOLS_BASEHREF)
     {
         if (preg_match("#^(\./|/)#", Libraries\Env::get('redirect'))) {
             header('Location:' . Libraries\Env::get('redirect'));
