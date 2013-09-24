@@ -31,7 +31,6 @@ abstract class Env
      * @method boolean filesExists(string $attr)
      * @method void    filesSet(string $attr, string $value)
      *
-     * @method string  request(string $attr, string $default)
      * @method boolean requestExists(string $attr)
      * @method void    requestSet(string $attr, string $value)
      *
@@ -45,7 +44,6 @@ abstract class Env
      *
      * @method string  cookie(string $attr, string $default)
      * @method boolean cookieExists(string $attr)
-     * @method void    cookieSet(string $attr, string $value)
      *
      * @method string  env(string $attr, string $default)
      * @method boolean envExists(string $attr)
@@ -96,8 +94,14 @@ abstract class Env
      */
     public static function cookieSet($name = false, $value = false, $expire = false, $path = '/', $domain = false, $secure = false, $httponly = false)
     {
-        setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
-        $_COOKIE[$name] = $value;
+        if($value) {
+            setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
+            $_COOKIE[$name] = $value;
+        } else {
+            setcookie($name, '', time() - 1000);
+            setcookie($name, '', time() - 1000, '/');            
+            unset($_COOKIE[$name]);
+        }
     }    
 
     /**
