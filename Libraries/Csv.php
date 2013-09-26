@@ -141,6 +141,16 @@ class Csv
     }
 
     /**
+     * Retourne l'entête
+     *
+     * @return object
+     */
+    public function getHeader ()
+    {
+        return $this->header;
+    }    
+
+    /**
      * Retourne la ligne courante
      *
      * @return object
