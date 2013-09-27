@@ -25,9 +25,8 @@ class DataTables
         return $data;
     }
 
-    public function set($data)
+    public function setData($data)
     {
-        $sEcho = 0;
         $aaData = array();
         if($data && count($data)) {
             foreach($data as $items) {
@@ -36,31 +35,38 @@ class DataTables
                     $aData[] = $value;
                 }
                 $aaData[] = $aData;
-                if($sEcho < count($aData)) {
-                    $sEcho = count($aData);
-                }
             }
         }
-        $this->data = array(
-            'sEcho'                 => Env::request('sEcho'),
-            'iTotalRecords'         => count($aaData),
-            'iTotalDisplayRecords'  => count($aaData),
-            'aaData'                => $aaData
-        );
+
+        $this->data['iTotalRecords']        = count($aaData);
+        $this->data['iTotalDisplayRecords'] = count($aaData);
+        $this->data['aaData']               = $aaData;
     }
+
+    public function setGroups($groups)
+    {
+        $this->data['aaGroups'] = $groups;
+    }    
 
     public function groupBy($field)
     {
         $this->data['groupBy'] = $field;
     }
 
+    public function callback()
+    {
+        $this->data['sEcho'] = Env::request('sEcho');
+
+        return $this->data;
+    }
+
     public function display()
     {
         header('Content-type:application/json; charset=utf-8');
         if(Env::get('callback')) {
-            echo Env::get('callback') . '(' . json_encode($this->data) . ');';
+            echo Env::get('callback') . '(' . json_encode($this->callback()) . ');';
         } else {
-            echo json_encode($this->data);
+            echo json_encode($this->callback());
         }
         exit;
     }
