@@ -15,7 +15,7 @@ include realpath(__DIR__) . '/__deprecated.php';
 
 /** Configuration */
 defined('PHPTOOLS_CHARSET') OR define('PHPTOOLS_CHARSET', 'UTF-8');
-defined('PHPTOOLS_LOCALE') OR define('PHPTOOLS_LOCALE', 'fr_FR.utf8');
+defined('PHPTOOLS_DEFAULT_LOCALE') OR define('PHPTOOLS_DEFAULT_LOCALE', 'en_US');
 
 defined('PHPTOOLS_ROOT') OR define('PHPTOOLS_ROOT', '..');
 defined('PHPTOOLS_ROOT_APP') OR define('PHPTOOLS_ROOT_APP', PHPTOOLS_ROOT . '/App');
@@ -36,7 +36,6 @@ defined('PHPTOOLS_METHOD_NAME') OR define('PHPTOOLS_METHOD_NAME', 'method');
 defined('PHPTOOLS_METHOD_DEFAULT') OR define('PHPTOOLS_METHOD_DEFAULT', '');
 
 defined('PHPTOOLS_CONTROLLER_METHOD_SEPARATOR') OR define('PHPTOOLS_CONTROLLER_METHOD_SEPARATOR', '::');
-defined('PHPTOOLS_FULL_RESTRICTED_ACCESS') OR define('PHPTOOLS_FULL_RESTRICTED_ACCESS', false);
 
 defined('PHPTOOLS_BASEHREF') OR define('PHPTOOLS_BASEHREF', './');
 
