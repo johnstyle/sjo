@@ -46,24 +46,15 @@ abstract class Controller
         $this->Libraries = new \stdClass();
     }
 
-   /**
-    * Control the access restrictions
-    *
-    * @return void
-    */
-    public function __restrictedAccess ()
+    public function __viewPreload ()
     {
-        if(PHPTOOLS_FULL_RESTRICTED_ACCESS) {
-            $this->Core->Session->check();
-        }
     }
 
-   /**
-    * Loader executed when loading the class
-    *
-    * @return void
-    */
-    public function __load ()
+    public function __viewLoaded ()
     {
-    }    
+    }   
+
+    public function __viewCompleted ()
+    {
+    }
 }

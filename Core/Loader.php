@@ -43,7 +43,12 @@ class Loader
                         $this->instance = new $className ();
                         try {
                             if(get_parent_class($this->instance) == 'PHPTools\Controller') {
-                                $this->_initModel();
+
+                                $className = '\\Model\\' . CONTROLLER;
+
+                                if (class_exists($className)) {
+                                    $this->instance->Model = new $className ();
+                                }
                             } else {
                                 throw new Exception('Controller <b>' . $className . '</b> is not extended to <b>\\PHPTools\\Controller</b>.');
                             }
@@ -62,29 +67,21 @@ class Loader
         } catch(Exception $Exception) {
             $Exception->showError();
         }
-    }
 
-    public function event ($event, $options = false)
-    {
-        $event = '__' . $event;
+        $this->_initCore('Session');
+        $this->_initCore('Request');
+        $this->_initCore('Alert');
 
-        if (method_exists($this->instance, $event)) {
-            $this->instance->{$event}($options);
-        }
+        $this->event('viewPreload');
+
+        new View($this->instance);
     }
 
     public function display ()
     {
         $className = '\\Controller\\' . CONTROLLER;
-        
-        $this->_initCore('Session');
-        $this->_initCore('Request');
-        $this->_initCore('Alert');
 
-        $this->_initView();
-
-        $this->event('restrictedAccess');
-        $this->event('load');
+        $this->event('viewLoaded');
 
         if(METHOD) {
             switch(Libraries\Env::get('content_type')) {
@@ -120,15 +117,22 @@ class Loader
             }
         }
 
+        $this->event('viewCompleted');
+
         View::inc(CONTROLLER);
     }
 
-    private function _initModel ()
+    public function restrictedAccess ()
     {
-        $className = '\\Model\\' . CONTROLLER;
+        $this->instance->Core->Session->check();
+    }
 
-        if (class_exists($className)) {
-            $this->instance->Model = new $className ();
+    public function event ($event, $options = false)
+    {
+        $event = '__' . $event;
+
+        if (method_exists($this->instance, $event)) {
+            $this->instance->{$event}($options);
         }
     }
 
@@ -145,9 +149,4 @@ class Loader
             }
         }
     }
-
-    private function _initView ()
-    {
-        $View = new View($this->instance);
-    }    
 }
