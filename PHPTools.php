@@ -15,6 +15,7 @@ include realpath(__DIR__) . '/__deprecated.php';
 
 /** Configuration */
 defined('PHPTOOLS_CHARSET') OR define('PHPTOOLS_CHARSET', 'UTF-8');
+defined('PHPTOOLS_LOCALE') OR define('PHPTOOLS_LOCALE', 'fr_FR.utf8');
 
 defined('PHPTOOLS_ROOT') OR define('PHPTOOLS_ROOT', '..');
 defined('PHPTOOLS_ROOT_APP') OR define('PHPTOOLS_ROOT_APP', PHPTOOLS_ROOT . '/App');
