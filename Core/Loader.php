@@ -1,10 +1,12 @@
 <?php
+
 /**
- * PHPTools
+ * Loader
  *
  * PHP version 5
  *
  * @package  PHPTools
+ * @category Core
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/PHPTools.git
@@ -12,6 +14,15 @@
 
 namespace PHPTools;
 
+/**
+ * Loader
+ *
+ * @package  PHPTools
+ * @category Core
+ * @author   Jonathan Sahm <contact@johnstyle.fr>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @link     https://github.com/johnstyle/PHPTools.git
+ */
 class Loader
 {
     private $instance;
@@ -31,41 +42,30 @@ class Loader
         define('CONTROLLER', $controller);
         define('METHOD', $method);
 
-        try {
-            if (CONTROLLER) {
+        if (CONTROLLER) {
 
-                \PHPTools\Helpers\Autoload(PHPTOOLS_ROOT_APP);
+            \PHPTools\Helpers\Autoload(PHPTOOLS_ROOT_APP);
 
-                try {
-                    $className = '\\Controller\\' . CONTROLLER;
+            $className = '\\Controller\\' . CONTROLLER;
+
+            if (class_exists($className)) {
+                $this->instance = new $className ();
+
+                if(get_parent_class($this->instance) == 'PHPTools\Controller') {
+
+                    $className = '\\Model\\' . CONTROLLER;
 
                     if (class_exists($className)) {
-                        $this->instance = new $className ();
-                        try {
-                            if(get_parent_class($this->instance) == 'PHPTools\Controller') {
-
-                                $className = '\\Model\\' . CONTROLLER;
-
-                                if (class_exists($className)) {
-                                    $this->instance->Model = new $className ();
-                                }
-                            } else {
-                                throw new Exception('Controller <b>' . $className . '</b> is not extended to <b>\\PHPTools\\Controller</b>.');
-                            }
-                        } catch(Exception $Exception) {
-                            $Exception->showError();
-                        }                        
-                    } else {
-                        throw new Exception('Controller <b>' . $className . '</b> do not exists.');
+                        $this->instance->Model = new $className ();
                     }
-                } catch(Exception $Exception) {
-                    $Exception->showError();
-                }
+                } else {
+                    Exception::error(Libraries\I18n::__('Controller %s is not extended to %s.', '<b>' . $className . '</b>', '<b>\\PHPTools\\Controller</b>'));
+                }                      
             } else {
-                throw new Exception('CONTROLLER is undefined.');
+                Exception::error(Libraries\I18n::__('Controller %s do not exists.', '<b>' . $className . '</b>'));
             }
-        } catch(Exception $Exception) {
-            $Exception->showError();
+        } else {
+            Exception::error(Libraries\I18n::__('CONTROLLER is undefined.'));
         }
 
         $this->_initCore('Session');
@@ -88,14 +88,10 @@ class Loader
                 case 'json' :
                     header('Content-type:application/json; charset=' . PHPTOOLS_CHARSET);
                         if (method_exists($className, METHOD)) {
-                            try {
-                                if($this->instance->Core->Request->hasToken()) {
-                                    echo json_encode($this->instance->{METHOD}());
-                                } else {
-                                    throw new Exception('Warning ! Prohibited queries.');
-                                }
-                            } catch(Exception $Exception) {
-                                $Exception->showError();
+                            if($this->instance->Core->Request->hasToken()) {
+                                echo json_encode($this->instance->{METHOD}());
+                            } else {
+                                Exception::error(Libraries\I18n::__('Warning ! Prohibited queries.'));
                             }
                         }
                     exit ;
@@ -103,15 +99,11 @@ class Loader
                 default :
                     header('Content-type:text/html; charset=' . PHPTOOLS_CHARSET);
                     if (method_exists($className, METHOD)) {
-                        try {
-                            if($this->instance->Core->Request->hasToken()) {
-                                $this->instance->{METHOD}();
-                            } else {
-                                throw new Exception('Warning ! Prohibited queries.');
-                            }
-                        } catch(Exception $Exception) {
-                            $Exception->showError();
-                        }    
+                        if($this->instance->Core->Request->hasToken()) {
+                            $this->instance->{METHOD}();
+                        } else {
+                            Exception::error(Libraries\I18n::__('Warning ! Prohibited queries.'));
+                        }
                     }
                     break;
             }

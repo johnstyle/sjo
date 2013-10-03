@@ -4,14 +4,12 @@
  *
  * PHP version 5
  *
- * @package  phpTools
+ * @package  PHPTools
+ * @category Core 
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/phpTools
  */
- 
-/** Compatibilité anciennes méthodes */
-include realpath(__DIR__) . '/__deprecated.php';
 
 /** Configuration */
 defined('PHPTOOLS_CHARSET') OR define('PHPTOOLS_CHARSET', 'UTF-8');
@@ -23,6 +21,7 @@ defined('PHPTOOLS_ROOT_MODEL') OR define('PHPTOOLS_ROOT_MODEL', PHPTOOLS_ROOT_AP
 defined('PHPTOOLS_ROOT_VIEW') OR define('PHPTOOLS_ROOT_VIEW', PHPTOOLS_ROOT_APP . '/View');
 defined('PHPTOOLS_ROOT_CONTROLLER') OR define('PHPTOOLS_ROOT_CONTROLLER', PHPTOOLS_ROOT_APP . '/Controller');
 defined('PHPTOOLS_ROOT_PUBLIC_HTML') OR define('PHPTOOLS_ROOT_PUBLIC_HTML', PHPTOOLS_ROOT . '/public_html');
+defined('PHPTOOLS_ROOT_TMP') OR define('PHPTOOLS_ROOT_TMP', sys_get_temp_dir());
 
 defined('PHPTOOLS_DB_HOST') OR define('PHPTOOLS_DB_HOST', 'localhost');
 defined('PHPTOOLS_DB_USER') OR define('PHPTOOLS_DB_USER', 'root');
@@ -58,5 +57,9 @@ spl_autoload_register(
 
 /** Helpers */
 foreach(\PHPTools\Libraries\Dir::getFiles(realpath(__DIR__) . '/Helpers') as $helpers) {
-	include $helpers->path;
+    include $helpers->path;
 }
+
+/** Locale */
+$PHPToolsI18n = new \PHPTools\Libraries\I18n();
+$PHPToolsI18n->load('default', realpath(__DIR__) . '/Locale');

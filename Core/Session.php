@@ -1,11 +1,12 @@
 <?php
 
 /**
- * PHPTools
+ * Gestion des sesions de connexion
  *
  * PHP version 5
  *
  * @package  PHPTools
+ * @category Core
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/PHPTools.git
@@ -13,12 +14,31 @@
 
 namespace PHPTools;
 
+/**
+ * Gestion des sesions de connexion
+ *
+ * @package  PHPTools
+ * @category Core
+ * @author   Jonathan Sahm <contact@johnstyle.fr>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @link     https://github.com/johnstyle/PHPTools.git
+ */
 class Session
 {
+    private static $id;
+
     public static function start()
     {
         if (session_status() == PHP_SESSION_NONE) {
+
             session_start();
+
+            if(!self::$id) {
+
+                self::$id = session_id();
+
+                session_write_close();
+            }
         }
     }
 

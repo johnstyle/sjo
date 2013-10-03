@@ -6,6 +6,7 @@
  * PHP version 5
  *
  * @package  PHPTools
+ * @category Libraries
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/PHPTools.git
@@ -17,12 +18,18 @@ namespace PHPTools\Libraries;
  * Gestion du multilanguage
  *
  * @package  PHPTools
+ * @category Libraries
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/PHPTools.git
  */
 class I18n
 {
+    /**
+     * Liste des répertoires de langue
+     * 
+     * @var type Array
+     */
     private static $directories = array();
     
     public function __construct()
@@ -36,11 +43,15 @@ class I18n
         putenv('LC_ALL=' . $language);
 
         if(setlocale(LC_ALL, $language) != $language) {
-            $Exception = new \PHPTools\Exception('I18n locale <b>' . $language . '</b> do not exists.');
-            $Exception->showError();
+            Exception::error('I18n locale <b>' . $language . '</b> do not exists.');
         }
     }
 
+    /**
+     * Chargement d'un répertoire de langue
+     * 
+     * @return void
+     */    
     public function load($domain, $directory)
     {
         if(is_dir($directory)) {
@@ -50,17 +61,18 @@ class I18n
                 bind_textdomain_codeset($domain, PHPTOOLS_CHARSET);
             }
         } else {
-            $Exception = new \PHPTools\Exception('I18n directory <b>' . $directory . '</b> do not exists.');
-            $Exception->showError();
+            Exception::error('I18n directory <b>' . $directory . '</b> do not exists.');
         }
     }
 
     public static function __callStatic($method, $args = false)
     {
-        if (preg_match("#^(__|n__|p__)(.+)$#", $method, $match)) {
+        if (preg_match("#^(__|n__|p__)(.*)$#", $method, $match)) {
 
-            textdomain($match[2]);
-            
+            $domain = $match[2] ? $match[2] : 'default';
+
+            textdomain($domain);
+
             $message = false;
 
             switch ($match[1]) {

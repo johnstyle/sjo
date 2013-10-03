@@ -51,7 +51,7 @@ abstract class Event
     public static function register($name, $callback, $priority = 10)
     {
         if (!is_callable($callback)) {
-            throw new \InvalidArgumentException('Le second paramètre doit être une fonction');
+            Exception::error(I18n::__('Le second paramètre doit être une fonction'));
         }
         self::$registered[$name][$priority][] = $callback;
     }

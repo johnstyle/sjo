@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHPTools
  *
@@ -14,18 +15,18 @@ namespace PHPTools\Libraries;
 
 class Http
 {
-	private $id;
-	private $cookieFile;
-	private $resource;
-	private $response;
+    private $id;
+    private $cookieFile;
+    private $resource;
+    private $response;
     private $info;
     private $cache;
 
-	public function __construct($cache = false)
-	{
-		$this->id	 		= md5(microtime());
-		$this->cookieFile 	= sys_get_temp_dir() . '/' . $this->id . '.cookie';
-        $this->resource     = curl_init();
+    public function __construct($cache = false)
+    {
+        $this->id = md5(microtime());
+        $this->cookieFile = PHPTOOLS_ROOT_TMP . '/' . $this->id . '.cookie';
+        $this->resource = curl_init();
 
         $this->setOption(CURLOPT_USERAGENT, 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:21.0) Gecko/20100101 Firefox/21.0');
         $this->setOption(CURLOPT_ENCODING, 'gzip,deflate');
@@ -38,53 +39,53 @@ class Http
         $this->setOption(CURLOPT_MAXREDIRS, 10);
         $this->setOption(CURLOPT_VERBOSE, false);
         $this->setOption(CURLOPT_COOKIEJAR, $this->cookieFile);
-	}
+    }
 
     public function setCache($time)
     {
         $this->cache = $time;
     }
-	
-	public function setOption($option, $value = false)
-	{
-		if(is_array($option)) {
-			curl_setopt_array($this->resource, $option);
-		} else {
-			curl_setopt($this->resource, $option, $value);
-		}
-	}
-	
-	public function request($url, $post = false)
-	{
-	    $hash = md5($url . serialize($post));
-        $cacheFile = sys_get_temp_dir() . '/' . $hash . '.cache';
-	    if(!$this->cache || !file_exists($cacheFile) || filemtime($cacheFile) >= (time() + $this->cache)) {
-    		if(preg_match("#^https://#i", $url)) {
-    			$this->setOption(CURLOPT_SSL_VERIFYPEER, false);
-    			$this->setOption(CURLOPT_SSL_VERIFYHOST, false);
-    		}
-    
-    		if($post) {
-    			if(is_array($post)) {
-    				$post = http_build_query($post);
-    			}
-    			$this->setOption(CURLOPT_POST, true);
-    			$this->setOption(CURLOPT_POSTFIELDS, $post);
-    		}
-    
-    		if(file_exists($this->cookieFile)) {
-    			$this->setOption(CURLOPT_COOKIEFILE, $this->cookieFile);
-    		}
-    
-    		$this->setOption(CURLOPT_URL, $url);
-    
-    		$this->response = curl_exec($this->resource);
-    		$this->info = curl_getinfo($this->resource);
 
-            if($this->cache) {
+    public function setOption($option, $value = false)
+    {
+        if (is_array($option)) {
+            curl_setopt_array($this->resource, $option);
+        } else {
+            curl_setopt($this->resource, $option, $value);
+        }
+    }
+
+    public function request($url, $post = false)
+    {
+        $hash = md5($url . serialize($post));
+        $cacheFile = PHPTOOLS_ROOT_TMP . '/' . $hash . '.cache';
+        if (!$this->cache || !file_exists($cacheFile) || filemtime($cacheFile) >= (time() + $this->cache)) {
+            if (preg_match("#^https://#i", $url)) {
+                $this->setOption(CURLOPT_SSL_VERIFYPEER, false);
+                $this->setOption(CURLOPT_SSL_VERIFYHOST, false);
+            }
+
+            if ($post) {
+                if (is_array($post)) {
+                    $post = http_build_query($post);
+                }
+                $this->setOption(CURLOPT_POST, true);
+                $this->setOption(CURLOPT_POSTFIELDS, $post);
+            }
+
+            if (file_exists($this->cookieFile)) {
+                $this->setOption(CURLOPT_COOKIEFILE, $this->cookieFile);
+            }
+
+            $this->setOption(CURLOPT_URL, $url);
+
+            $this->response = curl_exec($this->resource);
+            $this->info = curl_getinfo($this->resource);
+
+            if ($this->cache) {
                 file_put_contents($cacheFile, serialize((object) array(
-                    'response'  => $this->response,
-                    'info'      => $this->info
+                                    'response' => $this->response,
+                                    'info' => $this->info
                 )));
             }
         } else {
@@ -92,41 +93,41 @@ class Http
             $this->response = $cache->response;
             $this->info = $cache->info;
         }
-	}
+    }
 
-	public function info($name = false)
-	{
-		return Arr::getTree($this->info, $name); 
-	}	
+    public function info($name = false)
+    {
+        return Arr::getTree($this->info, $name);
+    }
 
-	public function response($format = false, $options = false, $callback = false)
-	{
-		if($this->info('http_code') == 200) {
-		    if($callback && is_callable($callback)) {
-		        $this->response = call_user_func($callback, $this->response);
+    public function response($format = false, $options = false, $callback = false)
+    {
+        if ($this->info('http_code') == 200) {
+            if ($callback && is_callable($callback)) {
+                $this->response = call_user_func($callback, $this->response);
             }
-			switch($format) {
-				case 'json':
-					return json_decode($this->response);
-					break;
+            switch ($format) {
+                case 'json':
+                    return json_decode($this->response);
+                    break;
                 case 'csv':
                     return Csv::arrayFromRaw($this->response, $options);
                     break;
-				default:
-					return $this->response;
-					break;
-			}
-		}
-		return false;
-	}
-	
-	public function __destruct()
-	{
-		if(is_resource($this->resource)) {
-			curl_close($this->resource);
-		}
-		if(file_exists($this->cookieFile)) {
-			unlink($this->cookieFile);
-		}
-	}
+                default:
+                    return $this->response;
+                    break;
+            }
+        }
+        return false;
+    }
+
+    public function __destruct()
+    {
+        if (is_resource($this->resource)) {
+            curl_close($this->resource);
+        }
+        if (file_exists($this->cookieFile)) {
+            unlink($this->cookieFile);
+        }
+    }
 }
