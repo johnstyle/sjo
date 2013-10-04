@@ -61,5 +61,5 @@ foreach(\PHPTools\Libraries\Dir::getFiles(realpath(__DIR__) . '/Helpers') as $he
 }
 
 /** Locale */
-$PHPToolsI18n = new \PHPTools\Libraries\I18n();
-$PHPToolsI18n->load('default', realpath(__DIR__) . '/Locale');
+//$PHPToolsI18n = new \PHPTools\Libraries\I18n();
+//$PHPToolsI18n->load('default', realpath(__DIR__) . '/Locale');
