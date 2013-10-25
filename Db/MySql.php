@@ -1,18 +1,29 @@
 <?php
+
 /**
- * PHPTools
+ * Base de données MySql
  *
  * PHP version 5
  *
  * @package  PHPTools
+ * @category Db
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/PHPTools.git
  */
 
-namespace PHPTools\Libraries;
+namespace PHPTools\Db;
 
-abstract class Db
+/**
+ * Base de données MySql
+ *
+ * @package  PHPTools
+ * @category Db
+ * @author   Jonathan Sahm <contact@johnstyle.fr>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @link     https://github.com/johnstyle/PHPTools.git
+ */
+abstract class MySql
 {
     static public $resource;
     static public $hits = 0;
