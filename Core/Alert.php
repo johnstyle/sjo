@@ -31,7 +31,7 @@ class Alert
     {
         Session::start();
 
-        if(Libraries\Env::session('alerts')) {
+        if (Libraries\Env::session('alerts')) {
             $this->alerts = json_decode($this->alerts);
         }
     }
@@ -48,7 +48,7 @@ class Alert
 
     public function exists()
     {
-        if($this->alerts) {
+        if ($this->alerts) {
             return true;
         }
         return false;
@@ -56,17 +56,17 @@ class Alert
 
     public function display()
     {
-        if($this->exists()) {
-            foreach($this->alerts as $type=>$alerts) {
-                echo '<div class="alert alert-'.$type.'">';
-                if(count($alerts) > 1) {
+        if ($this->exists()) {
+            foreach ($this->alerts as $type => $alerts) {
+                echo '<div class="alert alert-' . $type . '">';
+                if (count($alerts) > 1) {
                     echo '<ol>';
-                    foreach($alerts as $alert) {
+                    foreach ($alerts as $alert) {
                         echo '<li>' . $alert . '</li>';
                     }
                     echo '</ol>';
                 } else {
-                    foreach($alerts as $alert) {
+                    foreach ($alerts as $alert) {
                         echo '<p>' . $alert . '</p>';
                     }
                 }
@@ -75,6 +75,6 @@ class Alert
         }
 
         Libraries\Env::sessionSet('alerts');
-        $this->alerts = NULL;
+        $this->alerts = null;
     }
 }

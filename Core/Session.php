@@ -33,7 +33,7 @@ class Session
 
             session_start();
 
-            if(!self::$id) {
+            if (!self::$id) {
 
                 self::$id = session_id();
 
@@ -52,7 +52,11 @@ class Session
                     $this->isActive(Libraries\Env::get('token'));
                 } else {
                     http_response_code(401);
-                    $this->redirect(PHPTOOLS_BASEHREF . '/' . PHPTOOLS_CONTROLLER_AUTH . '/?redirect=' . urlencode(Libraries\Env::server('REQUEST_URI')));
+                    $this->redirect(
+                        PHPTOOLS_BASEHREF . '/' . PHPTOOLS_CONTROLLER_AUTH . '/?redirect=' . urlencode(
+                            Libraries\Env::server('REQUEST_URI')
+                        )
+                    );
                 }
             }
         } elseif ($this->isActive() && !METHOD) {
@@ -69,7 +73,7 @@ class Session
     public function signout($url = PHPTOOLS_BASEHREF)
     {
         if (Libraries\Env::cookie()) {
-            foreach(Libraries\Env::cookie() as $name=>$value) {
+            foreach (Libraries\Env::cookie() as $name => $value) {
                 Libraries\Env::cookieSet($name);
             }
         }
@@ -98,11 +102,11 @@ class Session
     public static function getToken($options = false)
     {
         return md5(
-                PHPTOOLS_SALT
-                . Libraries\Env::server('REMOTE_ADDR')
-                . Libraries\Env::server('HTTP_USER_AGENT')
-                . Libraries\Env::server('HTTP_HOST')
-                . $options
+            PHPTOOLS_SALT
+            . Libraries\Env::server('REMOTE_ADDR')
+            . Libraries\Env::server('HTTP_USER_AGENT')
+            . Libraries\Env::server('HTTP_HOST')
+            . $options
         );
     }
 }

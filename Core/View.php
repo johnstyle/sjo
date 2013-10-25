@@ -39,11 +39,12 @@ class View
     */
     public static $Controller;
 
-   /**
-    * Constructor
-    *
-    * @return void
-    */
+    /**
+     * Constructor
+     *
+     * @param $instance
+     * @return \PHPTools\View
+     */
     public function __construct(&$instance)
     {
         self::$Controller =& $instance;
@@ -73,6 +74,8 @@ class View
     /**
      * Inclusion d'un fichier du template
      *
+     * @param $filename
+     * @param bool $vars
      * @return void
      */
     public static function inc($filename, $vars = false)

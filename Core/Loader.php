@@ -27,15 +27,22 @@ class Loader
 {
     private $instance;
 
-    public function __construct ($controller = false, $method = false)
+    /**
+     * Constructeur
+     *
+     * @param bool $controller
+     * @param bool $method
+     * @return \PHPTools\Loader
+     */
+    public function __construct($controller = false, $method = false)
     {
-        if(!$controller) {
+        if (!$controller) {
             $controller = Libraries\Env::request(PHPTOOLS_CONTROLLER_NAME, PHPTOOLS_CONTROLLER_DEFAULT);
             $controller = trim($controller, '/');
             $controller = str_replace('/', '\\', $controller);
         }
 
-        if(!$method) {
+        if (!$method) {
             $method = Libraries\Env::request(PHPTOOLS_METHOD_NAME, PHPTOOLS_METHOD_DEFAULT);
         }
 
@@ -51,7 +58,7 @@ class Loader
             if (class_exists($className)) {
                 $this->instance = new $className ();
 
-                if(get_parent_class($this->instance) == 'PHPTools\Controller') {
+                if (get_parent_class($this->instance) == 'PHPTools\Controller') {
 
                     $className = '\\Model\\' . CONTROLLER;
 
@@ -59,8 +66,14 @@ class Loader
                         $this->instance->Model = new $className ();
                     }
                 } else {
-                    Exception::error(Libraries\I18n::__('Controller %s is not extended to %s.', '<b>' . $className . '</b>', '<b>\\PHPTools\\Controller</b>'));
-                }                      
+                    Exception::error(
+                        Libraries\I18n::__(
+                            'Controller %s is not extended to %s.',
+                            '<b>' . $className . '</b>',
+                            '<b>\\PHPTools\\Controller</b>'
+                        )
+                    );
+                }
             } else {
                 Exception::error(Libraries\I18n::__('Controller %s do not exists.', '<b>' . $className . '</b>'));
             }
@@ -77,29 +90,29 @@ class Loader
         new View($this->instance);
     }
 
-    public function display ()
+    public function display()
     {
         $className = '\\Controller\\' . CONTROLLER;
 
         $this->event('viewLoaded');
 
-        if(METHOD) {
-            switch(Libraries\Env::get('content_type')) {
+        if (METHOD) {
+            switch (Libraries\Env::get('content_type')) {
                 case 'json' :
                     header('Content-type:application/json; charset=' . PHPTOOLS_CHARSET);
-                        if (method_exists($className, METHOD)) {
-                            if($this->instance->Core->Request->hasToken()) {
-                                echo json_encode($this->instance->{METHOD}());
-                            } else {
-                                Exception::error(Libraries\I18n::__('Warning ! Prohibited queries.'));
-                            }
+                    if (method_exists($className, METHOD)) {
+                        if ($this->instance->Core->Request->hasToken()) {
+                            echo json_encode($this->instance->{METHOD}());
+                        } else {
+                            Exception::error(Libraries\I18n::__('Warning ! Prohibited queries.'));
                         }
-                    exit ;
+                    }
+                    exit;
                     break;
                 default :
                     header('Content-type:text/html; charset=' . PHPTOOLS_CHARSET);
                     if (method_exists($className, METHOD)) {
-                        if($this->instance->Core->Request->hasToken()) {
+                        if ($this->instance->Core->Request->hasToken()) {
                             $this->instance->{METHOD}();
                         } else {
                             Exception::error(Libraries\I18n::__('Warning ! Prohibited queries.'));
@@ -114,12 +127,12 @@ class Loader
         View::inc(CONTROLLER);
     }
 
-    public function restrictedAccess ()
+    public function restrictedAccess()
     {
         $this->instance->Core->Session->check();
     }
 
-    public function event ($event, $options = false)
+    public function event($event, $options = false)
     {
         $event = '__' . $event;
 
@@ -128,7 +141,7 @@ class Loader
         }
     }
 
-    private function _initCore ($class)
+    private function _initCore($class)
     {
         $className = '\\PHPTools\\' . $class;
 

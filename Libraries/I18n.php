@@ -22,13 +22,17 @@ namespace PHPTools\Libraries;
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/PHPTools.git
+ *
+ * @method static __($message)
+ * @method static n__($msgid1, $msgid2, $n)
  */
 class I18n
 {
     /**
      * Liste des répertoires de langue
-     * 
-     * @var type Array
+     *
+     * @access private
+     * @var array
      */
     private static $directories = array();
     
@@ -43,15 +47,17 @@ class I18n
         putenv('LC_ALL=' . $language);
 
         if(setlocale(LC_ALL, $language) != $language) {
-            Exception::error('I18n locale <b>' . $language . '</b> do not exists.');
+            \PHPTools\Exception::error('I18n locale <b>' . $language . '</b> do not exists.');
         }
     }
 
     /**
      * Chargement d'un répertoire de langue
-     * 
+     *
+     * @param $domain
+     * @param $directory
      * @return void
-     */    
+     */
     public function load($domain, $directory)
     {
         if(is_dir($directory)) {
@@ -61,19 +67,26 @@ class I18n
                 bind_textdomain_codeset($domain, PHPTOOLS_CHARSET);
             }
         } else {
-            Exception::error('I18n directory <b>' . $directory . '</b> do not exists.');
+            \PHPTools\Exception::error('I18n directory <b>' . $directory . '</b> do not exists.');
         }
     }
 
+
+    /**
+     * @param $method
+     * @param bool $args
+     * @return bool|string
+     */
     public static function __callStatic($method, $args = false)
     {
-        if (preg_match("#^(__|n__|p__)(.*)$#", $method, $match)) {
+        if (preg_match("#^(__|n__)(.*)$#", $method, $match)) {
 
             $domain = $match[2] ? $match[2] : 'default';
 
             textdomain($domain);
 
             $message = false;
+            $argsNum = 0;
 
             switch ($match[1]) {
                 case '__':

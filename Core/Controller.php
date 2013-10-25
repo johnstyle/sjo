@@ -46,11 +46,11 @@ abstract class Controller
     */
     public $Model;
 
-   /**
-    * Constructor
-    *
-    * @return void
-    */
+    /**
+     * Constructeur
+     *
+     * @return \PHPTools\Controller
+     */
     final public function __construct ()
     {
         $this->Core = new \stdClass();

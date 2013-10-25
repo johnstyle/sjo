@@ -26,4 +26,3 @@ namespace PHPTools;
 class Model
 {
 }
-        
