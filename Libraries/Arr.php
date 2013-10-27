@@ -14,6 +14,46 @@ namespace PHPTools\Libraries;
 
 abstract class Arr
 {
+    /**
+     * Merge intelligent d'un tableau de données
+     *
+     * return array
+     */
+    public static function extend(array $array, array $array2 = array())
+    {
+        foreach($array2 as $name=>$value) {
+            if(is_array($value)) {
+                $default = array();
+                if(isset($array[$name])) {
+                    $default = $array[$name];
+                }
+                $array[$name] = self::extend($default, $value);
+            } else {
+                $array[$name] = $value;
+            }
+        }
+
+        return $array;
+    }
+
+    /**
+     * Transforme un array en tableau d'objet
+     *
+     * @param array $array
+     * @return \stdClass
+     */
+    public static function toObject (array &$array)
+    {
+        if(is_object($array) || is_array($array)) {
+            foreach($array as &$item) {
+                if(!is_scalar($item)) {
+                    self::toObject($item);
+                }
+            }
+        }
+        $array = (object) $array;
+    }
+
     public static function getTree ($array, $items = false)
     {
         if (is_object($array)) {
@@ -90,13 +130,6 @@ abstract class Arr
         return $array;
     }
 
-    public static function toObject (&$array)
-    {
-        foreach ($array as &$item) {
-            $item = (object)$item;
-        }
-    }
-
     /**
      * Tri un tableau
      */
@@ -110,5 +143,4 @@ abstract class Arr
             array_multisort($tmp, $order, $array);
         }
     }
-
 }
