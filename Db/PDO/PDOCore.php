@@ -52,6 +52,38 @@ abstract class PDOCore extends \PDO
     private static $count = 0;
 
     /**
+     * Insertion / Mise à jour des données simplifiée
+     *
+     * @param string $table
+     * @param array $data
+     * @param array $where
+     */
+    public function update($table, array $data, array $where = array())
+    {
+        $keysQuery = array_keys($data);
+
+        if(count($where)) {
+            $itemsQuery = array();
+            foreach($keysQuery as $item) {
+                $itemsQuery[] = "`" . $item . "` = :" . $item;
+            }
+            $keysWhere = array_keys($where);
+            $itemsWhere = array();
+            foreach($keysWhere as $item) {
+                $itemsWhere[] = "`" . $item . "` = :" . $item;
+            }
+            foreach($where as $name=>$value) {
+                $data[$name] = $value;
+            }
+            $query = "UPDATE `" . $table . "` SET " . implode("`,`", $itemsQuery) . " WHERE " . implode(",", $itemsWhere);
+        } else {
+            $query = "INSERT INTO `" . $table . "` (`" . implode("`,`", $keysQuery) . "`) VALUES(:" . implode(", :", $keysQuery) . ")";
+        }
+
+        $this->req($query, (array) $data);
+    }
+
+    /**
      * Envoi d'une requete
      *
      * @param string $query
@@ -62,17 +94,17 @@ abstract class PDOCore extends \PDO
     {
         $req = $this->prepare($query);
 
-        if (count($args)) {
-            if (!is_array($args[0])) {
+        if(count($args)) {
+            $tmp = $args;
+            if(!is_array(array_shift($tmp))) {
                 $args = array($args);
             }
+            foreach ($args as $arg) {
+                $req->execute($arg);
+                self::$count++;
+            }
         } else {
-            $args = array(array());
-        }
-
-        foreach ($args as $arg) {
-            $req->execute($arg);
-            self::$count++;
+            $req->execute();
         }
 
         return $req;
@@ -133,8 +165,7 @@ abstract class PDOCore extends \PDO
      * @access public
      * @static
      * @param int $id
-     * @internal param $void
-     * @return \PDO $instance
+     * @return static
      */
     final public static function instance($id = 0)
     {
