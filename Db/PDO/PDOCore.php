@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Base de données PDO
+ * Base de données Drivers
  *
  * PHP version 5
  *
@@ -12,12 +12,12 @@
  * @link     https://github.com/johnstyle/PHPTools.git
  */
 
-namespace PHPTools\Db;
+namespace PHPTools\Db\PDO;
 
 use \PHPTools\Libraries as Lib;
 
 /**
- * Base de données PDO
+ * Base de données Drivers
  *
  * @package  PHPTools
  * @category Db
@@ -25,41 +25,40 @@ use \PHPTools\Libraries as Lib;
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/PHPTools.git
  */
-class PDO extends \PDO
+abstract class PDOCore extends \PDO
 {
-
     /**
-     * Instances de la classe PDO
+     * Instances
      *
      * @var array
      * @access private
      */
     private static $instances = array();
 
+    /**
+     * Liste des connexions
+     *
+     * @var array
+     * @access private
+     */
     private static $auth = array();
-    private static $count = 0;
-    private static $type = 'mysql';
 
     /**
-     * Constructeur
+     * Total Queries
      *
-     * @param $host
-     * @param $dbname
-     * @param $username
-     * @param $password
-     * @return \PHPTools\Db\PDO
+     * @var int
+     * @access private
      */
-    public function __construct($host, $dbname, $username, $password)
-    {
-        try {
-            parent::__construct(self::$type . ':host=' . $host . ';dbname=' . $dbname, $username, $password);
-            $this->setAttribute(self::ATTR_ERRMODE, self::ERRMODE_EXCEPTION);
-        } catch (\PDOException $e) {
-            die('ERROR: ' . $e->getMessage());
-        }
-    }
+    private static $count = 0;
 
-    public function req($query, $args = array())
+    /**
+     * Envoi d'une requete
+     *
+     * @param string $query
+     * @param array $args
+     * @return \PDOStatement
+     */
+    public function req($query, array $args = array())
     {
         $req = $this->prepare($query);
 
@@ -79,6 +78,11 @@ class PDO extends \PDO
         return $req;
     }
 
+    /**
+     * Envoi d'un groupe de requetes
+     *
+     * @param array $queries
+     */
     public function bulk(array $queries)
     {
         try {
@@ -93,22 +97,38 @@ class PDO extends \PDO
         } catch (\PHPTools\Exception $Exception) {
 
             $this->rollback();
-            $Exception::error(Lib\I18n::__('PDO bulk rollback.'));
+            $Exception::error(Lib\I18n::__('Drivers bulk rollback.'));
         }
     }
 
-    public function result($query, $args = array(), $type = self::FETCH_OBJ)
+    /**
+     * Resultat de la requete
+     *
+     * @param string $query
+     * @param array $args
+     * @param int $type
+     * @return object
+     */
+    public function result($query, array $args = array(), $type = self::FETCH_OBJ)
     {
         return $this->req($query, $args)->fetch($type);
     }
 
-    public function results($query, $args = array(), $type = self::FETCH_OBJ)
+    /**
+     * Liste de résultats de la requete
+     *
+     * @param string $query
+     * @param array $args
+     * @param int $type
+     * @return array
+     */
+    public function results($query, array $args = array(), $type = self::FETCH_OBJ)
     {
         return $this->req($query, $args)->fetchAll($type);
     }
 
     /**
-     * Crée et retourne l'objet PDO
+     * Créé et retourne l'objet courrant
      *
      * @access public
      * @static
@@ -116,27 +136,30 @@ class PDO extends \PDO
      * @internal param $void
      * @return \PDO $instance
      */
-    public static function instance($id = 0)
+    final public static function instance($id = 0)
     {
         if (isset(self::$auth[$id])) {
             if (!isset(self::$instances[$id])) {
-                self::$instances[$id] = new self(self::$auth[$id][0], self::$auth[$id][1], self::$auth[$id][2], self::$auth[$id][3]);
+                self::$instances[$id] = new static(self::$auth[$id]);
             }
             return self::$instances[$id];
         } else {
-            \PHPTools\Exception::error(Lib\I18n::__('PDO Unknow Auth ID %s.', '<b>' . $id . '</b>'));
+            \PHPTools\Exception::error(Lib\I18n::__('Drivers Unknow Auth ID %s.', '<b>' . $id . '</b>'));
         }
         return false;
     }
 
-    public static function auth($host, $dbname = false, $username = false, $password = false)
+    /**
+     * Déclaration des connexions
+     *
+     * @param array $data
+     */
+    final public static function auth(array $data)
     {
-        if (is_array($host)) {
-            self::$auth = $host;
-        } else {
-            self::$auth = array(
-                array($host, $dbname, $username, $password)
-            );
+        self::$auth = $data;
+
+        if(!is_array(array_shift($data))) {
+            self::$auth = array(self::$auth);
         }
     }
 }

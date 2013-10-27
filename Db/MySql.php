@@ -17,6 +17,9 @@ namespace PHPTools\Db;
 /**
  * Base de données MySql
  *
+ * @deprecated Préférer l'utilisation de la classe \PHPTools\Db\PDO\Mysql();
+ * @todo Supprimer cette clase obsolète
+ *
  * @package  PHPTools
  * @category Db
  * @author   Jonathan Sahm <contact@johnstyle.fr>
@@ -61,10 +64,10 @@ abstract class MySql
         self::connect();
         $results = false;
         $request = mysql_query($query, self::$resource)
-            or die("Erreur SQL : " . mysql_error() . "\n" . $query . "\n");
+        or die("Erreur SQL : " . mysql_error() . "\n" . $query . "\n");
         if ($type) {
             if ($request) {
-                switch($type) {
+                switch ($type) {
                     case 'gets':
                         while ($item = mysql_fetch_object($request)) {
                             $results[] = $item;
@@ -91,10 +94,10 @@ abstract class MySql
     {
         if (!self::$resource) {
             self::$resource = mysql_connect(PHPTOOLS_DB_HOST, PHPTOOLS_DB_USER, PHPTOOLS_DB_PWD)
-                or die("Fatal ERROR SERVER : Check the connection script.\n");
+            or die("Fatal ERROR SERVER : Check the connection script.\n");
             mysql_select_db(PHPTOOLS_DB_BASE, self::$resource)
-                or die("Fatal ERROR DATABASE : Check the connection script.\n");
-            switch(PHPTOOLS_CHARSET) {
+            or die("Fatal ERROR DATABASE : Check the connection script.\n");
+            switch (PHPTOOLS_CHARSET) {
                 case 'UTF-8':
                     mysql_query('SET NAMES "utf8"', self::$resource) or die("Erreur SQL : " . mysql_error() . "\n");
                     break;
