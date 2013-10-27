@@ -31,8 +31,8 @@ class Alert
     {
         Session::start();
 
-        if (Libraries\Env::session('alerts')) {
-            $this->alerts = json_decode($this->alerts);
+        if (Libraries\Env::sessionExists('alerts')) {
+            $this->alerts = json_decode(Libraries\Env::session('alerts'));
         }
     }
 
