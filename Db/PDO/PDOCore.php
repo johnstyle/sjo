@@ -134,6 +134,20 @@ abstract class PDOCore extends \PDO
     }
 
     /**
+     * Resultat de la première colonne
+     *
+     * @param string $query
+     * @param array $args
+     * @param int $type
+     * @return object
+     */
+    public function value($query, array $args = array(), $type = self::FETCH_OBJ)
+    {
+        return $this->req($query, $args)->fetchColumn(0);
+    }
+
+
+    /**
      * Resultat de la requete
      *
      * @param string $query
