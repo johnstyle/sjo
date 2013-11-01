@@ -46,7 +46,7 @@ class Session
     {
         self::start();
 
-        if (CONTROLLER != PHPTOOLS_CONTROLLER_AUTH) {
+        if (Loader::$controller != PHPTOOLS_CONTROLLER_AUTH) {
             if (!$this->isActive()) {
                 if (Libraries\Env::get('token')) {
                     $this->isActive(Libraries\Env::get('token'));
@@ -59,7 +59,7 @@ class Session
                     );
                 }
             }
-        } elseif ($this->isActive() && !METHOD) {
+        } elseif ($this->isActive() && !Loader::$method) {
             $this->redirect();
         }
     }

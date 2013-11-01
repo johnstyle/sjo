@@ -45,6 +45,27 @@ class Exception extends \Exception
     public static function error($msg = null, $code = 0)
     {
         $Exception = new self($msg, $code);
-        $Exception->showError();
+        $Exception->logError();
+    }
+
+    public static function ErrorDocument($msg = null, $code = 0)
+    {
+        self::error($msg, $code);
+
+        return new self();
+    }
+
+    public static function http404()
+    {
+        $Loader = new Loader('http404', false, 'ErrorDocument');
+        $Loader->display();
+        exit;
+    }
+
+    public static function http403()
+    {
+        $Loader = new Loader('http403', false, 'ErrorDocument');
+        $Loader->display();
+        exit;
     }
 }

@@ -34,9 +34,9 @@ class Request
 
     public function hasToken()
     {
-        $controller = str_replace('\\', '/', CONTROLLER);
+        $controller = str_replace('\\', '/', Loader::$controller);
         if (Libraries\Env::request('token') == $this->getToken(
-                $controller . PHPTOOLS_CONTROLLER_METHOD_SEPARATOR . METHOD
+                $controller . PHPTOOLS_CONTROLLER_METHOD_SEPARATOR . Loader::$method
             )
         ) {
             return true;
