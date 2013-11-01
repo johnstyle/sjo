@@ -12,6 +12,8 @@
  */
 
 /** Configuration */
+defined('PHPTOOLS_DEBUG') OR define('PHPTOOLS_DEBUG', false);
+
 defined('PHPTOOLS_CHARSET') OR define('PHPTOOLS_CHARSET', 'UTF-8');
 defined('PHPTOOLS_DEFAULT_LOCALE') OR define('PHPTOOLS_DEFAULT_LOCALE', 'en_US');
 
@@ -22,6 +24,7 @@ defined('PHPTOOLS_ROOT_VIEW') OR define('PHPTOOLS_ROOT_VIEW', PHPTOOLS_ROOT_APP 
 defined('PHPTOOLS_ROOT_CONTROLLER') OR define('PHPTOOLS_ROOT_CONTROLLER', PHPTOOLS_ROOT_APP . '/Controller');
 defined('PHPTOOLS_ROOT_PUBLIC_HTML') OR define('PHPTOOLS_ROOT_PUBLIC_HTML', PHPTOOLS_ROOT . '/public_html');
 defined('PHPTOOLS_ROOT_TMP') OR define('PHPTOOLS_ROOT_TMP', sys_get_temp_dir());
+defined('PHPTOOLS_ROOT_LOG') OR define('PHPTOOLS_ROOT_LOG', PHPTOOLS_ROOT . '/log');
 
 defined('PHPTOOLS_DB_HOST') OR define('PHPTOOLS_DB_HOST', 'localhost');
 defined('PHPTOOLS_DB_USER') OR define('PHPTOOLS_DB_USER', 'root');
@@ -47,9 +50,15 @@ spl_autoload_register(
         if (strstr($filename, 'PHPTools/')) {
             $filename = str_replace('PHPTools/', '', $filename);
             if (!strstr($filename, '/')) {
-                include realpath(__DIR__) . '/Core/' . $filename;
+                $file = realpath(__DIR__) . '/Core/' . $filename;
+                if(file_exists($file)) {
+                    include $file;
+                }
             } else {
-                include realpath(__DIR__) . '/' . $filename;
+                $file = realpath(__DIR__) . '/' . $filename;
+                if(file_exists($file)) {
+                    include $file;
+                }
             }
         }
     }
