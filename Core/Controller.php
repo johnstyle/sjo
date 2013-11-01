@@ -25,6 +25,13 @@ namespace PHPTools;
  */
 abstract class Controller
 {
+    /**
+     * Model references
+     *
+     * @var Model
+     */
+    public $Model;
+
    /**
     * Core references
     *
@@ -32,19 +39,12 @@ abstract class Controller
     */
     public $Core;
 
-   /**
-    * Libraries references
-    *
-    * @var object
-    */
-    public $Libraries;    
-
-   /**
-    * Model references
-    *
-    * @var object
-    */
-    public $Model;
+    /**
+     * Logger references
+     *
+     * @var Logger
+     */
+    public $Logger;
 
     /**
      * Constructeur
@@ -54,7 +54,6 @@ abstract class Controller
     final public function __construct ()
     {
         $this->Core = new \stdClass();
-        $this->Libraries = new \stdClass();
     }
 
     public function __viewPreload ()

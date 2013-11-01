@@ -23,6 +23,39 @@ namespace PHPTools;
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/PHPTools.git
  */
-class Model
+abstract class Model
 {
+    /**
+     * Model references
+     *
+     * @var Controller
+     */
+    protected $Controller;
+
+    /**
+     * Core references
+     *
+     * @var object
+     */
+    protected $Core;
+
+    /**
+     * Logger references
+     *
+     * @var Logger
+     */
+    protected $Logger;
+
+    /**
+     * Constructor
+     *
+     * @param $instance
+     * @return \PHPTools\Model
+     */
+    public function __construct(&$instance)
+    {
+        $this->Controller =& $instance;
+        $this->Core =& $instance->Core;
+        $this->Logger =& $instance->Logger;
+    }
 }

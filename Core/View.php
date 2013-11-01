@@ -23,21 +23,28 @@ namespace PHPTools;
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/PHPTools.git
  */
-class View
+final class View
 {
-   /**
-    * Core references
-    *
-    * @var object
-    */
+    /**
+     * Model references
+     *
+     * @var Controller
+     */
+    public static $Controller;
+
+    /**
+     * Core references
+     *
+     * @var object
+     */
     public static $Core;
 
-   /**
-    * Controller references
-    *
-    * @var object
-    */
-    public static $Controller;
+    /**
+     * Logger references
+     *
+     * @var Logger
+     */
+    public static $Logger;
 
     /**
      * Constructor
@@ -49,6 +56,7 @@ class View
     {
         self::$Controller =& $instance;
         self::$Core =& $instance->Core;
+        self::$Logger =& $instance->Logger;
     }
 
     /**
@@ -81,7 +89,11 @@ class View
     public static function inc($filename, $vars = false)
     {
         $filename = str_replace('\\', '/', $filename);
-        $path = PHPTOOLS_ROOT_VIEW . '/' . $filename . '.php';
+        if(Loader::$module) {
+            $path = realpath(__DIR__) . '/' . PHPTOOLS_ROOT . '/Modules/' . Loader::$module . '/View/' . $filename . '.php';
+        } else {
+            $path = PHPTOOLS_ROOT_VIEW . '/' . $filename . '.php';
+        }
         if (file_exists($path)) {
             if($vars) {
                 foreach($vars as $var=>$value) {
@@ -100,16 +112,16 @@ class View
 
     public static function htmlClasses()
     {
-        $classes =  'c-' . str_replace('/', '-', strtolower(CONTROLLER));
-        if(METHOD) {
-            $classes .=  ' m-' . strtolower(METHOD);
+        $classes =  'c-' . str_replace('/', '-', strtolower(Loader::$controller));
+        if(Loader::$module) {
+            $classes .=  ' m-' . strtolower(Loader::$module);
         }
         echo $classes;
     }
 
     public static function htmlStylesheet($root = './')
     {
-        $filename = str_replace('\\', '/', strtolower(CONTROLLER)) . '.css';
+        $filename = str_replace('\\', '/', strtolower(Loader::$controller)) . '.css';
         if(file_exists(PHPTOOLS_ROOT_PUBLIC_HTML . '/css/' . $filename)) {
             echo '<link href="' . $root . 'css/' . $filename . '" rel="stylesheet" media="screen" />';
         }
@@ -117,7 +129,7 @@ class View
 
     public static function htmlScript($root = './')
     {
-        $filename = str_replace('\\', '/', strtolower(CONTROLLER)) . '.js';
+        $filename = str_replace('\\', '/', strtolower(Loader::$controller)) . '.js';
         if(file_exists(PHPTOOLS_ROOT_PUBLIC_HTML . '/js/' . $filename)) {
             echo '<script type="text/javascript" src="' . $root . 'js/' . $filename . '"></script>';
         }
