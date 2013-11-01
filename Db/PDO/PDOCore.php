@@ -81,6 +81,8 @@ abstract class PDOCore extends \PDO
         }
 
         $this->req($query, (array) $data);
+
+        return $this;
     }
 
     /**
@@ -131,6 +133,8 @@ abstract class PDOCore extends \PDO
             $this->rollback();
             $Exception::error(Lib\I18n::__('Drivers bulk rollback.'));
         }
+
+        return $this;
     }
 
     /**
@@ -189,7 +193,7 @@ abstract class PDOCore extends \PDO
             }
             return self::$instances[$id];
         } else {
-            \PHPTools\Exception::error(Lib\I18n::__('Drivers Unknow Auth ID %s.', '<b>' . $id . '</b>'));
+            \PHPTools\Exception::error(Lib\I18n::__('Drivers Unknow Auth ID %s.', $id));
         }
         return false;
     }
