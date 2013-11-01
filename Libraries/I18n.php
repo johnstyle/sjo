@@ -47,7 +47,7 @@ class I18n
         putenv('LC_ALL=' . $language);
 
         if(setlocale(LC_ALL, $language) != $language) {
-            \PHPTools\Exception::error('I18n locale <b>' . $language . '</b> do not exists.');
+            \PHPTools\Exception::error('I18n locale ' . $language . ' do not exists.');
         }
     }
 
@@ -67,7 +67,7 @@ class I18n
                 bind_textdomain_codeset($domain, PHPTOOLS_CHARSET);
             }
         } else {
-            \PHPTools\Exception::error('I18n directory <b>' . $directory . '</b> do not exists.');
+            \PHPTools\Exception::error('I18n directory ' . $directory . ' do not exists.');
         }
     }
 
