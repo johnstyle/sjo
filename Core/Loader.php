@@ -26,96 +26,104 @@ namespace PHPTools;
 class Loader
 {
     private $instance;
+    public static $controller;
+    public static $method;
+    public static $module;
 
     /**
      * Constructeur
      *
      * @param bool $controller
      * @param bool $method
+     * @param bool $module
      * @return \PHPTools\Loader
      */
-    public function __construct($controller = false, $method = false)
+    public function __construct($controller = false, $method = false, $module = false)
     {
-        if (!$controller) {
-            $controller = Libraries\Env::request(PHPTOOLS_CONTROLLER_NAME, PHPTOOLS_CONTROLLER_DEFAULT);
-            $controller = trim($controller, '/');
-            $controller = str_replace('/', '\\', $controller);
+        self::$controller = $controller;
+        if (!self::$controller) {
+            self::$controller = Libraries\Env::request(PHPTOOLS_CONTROLLER_NAME, PHPTOOLS_CONTROLLER_DEFAULT);
+            self::$controller = trim(self::$controller, '/');
+            self::$controller = str_replace('/', '\\', self::$controller);
         }
 
+        self::$method = $method;
         if (!$method) {
-            $method = Libraries\Env::request(PHPTOOLS_METHOD_NAME, PHPTOOLS_METHOD_DEFAULT);
+            self::$method = Libraries\Env::request(PHPTOOLS_METHOD_NAME, PHPTOOLS_METHOD_DEFAULT);
         }
 
-        define('CONTROLLER', $controller);
-        define('METHOD', $method);
+        self::$module = $module;
+        if (!$module) {
+            self::$module = Libraries\Env::request('module', false);
+        }
 
-        if (CONTROLLER) {
+        if (self::$controller) {
 
             \PHPTools\Helpers\Autoload(PHPTOOLS_ROOT_APP);
 
-            $className = '\\Controller\\' . CONTROLLER;
+            $className = Module::getClassName('Controller', self::$module, self::$controller);
 
             if (class_exists($className)) {
+
                 $this->instance = new $className ();
 
-                if (get_parent_class($this->instance) == 'PHPTools\Controller') {
+                if (get_parent_class($this->instance) == 'PHPTools\\Controller') {
 
-                    $className = '\\Model\\' . CONTROLLER;
+                    $className = Module::getClassName('Model', self::$module, self::$controller);
 
-                    if (class_exists($className)) {
-                        $this->instance->Model = new $className ();
+                    $this->_load($className, 'Model');
+
+                    if (get_parent_class($this->instance->Model) == 'PHPTools\\Model') {
+
+                        $this->_load('\\PHPTools\\Session', array('Core', 'Session'));
+                        $this->_load('\\PHPTools\\Request', array('Core', 'Request'));
+                        $this->_load('\\PHPTools\\Alert', array('Core', 'Alert'));
+                        $this->_load('\\PHPTools\\Logger', 'Logger');
+
+                        $this->event('viewPreload');
+
+                        new View($this->instance);
+
+                    } else {
+                        Exception::ErrorDocument(Libraries\I18n::__('Model %s is not extended to %s.', $className, '\\PHPTools\\Model'))->http403();
                     }
                 } else {
-                    Exception::error(
-                        Libraries\I18n::__(
-                            'Controller %s is not extended to %s.',
-                            '<b>' . $className . '</b>',
-                            '<b>\\PHPTools\\Controller</b>'
-                        )
-                    );
+                    Exception::ErrorDocument(Libraries\I18n::__('Controller %s is not extended to %s.', $className, '\\PHPTools\\Controller'))->http403();
                 }
             } else {
-                Exception::error(Libraries\I18n::__('Controller %s do not exists.', '<b>' . $className . '</b>'));
+                Exception::ErrorDocument(Libraries\I18n::__('Controller %s do not exists.', $className))->http404();
             }
         } else {
-            Exception::error(Libraries\I18n::__('CONTROLLER is undefined.'));
+            Exception::ErrorDocument(Libraries\I18n::__('CONTROLLER is undefined.'))->http404();
         }
-
-        $this->_initCore('Session');
-        $this->_initCore('Request');
-        $this->_initCore('Alert');
-
-        $this->event('viewPreload');
-
-        new View($this->instance);
     }
 
     public function display()
     {
-        $className = '\\Controller\\' . CONTROLLER;
+        $className = '\\Controller\\' . self::$controller;
 
         $this->event('viewLoaded');
 
-        if (METHOD) {
+        if (self::$method) {
             switch (Libraries\Env::get('content_type')) {
                 case 'json' :
                     header('Content-type:application/json; charset=' . PHPTOOLS_CHARSET);
-                    if (method_exists($className, METHOD)) {
+                    if (method_exists($className, self::$method)) {
                         if ($this->instance->Core->Request->hasToken()) {
-                            echo json_encode($this->instance->{METHOD}());
+                            echo json_encode($this->instance->{self::$method}());
                         } else {
-                            Exception::error(Libraries\I18n::__('Warning ! Prohibited queries.'));
+                            Exception::ErrorDocument(Libraries\I18n::__('Warning ! Prohibited queries.'))->http403();
                         }
                     }
                     exit;
                     break;
                 default :
                     header('Content-type:text/html; charset=' . PHPTOOLS_CHARSET);
-                    if (method_exists($className, METHOD)) {
+                    if (method_exists($className, self::$method)) {
                         if ($this->instance->Core->Request->hasToken()) {
-                            $this->instance->{METHOD}();
+                            $this->instance->{self::$method}();
                         } else {
-                            Exception::error(Libraries\I18n::__('Warning ! Prohibited queries.'));
+                            Exception::ErrorDocument(Libraries\I18n::__('Warning ! Prohibited queries.'))->http403();
                         }
                     }
                     break;
@@ -124,7 +132,7 @@ class Loader
 
         $this->event('viewCompleted');
 
-        View::inc(CONTROLLER);
+        View::inc(self::$controller);
     }
 
     public function restrictedAccess()
@@ -141,16 +149,16 @@ class Loader
         }
     }
 
-    private function _initCore($class)
+    private function _load($className, $name)
     {
-        $className = '\\PHPTools\\' . $class;
-
         if (class_exists($className)) {
-            $hookName = '\\Hooks\\' . $class;
+
+            $hookName = '\\Hooks\\' . str_replace('\\PHPTools\\', '', $className);
+
             if (class_exists($hookName)) {
-                $this->instance->Core->{$class} = new $hookName ();
+                Libraries\Obj::tree($this->instance, $name, new $hookName ($this->instance));
             } else {
-                $this->instance->Core->{$class} = new $className ();
+                Libraries\Obj::tree($this->instance, $name, new $className ($this->instance));
             }
         }
     }
