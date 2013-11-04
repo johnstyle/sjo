@@ -43,6 +43,10 @@ defined('PHPTOOLS_BASEHREF') OR define('PHPTOOLS_BASEHREF', './');
 
 defined('PHPTOOLS_SALT') OR define('PHPTOOLS_SALT', '1eecf9f2251f9ec8468a67df25154cb9');
 
+defined('PHPTOOLS_TIMEZONE') OR define('PHPTOOLS_TIMEZONE', 'Europe/Paris');
+
+date_default_timezone_set(PHPTOOLS_TIMEZONE);
+
 /** Classes */
 spl_autoload_register(
     function ($class) {
