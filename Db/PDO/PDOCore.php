@@ -57,6 +57,7 @@ abstract class PDOCore extends \PDO
      * @param string $table
      * @param array $data
      * @param array $where
+     * @return $this
      */
     public function update($table, array $data, array $where = array())
     {
@@ -116,6 +117,7 @@ abstract class PDOCore extends \PDO
      * Envoi d'un groupe de requetes
      *
      * @param array $queries
+     * @return $this
      */
     public function bulk(array $queries)
     {
