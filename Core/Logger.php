@@ -2,6 +2,8 @@
 
 namespace PHPTools;
 
+use \PHPTools\Libraries as Lib;
+
 /**
  * This Logger can be used to avoid conditional log calls
  *
@@ -24,7 +26,9 @@ class Logger extends Log\AbstractLogger
     {
         file_put_contents(
             PHPTOOLS_ROOT_LOG . '/app.' . $level . '.log',
-            date('Y-m-d H:i:s') . "\t" . self::interpolate($message, $context) . "\n",
+                date('Y-m-d H:i:s') . "\t" .
+                Lib\Env::server('REQUEST_URI') ."\t" .
+                self::interpolate($message, $context) . "\n",
             FILE_APPEND | LOCK_EX
         );
     }
