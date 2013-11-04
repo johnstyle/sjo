@@ -25,12 +25,21 @@ namespace PHPTools;
  */
 class Module
 {
-    public function getClassName($type, $module, $controller)
+    public static function getClassName($type)
     {
-        if($module) {
-            return '\\PHPTools\\Modules\\' . $module . '\\' . $type . '\\' . $controller;
+        if(Loader::$module) {
+            return '\\PHPTools\\Modules\\' . Loader::$module . '\\' . $type . '\\' . Loader::$controller;
         } else {
-            return '\\' . $type . '\\' . $controller;
+            return '\\' . $type . '\\' . Loader::$controller;
+        }
+    }
+
+    public static function getView($filename)
+    {
+        if(Loader::$module) {
+            return realpath(__DIR__) . '/' . PHPTOOLS_ROOT . '/Modules/' . Loader::$module . '/View/' . $filename . '.php';
+        } else {
+            return PHPTOOLS_ROOT_VIEW . '/' . $filename . '.php';
         }
     }
 }
