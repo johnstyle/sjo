@@ -88,12 +88,8 @@ final class View
      */
     public static function inc($filename, $vars = false)
     {
-        $filename = str_replace('\\', '/', $filename);
-        if(Loader::$module) {
-            $path = realpath(__DIR__) . '/' . PHPTOOLS_ROOT . '/Modules/' . Loader::$module . '/View/' . $filename . '.php';
-        } else {
-            $path = PHPTOOLS_ROOT_VIEW . '/' . $filename . '.php';
-        }
+        $path = Module::getView(str_replace('\\', '/', $filename));
+
         if (file_exists($path)) {
             if($vars) {
                 foreach($vars as $var=>$value) {
@@ -101,7 +97,9 @@ final class View
                     $$var = $value;
                 }
             }
+
             include $path;
+
             if($vars) {
                 foreach($vars as $var=>$value) {
                     unset($$var);
