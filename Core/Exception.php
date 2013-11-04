@@ -14,6 +14,8 @@
 
 namespace PHPTools;
 
+use PHPTools\Libraries\I18n;
+
 /**
  * Gestion des Exception
  *
@@ -45,26 +47,15 @@ class Exception extends \Exception
     public static function error($msg = null, $code = 0)
     {
         $Exception = new self($msg, $code);
-        $Exception->logError();
+        $Exception->showError();
     }
 
-    public static function ErrorDocument($msg = null, $code = 0)
+    public static function ErrorDocument($controller, $msg = false, $code = 0)
     {
-        self::error($msg, $code);
+        new self($msg, $code);
 
-        return new self();
-    }
-
-    public static function http404()
-    {
-        $Loader = new Loader('http404', false, 'ErrorDocument');
-        $Loader->display();
-        exit;
-    }
-
-    public static function http403()
-    {
-        $Loader = new Loader('http403', false, 'ErrorDocument');
+        $Loader = new Loader('ErrorDocument\\' . $controller);
+        $Loader->instance()->message = $msg;
         $Loader->display();
         exit;
     }
