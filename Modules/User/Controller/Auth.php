@@ -10,11 +10,11 @@ class Auth extends \PHPTools\Controller
 {
     public function signin()
     {
-        if(Lib\Env::post('login')) {
+        if(Lib\Env::post('email')) {
             if(Lib\Env::post('password')) {
-                if($token = User::exists(Lib\Env::post('login'), Lib\Env::post('password'))) {
+                if($token = $this->Model->exists(Lib\Env::post('email'), Lib\Env::post('password'))) {
                     $this->Logger->info('Signin {user}', array(
-                        'user' => Lib\Env::post('login')
+                        'user' => Lib\Env::post('email')
                     ));
                     $this->Core->Session->signin($token);
                 } else {

@@ -3,14 +3,28 @@
 namespace PHPTools\Modules\User\Core;
 
 use \PHPTools\Db\PDO\Drivers\Mysql as Db;
+use \PHPTools\Libraries as Lib;
 
-class User
+class User extends Lib\DataObject
 {
-    public static function exists($login, $password)
+    protected $id;
+    protected $name;
+    protected $email;
+
+    public function __construct($id = false)
     {
-        return Db::instance()->value("SELECT `id` FROM `users` WHERE `email` = :login AND `password` = :password", array(
-            'login' => $login,
-            'password' => md5($password)
+        if($id === false) {
+            $id = Lib\Env::session('token');
+        }
+
+        $user = Db::instance()->result("SELECT id, name, email FROM users WHERE id = :id ", array(
+            'id' => $id
         ));
+
+        if($user) {
+            foreach($user as $name => $value) {
+                $this->{$name} = $value;
+            }
+        }
     }
 }
