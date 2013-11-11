@@ -47,6 +47,13 @@ abstract class Controller
     public $Logger;
 
     /**
+     * Module references
+     *
+     * @var object
+     */
+    public $Module;
+
+    /**
      * Constructeur
      *
      * @return \PHPTools\Controller
@@ -54,6 +61,7 @@ abstract class Controller
     final public function __construct ()
     {
         $this->Core = new \stdClass();
+        $this->Module = new \stdClass();
     }
 
     public function __viewPreload ()

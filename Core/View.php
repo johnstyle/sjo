@@ -47,6 +47,13 @@ final class View
     public static $Logger;
 
     /**
+     * Module references
+     *
+     * @var object
+     */
+    public static $Module;
+
+    /**
      * Constructor
      *
      * @param $instance
@@ -57,6 +64,7 @@ final class View
         self::$Controller =& $instance;
         self::$Core =& $instance->Core;
         self::$Logger =& $instance->Logger;
+        self::$Module =& $instance->Module;
     }
 
     /**

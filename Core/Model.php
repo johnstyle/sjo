@@ -47,6 +47,13 @@ abstract class Model
     protected $Logger;
 
     /**
+     * Module references
+     *
+     * @var object
+     */
+    protected $Module;
+
+    /**
      * Constructor
      *
      * @param $instance
