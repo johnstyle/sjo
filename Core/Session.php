@@ -42,18 +42,18 @@ class Session
         }
     }
 
-    public function check()
+    public function check($auth)
     {
         self::start();
 
-        if (Loader::$controller != PHPTOOLS_CONTROLLER_AUTH) {
+        if (Loader::$controller != $auth) {
             if (!$this->isActive()) {
                 if (Libraries\Env::get('token')) {
                     $this->isActive(Libraries\Env::get('token'));
                 } else {
                     http_response_code(401);
                     $this->redirect(
-                        PHPTOOLS_BASEHREF . '/' . str_replace('\\', '/', PHPTOOLS_CONTROLLER_AUTH) . '/?redirect=' . urlencode(
+                        PHPTOOLS_BASEHREF . '/' . str_replace('\\', '/', $auth) . '/?redirect=' . urlencode(
                             Libraries\Env::server('REQUEST_URI')
                         )
                     );
