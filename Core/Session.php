@@ -53,7 +53,7 @@ class Session
                 } else {
                     http_response_code(401);
                     $this->redirect(
-                        PHPTOOLS_BASEHREF . '/' . PHPTOOLS_CONTROLLER_AUTH . '/?redirect=' . urlencode(
+                        PHPTOOLS_BASEHREF . '/' . str_replace('\\', '/', PHPTOOLS_CONTROLLER_AUTH) . '/?redirect=' . urlencode(
                             Libraries\Env::server('REQUEST_URI')
                         )
                     );
