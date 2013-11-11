@@ -25,6 +25,8 @@ namespace PHPTools;
  */
 class Loader
 {
+    use Module;
+
     private $instance;
     public static $controller;
     public static $controllerClass;
@@ -44,11 +46,17 @@ class Loader
     {
         $this->_set('controller', $controller);
         $this->_set('method', $method);
-        $this->_set('module');
+
+        \PHPTools\Helpers\Autoload(PHPTOOLS_ROOT_APP);
+    }
+
+    public function init()
+    {
+        $this->useModule('ErrorDocument');
+
+        $this->_setModule();
 
         if (self::$controller) {
-
-            \PHPTools\Helpers\Autoload(PHPTOOLS_ROOT_APP);
 
             if (class_exists(self::$controllerClass)) {
 
@@ -64,6 +72,8 @@ class Loader
                         $this->_load('\\PHPTools\\Request', array('Core', 'Request'));
                         $this->_load('\\PHPTools\\Alert', array('Core', 'Alert'));
                         $this->_load('\\PHPTools\\Logger', 'Logger');
+
+                        $this->_loadModules();
 
                         $this->event('viewPreload');
 
@@ -118,11 +128,6 @@ class Loader
         View::load();
     }
 
-    public function restrictedAccess()
-    {
-        $this->instance->Core->Session->check();
-    }
-
     public function instance()
     {
         return $this->instance;
@@ -151,7 +156,6 @@ class Loader
         }
     }
 
-
     private function _set($type, $value = false)
     {
         switch($type) {
@@ -170,15 +174,6 @@ class Loader
                 self::$method = $value;
                 if (!self::$method) {
                     self::$method = Libraries\Env::request(PHPTOOLS_METHOD_NAME, PHPTOOLS_METHOD_DEFAULT);
-                }
-                break;
-            case 'module':
-                $controller = '\\Controller\\' . self::$controller;
-                if(!class_exists($controller) && preg_match("#^(.+?)\\\\([^\\\\]+)$#", self::$controller, $match)) {
-                    self::$module = $match[1];
-                    self::$controllerClass = '\\PHPTools\\Modules\\' . self::$module . '\\Controller\\' . $match[2];
-                    self::$modelClass = '\\PHPTools\\Modules\\' . self::$module . '\\Model\\' . $match[2];
-                    self::$viewFile = realpath(__DIR__) . '/' . PHPTOOLS_ROOT . '/Modules/' . self::$module . '/View/' . str_replace('\\', '/', $match[2]) . '.php';
                 }
                 break;
         }
