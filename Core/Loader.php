@@ -27,6 +27,9 @@ class Loader
 {
     private $instance;
     public static $controller;
+    public static $controllerClass;
+    public static $modelClass;
+    public static $viewFile;
     public static $method;
     public static $module;
 
@@ -47,17 +50,13 @@ class Loader
 
             \PHPTools\Helpers\Autoload(PHPTOOLS_ROOT_APP);
 
-            $className = Module::getClassName('Controller');
+            if (class_exists(self::$controllerClass)) {
 
-            if (class_exists($className)) {
-
-                $this->instance = new $className ();
+                $this->instance = new self::$controllerClass ();
 
                 if (get_parent_class($this->instance) == 'PHPTools\\Controller') {
 
-                    $className = Module::getClassName('Model');
-
-                    $this->_load($className, 'Model');
+                    $this->_load(self::$modelClass, 'Model');
 
                     if (get_parent_class($this->instance->Model) == 'PHPTools\\Model') {
 
@@ -71,13 +70,13 @@ class Loader
                         new View($this->instance);
 
                     } else {
-                        Exception::ErrorDocument('http403', Libraries\I18n::__('Model %s is not extended to %s.', $className, '\\PHPTools\\Model'));
+                        Exception::ErrorDocument('http403', Libraries\I18n::__('Model %s is not extended to %s.', self::$modelClass, '\\PHPTools\\Model'));
                     }
                 } else {
-                    Exception::ErrorDocument('http403', Libraries\I18n::__('Controller %s is not extended to %s.', $className, '\\PHPTools\\Controller'));
+                    Exception::ErrorDocument('http403', Libraries\I18n::__('Controller %s is not extended to %s.', self::$controllerClass, '\\PHPTools\\Controller'));
                 }
             } else {
-                Exception::ErrorDocument('http404', Libraries\I18n::__('Controller %s do not exists.', $className));
+                Exception::ErrorDocument('http404', Libraries\I18n::__('Controller %s do not exists.', self::$controllerClass));
             }
         } else {
             Exception::ErrorDocument('http404', Libraries\I18n::__('CONTROLLER is undefined.'));
@@ -86,15 +85,13 @@ class Loader
 
     public function display()
     {
-        $className = '\\Controller\\' . self::$controller;
-
         $this->event('viewLoaded');
 
         if (self::$method) {
             switch (Libraries\Env::get('content_type')) {
                 case 'json' :
                     header('Content-type:application/json; charset=' . PHPTOOLS_CHARSET);
-                    if (method_exists($className, self::$method)) {
+                    if (method_exists(self::$controllerClass, self::$method)) {
                         if ($this->instance->Core->Request->hasToken()) {
                             echo json_encode($this->instance->{self::$method}());
                         } else {
@@ -105,7 +102,7 @@ class Loader
                     break;
                 default :
                     header('Content-type:text/html; charset=' . PHPTOOLS_CHARSET);
-                    if (method_exists($className, self::$method)) {
+                    if (method_exists(self::$controllerClass, self::$method)) {
                         if ($this->instance->Core->Request->hasToken()) {
                             $this->instance->{self::$method}();
                         } else {
@@ -118,7 +115,7 @@ class Loader
 
         $this->event('viewCompleted');
 
-        View::inc(self::$controller);
+        View::load();
     }
 
     public function restrictedAccess()
@@ -165,6 +162,9 @@ class Loader
                     self::$controller = trim(self::$controller, '/');
                     self::$controller = str_replace('/', '\\', self::$controller);
                 }
+                self::$controllerClass = '\\Controller\\' . Loader::$controller;
+                self::$modelClass = '\\Model\\' . Loader::$controller;
+                self::$viewFile = PHPTOOLS_ROOT_VIEW . '/' . str_replace('\\', '/', self::$controller) . '.php';
                 break;
             case 'method':
                 self::$method = $value;
@@ -176,7 +176,9 @@ class Loader
                 $controller = '\\Controller\\' . self::$controller;
                 if(!class_exists($controller) && preg_match("#^(.+?)\\\\([^\\\\]+)$#", self::$controller, $match)) {
                     self::$module = $match[1];
-                    self::$controller = $match[2];
+                    self::$controllerClass = '\\PHPTools\\Modules\\' . self::$module . '\\Controller\\' . $match[2];
+                    self::$modelClass = '\\PHPTools\\Modules\\' . self::$module . '\\Model\\' . $match[2];
+                    self::$viewFile = realpath(__DIR__) . '/' . PHPTOOLS_ROOT . '/Modules/' . self::$module . '/View/' . str_replace('\\', '/', $match[2]) . '.php';
                 }
                 break;
         }
