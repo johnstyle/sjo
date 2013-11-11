@@ -79,6 +79,15 @@ final class View
         self::inc('footer');
     }
 
+
+    public static function load()
+    {
+        if(file_exists(Loader::$viewFile)) {
+            include Loader::$viewFile;
+        }
+    }
+
+
     /**
      * Inclusion d'un fichier du template
      *
@@ -88,9 +97,9 @@ final class View
      */
     public static function inc($filename, $vars = false)
     {
-        $path = Module::getView(str_replace('\\', '/', $filename));
+        $file = PHPTOOLS_ROOT_VIEW . '/' . $filename . '.php';
 
-        if (file_exists($path)) {
+        if (file_exists($file)) {
             if($vars) {
                 foreach($vars as $var=>$value) {
                     global $$var;
@@ -98,7 +107,7 @@ final class View
                 }
             }
 
-            include $path;
+            include $file;
 
             if($vars) {
                 foreach($vars as $var=>$value) {
