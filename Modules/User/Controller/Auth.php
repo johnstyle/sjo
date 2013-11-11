@@ -1,19 +1,20 @@
 <?php
 
-namespace PHPTools\Modules;
+namespace PHPTools\Modules\User\Controller;
 
 use \PHPTools\Libraries as Lib;
-use \PHPTools\Libraries\I18n as I18n;
+use \PHPTools\Libraries\I18n;
+use \PHPTools\Modules\User\Core\User;
 
-trait Auth
+class Auth extends \PHPTools\Controller
 {
-    public function signin ()
+    public function signin()
     {
-        if($this->getLogin()) {
-            if($this->getPassword()) {
-                if($token = $this->canSignin()) {
+        if(Lib\Env::post('login')) {
+            if(Lib\Env::post('password')) {
+                if($token = User::exists(Lib\Env::post('login'), Lib\Env::post('password'))) {
                     $this->Logger->info('Signin {user}', array(
-                        'user' => $this->getLogin()
+                        'user' => Lib\Env::post('login')
                     ));
                     $this->Core->Session->signin($token);
                 } else {
