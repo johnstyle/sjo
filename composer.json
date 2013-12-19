@@ -17,5 +17,10 @@
         "php": ">=5.4.0",
         "psr/log": "1.0.0"
     },
+    "autoload": {
+        "psr-0": {
+            "sJo\\": "system"
+        }
+    }
     "minimum-stability": "dev"
 }
