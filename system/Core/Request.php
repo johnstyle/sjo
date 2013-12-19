@@ -5,23 +5,23 @@
  *
  * PHP version 5
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Core
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace PHPTools;
+namespace sJo;
 
 /**
  * Gestion des requêtes
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Core
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 class Request
 {
@@ -36,7 +36,7 @@ class Request
     {
         $controller = str_replace('\\', '/', Loader::$controller);
         if (Libraries\Env::request('token') == $this->getToken(
-                $controller . PHPTOOLS_CONTROLLER_METHOD_SEPARATOR . Loader::$method
+                $controller . SJO_CONTROLLER_METHOD_SEPARATOR . Loader::$method
             )
         ) {
             return true;

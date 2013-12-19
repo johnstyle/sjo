@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPTools\n"
+"Project-Id-Version: sJo\n"
 "POT-Creation-Date: 2013-12-19 20:33+0100\n"
 "PO-Revision-Date: 2013-12-19 20:33+0100\n"
 "Last-Translator: Jonathan Sahm <contact@johnstyle.fr>\n"

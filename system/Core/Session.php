@@ -5,23 +5,23 @@
  *
  * PHP version 5
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Core
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace PHPTools;
+namespace sJo;
 
 /**
  * Gestion des sesions de connexion
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Core
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 class Session
 {
@@ -53,7 +53,7 @@ class Session
                 } else {
                     http_response_code(401);
                     $this->redirect(
-                        PHPTOOLS_BASEHREF . '/' . str_replace('\\', '/', $auth) . '/?redirect=' . urlencode(
+                        SJO_BASEHREF . '/' . str_replace('\\', '/', $auth) . '/?redirect=' . urlencode(
                             Libraries\Env::server('REQUEST_URI')
                         )
                     );
@@ -64,13 +64,13 @@ class Session
         }
     }
 
-    public function signin($token, $url = PHPTOOLS_BASEHREF)
+    public function signin($token, $url = SJO_BASEHREF)
     {
         Libraries\Env::sessionSet('token', $token);
         $this->redirect($url);
     }
 
-    public function signout($url = PHPTOOLS_BASEHREF)
+    public function signout($url = SJO_BASEHREF)
     {
         if (Libraries\Env::cookie()) {
             foreach (Libraries\Env::cookie() as $name => $value) {
@@ -81,7 +81,7 @@ class Session
         $this->redirect($url);
     }
 
-    public function redirect($url = PHPTOOLS_BASEHREF)
+    public function redirect($url = SJO_BASEHREF)
     {
         if (preg_match("#^(\./|/)#", Libraries\Env::get('redirect'))) {
             header('Location:' . Libraries\Env::get('redirect'));
@@ -102,7 +102,7 @@ class Session
     public static function getToken($options = false)
     {
         return md5(
-            PHPTOOLS_SALT
+            SJO_SALT
             . Libraries\Env::server('REMOTE_ADDR')
             . Libraries\Env::server('HTTP_USER_AGENT')
             . Libraries\Env::server('HTTP_HOST')

@@ -1,10 +1,10 @@
 <?php
 
-namespace PHPTools\Modules\User\Model;
+namespace sJo\Modules\User\Model;
 
-use \PHPTools\Db\PDO\Drivers\Mysql as Db;
+use \sJo\Db\PDO\Drivers\Mysql as Db;
 
-class Auth extends \PHPTools\Model
+class Auth extends \sJo\Model
 {
     public function exists($email, $password)
     {

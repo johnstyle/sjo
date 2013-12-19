@@ -1,10 +1,10 @@
 <?php
 
-namespace PHPTools\Modules\ErrorDocument\Controller;
+namespace sJo\Modules\ErrorDocument\Controller;
 
-use PHPTools\Libraries\I18n;
+use sJo\Libraries\I18n;
 
-class http403 extends \PHPTools\Controller
+class http403 extends \sJo\Controller
 {
     public $message;
 

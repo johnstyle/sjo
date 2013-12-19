@@ -1,17 +1,17 @@
 <?php
 
 /**
- * PHPTools
+ * sJo
  *
  * PHP version 5
  *
- * @package  PHPTools
+ * @package  sJo
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace PHPTools\Libraries;
+namespace sJo\Libraries;
 
 class Http
 {
@@ -25,7 +25,7 @@ class Http
     public function __construct($cache = false)
     {
         $this->id = md5(microtime());
-        $this->cookieFile = PHPTOOLS_ROOT_TMP . '/' . $this->id . '.cookie';
+        $this->cookieFile = SJO_ROOT_TMP . '/' . $this->id . '.cookie';
         $this->resource = curl_init();
 
         $this->setOption(CURLOPT_USERAGENT, 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:21.0) Gecko/20100101 Firefox/21.0');
@@ -58,7 +58,7 @@ class Http
     public function request($url, $post = false)
     {
         $hash = md5($url . serialize($post));
-        $cacheFile = PHPTOOLS_ROOT_TMP . '/' . $hash . '.cache';
+        $cacheFile = SJO_ROOT_TMP . '/' . $hash . '.cache';
         if (!$this->cache || !file_exists($cacheFile) || filemtime($cacheFile) >= (time() + $this->cache)) {
             if (preg_match("#^https://#i", $url)) {
                 $this->setOption(CURLOPT_SSL_VERIFYPEER, false);

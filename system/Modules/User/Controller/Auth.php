@@ -1,12 +1,12 @@
 <?php
 
-namespace PHPTools\Modules\User\Controller;
+namespace sJo\Modules\User\Controller;
 
-use \PHPTools\Libraries as Lib;
-use \PHPTools\Libraries\I18n;
-use \PHPTools\Modules\User\Core\User;
+use \sJo\Libraries as Lib;
+use \sJo\Libraries\I18n;
+use \sJo\Modules\User\Core\User;
 
-class Auth extends \PHPTools\Controller
+class Auth extends \sJo\Controller
 {
     public function signin()
     {

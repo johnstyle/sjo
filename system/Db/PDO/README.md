@@ -2,7 +2,7 @@ PDO
 =======
 
 <pre>
-use \PHPTools\Db\PDO\Drivers\Mysql as Db;
+use \sJo\Db\PDO\Drivers\Mysql as Db;
 </pre>
 
 Exemple avec une seule base

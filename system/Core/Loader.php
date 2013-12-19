@@ -5,23 +5,23 @@
  *
  * PHP version 5
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Core
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace PHPTools;
+namespace sJo;
 
 /**
  * Loader
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Core
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 class Loader
 {
@@ -40,14 +40,14 @@ class Loader
      *
      * @param bool $controller
      * @param bool $method
-     * @return \PHPTools\Loader
+     * @return \sJo\Loader
      */
     public function __construct($controller = false, $method = false)
     {
         $this->_set('controller', $controller);
         $this->_set('method', $method);
 
-        \PHPTools\Helpers\Autoload(PHPTOOLS_ROOT_APP);
+        \sJo\Helpers\Autoload(SJO_ROOT_APP);
     }
 
     public function init()
@@ -62,16 +62,16 @@ class Loader
 
                 $this->instance = new self::$controllerClass ();
 
-                if (get_parent_class($this->instance) == 'PHPTools\\Controller') {
+                if (get_parent_class($this->instance) == 'sJo\\Controller') {
 
                     $this->_load(self::$modelClass, 'Model');
 
-                    if (get_parent_class($this->instance->Model) == 'PHPTools\\Model') {
+                    if (get_parent_class($this->instance->Model) == 'sJo\\Model') {
 
-                        $this->_load('\\PHPTools\\Session', array('Core', 'Session'));
-                        $this->_load('\\PHPTools\\Request', array('Core', 'Request'));
-                        $this->_load('\\PHPTools\\Alert', array('Core', 'Alert'));
-                        $this->_load('\\PHPTools\\Logger', 'Logger');
+                        $this->_load('\\sJo\\Session', array('Core', 'Session'));
+                        $this->_load('\\sJo\\Request', array('Core', 'Request'));
+                        $this->_load('\\sJo\\Alert', array('Core', 'Alert'));
+                        $this->_load('\\sJo\\Logger', 'Logger');
 
                         $this->_loadModules();
 
@@ -80,10 +80,10 @@ class Loader
                         new View($this->instance);
 
                     } else {
-                        Exception::ErrorDocument('http403', Libraries\I18n::__('Model %s is not extended to %s.', self::$modelClass, '\\PHPTools\\Model'));
+                        Exception::ErrorDocument('http403', Libraries\I18n::__('Model %s is not extended to %s.', self::$modelClass, '\\sJo\\Model'));
                     }
                 } else {
-                    Exception::ErrorDocument('http403', Libraries\I18n::__('Controller %s is not extended to %s.', self::$controllerClass, '\\PHPTools\\Controller'));
+                    Exception::ErrorDocument('http403', Libraries\I18n::__('Controller %s is not extended to %s.', self::$controllerClass, '\\sJo\\Controller'));
                 }
             } else {
                 Exception::ErrorDocument('http404', Libraries\I18n::__('Controller %s do not exists.', self::$controllerClass));
@@ -100,7 +100,7 @@ class Loader
         if (self::$method) {
             switch (Libraries\Env::get('content_type')) {
                 case 'json' :
-                    header('Content-type:application/json; charset=' . PHPTOOLS_CHARSET);
+                    header('Content-type:application/json; charset=' . SJO_CHARSET);
                     if (method_exists(self::$controllerClass, self::$method)) {
                         if ($this->instance->Core->Request->hasToken()) {
                             echo json_encode($this->instance->{self::$method}());
@@ -111,7 +111,7 @@ class Loader
                     exit;
                     break;
                 default :
-                    header('Content-type:text/html; charset=' . PHPTOOLS_CHARSET);
+                    header('Content-type:text/html; charset=' . SJO_CHARSET);
                     if (method_exists(self::$controllerClass, self::$method)) {
                         if ($this->instance->Core->Request->hasToken()) {
                             $this->instance->{self::$method}();
@@ -146,7 +146,7 @@ class Loader
     {
         if (class_exists($className)) {
 
-            $hookName = '\\Hooks\\' . str_replace('\\PHPTools\\', '', $className);
+            $hookName = '\\Hooks\\' . str_replace('\\sJo\\', '', $className);
 
             if (class_exists($hookName)) {
                 Libraries\Obj::tree($this->instance, $name, new $hookName ($this->instance));
@@ -162,18 +162,18 @@ class Loader
             case 'controller':
                 self::$controller = $value;
                 if (!self::$controller) {
-                    self::$controller = Libraries\Env::request(PHPTOOLS_CONTROLLER_NAME, PHPTOOLS_CONTROLLER_DEFAULT);
+                    self::$controller = Libraries\Env::request(SJO_CONTROLLER_NAME, SJO_CONTROLLER_DEFAULT);
                     self::$controller = trim(self::$controller, '/');
                     self::$controller = str_replace('/', '\\', self::$controller);
                 }
                 self::$controllerClass = '\\Controller\\' . Loader::$controller;
                 self::$modelClass = '\\Model\\' . Loader::$controller;
-                self::$viewFile = PHPTOOLS_ROOT_VIEW . '/' . str_replace('\\', '/', self::$controller) . '.php';
+                self::$viewFile = SJO_ROOT_VIEW . '/' . str_replace('\\', '/', self::$controller) . '.php';
                 break;
             case 'method':
                 self::$method = $value;
                 if (!self::$method) {
-                    self::$method = Libraries\Env::request(PHPTOOLS_METHOD_NAME, PHPTOOLS_METHOD_DEFAULT);
+                    self::$method = Libraries\Env::request(SJO_METHOD_NAME, SJO_METHOD_DEFAULT);
                 }
                 break;
         }

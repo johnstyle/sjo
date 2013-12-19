@@ -5,23 +5,23 @@
  *
  * PHP version 5
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Core
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace PHPTools;
+namespace sJo;
 
 /**
  * Gestion des Controlleurs
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Core
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 abstract class Controller
 {
@@ -56,7 +56,7 @@ abstract class Controller
     /**
      * Constructeur
      *
-     * @return \PHPTools\Controller
+     * @return \sJo\Controller
      */
     final public function __construct ()
     {

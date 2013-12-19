@@ -5,23 +5,23 @@
  *
  * PHP version 5
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Libraries
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace PHPTools\Libraries;
+namespace sJo\Libraries;
 
 /**
  * Variables d'environnement
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Libraries
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  *
  * @method static get(string $attr, string $default)
  * @method static getExists(string $attr)

@@ -1,14 +1,14 @@
 <?php
 /**
- * phpTools
+ * sJo
  *
  * PHP version 5
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Core
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/phpTools
+ * @link     https://github.com/johnstyle/sjo.git
  */
 
 
@@ -34,16 +34,16 @@ if (file_exists(realpath(__DIR__) . '/settings.ini')) {
     }
 }
 
-if (defined('PHPTOOLS_TIMEZONE')) {
-    date_default_timezone_set(PHPTOOLS_TIMEZONE);
+if (defined('SJO_TIMEZONE')) {
+    date_default_timezone_set(SJO_TIMEZONE);
 }
 
 /** Classes */
 spl_autoload_register(
     function ($class) {
         $filename = str_replace('\\', '/', $class) . '.php';
-        if (strstr($filename, 'PHPTools/')) {
-            $filename = str_replace('PHPTools/', '', $filename);
+        if (strstr($filename, 'sJo/')) {
+            $filename = str_replace('sJo/', '', $filename);
             if (!strstr($filename, '/')) {
                 $file = realpath(__DIR__) . '/Core/' . $filename;
                 if (file_exists($file)) {
@@ -60,10 +60,10 @@ spl_autoload_register(
 );
 
 /** Helpers */
-foreach (\PHPTools\Libraries\Dir::getFiles(realpath(__DIR__) . '/Helpers') as $helpers) {
+foreach (\sJo\Libraries\Dir::getFiles(realpath(__DIR__) . '/Helpers') as $helpers) {
     include $helpers->path;
 }
 
 /** Locale */
-//$PHPToolsI18n = new \PHPTools\Libraries\I18n();
-//$PHPToolsI18n->load('default', dirname(dirname(__DIR__)) . '/locale');
+//$sJo_I18n = new \sJo\Libraries\I18n();
+//$sJo_I18n->load('default', dirname(dirname(__DIR__)) . '/locale');

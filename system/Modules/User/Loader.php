@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPTools\Modules\User;
+namespace sJo\Modules\User;
 
 class Loader
 {

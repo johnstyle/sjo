@@ -1,7 +1,7 @@
 <?php
 
-namespace PHPTools\Modules\ErrorDocument\Model;
+namespace sJo\Modules\ErrorDocument\Model;
 
-class http404 extends \PHPTools\Model
+class http404 extends \sJo\Model
 {
 }

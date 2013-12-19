@@ -5,33 +5,33 @@
  *
  * PHP version 5
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Db\PDO\Drivers
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace PHPTools\Db\PDO\Drivers;
+namespace sJo\Db\PDO\Drivers;
 
-use \PHPTools\Libraries as Lib;
+use \sJo\Libraries as Lib;
 
 /**
  * Base de données Mysql
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Db\PDO\Drivers
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
-class Mysql extends \PHPTools\Db\PDO\PDOCore
+class Mysql extends \sJo\Db\PDO\PDOCore
 {
     /**
      * Constructeur
      *
      * @param array $auth
-     * @return \PHPTools\Db\PDO\Drivers\Mysql
+     * @return \sJo\Db\PDO\Drivers\Mysql
      */
     public function __construct(array $auth)
     {

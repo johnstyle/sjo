@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPTools\Libraries;
+namespace sJo\Libraries;
 
 abstract class DataObject
 {

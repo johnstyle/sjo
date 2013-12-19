@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPTools\Helpers;
+namespace sJo\Helpers;
 
 function DateInterval($begin, $end)
 {

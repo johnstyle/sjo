@@ -5,25 +5,25 @@
  *
  * PHP version 5
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Db
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace PHPTools\Db\PDO;
+namespace sJo\Db\PDO;
 
-use \PHPTools\Libraries as Lib;
+use \sJo\Libraries as Lib;
 
 /**
  * Base de données Drivers
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Db
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 abstract class PDOCore extends \PDO
 {
@@ -130,7 +130,7 @@ abstract class PDOCore extends \PDO
             }
 
             $this->commit();
-        } catch (\PHPTools\Exception $Exception) {
+        } catch (\sJo\Exception $Exception) {
 
             $this->rollback();
             $Exception::error(Lib\I18n::__('Drivers bulk rollback.'));
@@ -195,7 +195,7 @@ abstract class PDOCore extends \PDO
             }
             return self::$instances[$id];
         } else {
-            \PHPTools\Exception::error(Lib\I18n::__('Drivers Unknow Auth ID %s.', $id));
+            \sJo\Exception::error(Lib\I18n::__('Drivers Unknow Auth ID %s.', $id));
         }
         return false;
     }

@@ -5,23 +5,23 @@
  *
  * PHP version 5
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Libraries
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace PHPTools\Libraries;
+namespace sJo\Libraries;
 
 /**
  * Gestion du multilanguage
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Libraries
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  *
  * @method static __($message)
  * @method static n__($msgid1, $msgid2, $n)
@@ -38,16 +38,16 @@ class I18n
     
     public function __construct()
     {
-        defined('PHPTOOLS_LOCALE') OR define('PHPTOOLS_LOCALE', PHPTOOLS_DEFAULT_LOCALE);
+        defined('SJO_LOCALE') OR define('SJO_LOCALE', SJO_DEFAULT_LOCALE);
 
-        $language = PHPTOOLS_LOCALE . '.' . PHPTOOLS_CHARSET;
+        $language = SJO_LOCALE . '.' . SJO_CHARSET;
 
         putenv('LANG=' . $language);
         putenv('LANGUAGE=' . $language);
         putenv('LC_ALL=' . $language);
 
         if(setlocale(LC_ALL, $language) != $language) {
-            \PHPTools\Exception::error('I18n locale ' . $language . ' do not exists.');
+            \sJo\Exception::error('I18n locale ' . $language . ' do not exists.');
         }
     }
 
@@ -64,10 +64,10 @@ class I18n
             if(!in_array($directory, self::$directories)) {
                 self::$directories[] = $directory;
                 bindtextdomain($domain, $directory);
-                bind_textdomain_codeset($domain, PHPTOOLS_CHARSET);
+                bind_textdomain_codeset($domain, SJO_CHARSET);
             }
         } else {
-            \PHPTools\Exception::error('I18n directory ' . $directory . ' do not exists.');
+            \sJo\Exception::error('I18n directory ' . $directory . ' do not exists.');
         }
     }
 
@@ -108,18 +108,18 @@ class I18n
 
     public static function defaultLocale()
     {
-        return PHPTOOLS_DEFAULT_LOCALE;
+        return SJO_DEFAULT_LOCALE;
     }
 
     public static function locale()
     {
-        return PHPTOOLS_LOCALE;
+        return SJO_LOCALE;
     }
 
     public static function country($locale = false)
     {
         if(!$locale) {
-            $locale = PHPTOOLS_LOCALE;
+            $locale = SJO_LOCALE;
         }
         return strtolower(substr($locale, 3));
     }
@@ -127,7 +127,7 @@ class I18n
     public static function language($locale = false)
     {
         if(!$locale) {
-            $locale = PHPTOOLS_LOCALE;
+            $locale = SJO_LOCALE;
         }
         return strtolower(substr($locale, 0, 2));
     }
@@ -136,7 +136,7 @@ class I18n
     {
         $languages = false;
         foreach(self::$directories as $directory) {
-            $items = \PHPTools\Libraries\Dir::gets($directory);
+            $items = \sJo\Libraries\Dir::gets($directory);
             if($items) {
                 foreach($items as $item) {
                     if(!isset($languages[$item->title])) {

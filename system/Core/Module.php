@@ -5,23 +5,23 @@
  *
  * PHP version 5
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Core
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace PHPTools;
+namespace sJo;
 
 /**
  * Module
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Core
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 trait Module
 {
@@ -40,9 +40,9 @@ trait Module
         if(!class_exists($controller) && preg_match("#^(.+?)\\\\([^\\\\]+)$#", self::$controller, $match)) {
             if(in_array($match[1], $this->modules)) {
                 self::$module = $match[1];
-                self::$controllerClass = '\\PHPTools\\Modules\\' . self::$module . '\\Controller\\' . $match[2];
-                self::$modelClass = '\\PHPTools\\Modules\\' . self::$module . '\\Model\\' . $match[2];
-                self::$viewFile = realpath(__DIR__) . '/' . PHPTOOLS_ROOT . '/Modules/' . self::$module . '/View/' . str_replace('\\', '/', $match[2]) . '.php';
+                self::$controllerClass = '\\sJo\\Modules\\' . self::$module . '\\Controller\\' . $match[2];
+                self::$modelClass = '\\sJo\\Modules\\' . self::$module . '\\Model\\' . $match[2];
+                self::$viewFile = realpath(__DIR__) . '/' . SJO_ROOT . '/Modules/' . self::$module . '/View/' . str_replace('\\', '/', $match[2]) . '.php';
             }
         }
     }
@@ -51,7 +51,7 @@ trait Module
     {
         if(count($this->modules)) {
             foreach($this->modules as $module) {
-                $className = '\\PHPTools\\Modules\\' . $module . '\\Loader';
+                $className = '\\sJo\\Modules\\' . $module . '\\Loader';
                 if(class_exists($className)) {
                     $Loader = new $className ($this->instance);
                     if(method_exists($className, 'init')) {

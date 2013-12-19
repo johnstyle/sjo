@@ -1,16 +1,16 @@
 <?php
 /**
- * PHPTools
+ * sJo
  *
  * PHP version 5
  *
- * @package  PHPTools
+ * @package  sJo
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace PHPTools\Libraries;
+namespace sJo\Libraries;
 
 class Csv
 {
@@ -73,7 +73,7 @@ class Csv
     public function create ($file)
     {
         $this->fileMv = $file;
-        $this->file = PHPTOOLS_ROOT_TMP . '/' . md5($file);
+        $this->file = SJO_ROOT_TMP . '/' . md5($file);
         $this->delete();
         return $this->handle();
     }

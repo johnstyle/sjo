@@ -5,26 +5,26 @@
  *
  * PHP version 5
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Db
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace PHPTools\Db;
+namespace sJo\Db;
 
 /**
  * Base de données MySql
  *
- * @deprecated Préférer l'utilisation de la classe \PHPTools\Db\PDO\Mysql();
+ * @deprecated Préférer l'utilisation de la classe \sJo\Db\PDO\Mysql();
  * @todo Supprimer cette clase obsolète
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Db
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 abstract class MySql
 {
@@ -93,11 +93,11 @@ abstract class MySql
     private static function connect()
     {
         if (!self::$resource) {
-            self::$resource = mysql_connect(PHPTOOLS_DB_HOST, PHPTOOLS_DB_USER, PHPTOOLS_DB_PWD)
+            self::$resource = mysql_connect(SJO_DB_HOST, SJO_DB_USER, SJO_DB_PWD)
             or die("Fatal ERROR SERVER : Check the connection script.\n");
-            mysql_select_db(PHPTOOLS_DB_BASE, self::$resource)
+            mysql_select_db(SJO_DB_BASE, self::$resource)
             or die("Fatal ERROR DATABASE : Check the connection script.\n");
-            switch (PHPTOOLS_CHARSET) {
+            switch (SJO_CHARSET) {
                 case 'UTF-8':
                     mysql_query('SET NAMES "utf8"', self::$resource) or die("Erreur SQL : " . mysql_error() . "\n");
                     break;

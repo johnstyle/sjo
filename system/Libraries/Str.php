@@ -1,16 +1,16 @@
 <?php
 /**
- * PHPTools
+ * sJo
  *
  * PHP version 5
  *
- * @package  PHPTools
+ * @package  sJo
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace PHPTools\Libraries;
+namespace sJo\Libraries;
 
 abstract class Str
 {
@@ -43,7 +43,7 @@ abstract class Str
      */
     public static function noAccent($str)
     {
-        $str = htmlentities(html_entity_decode($str, false, PHPTOOLS_CHARSET), false, PHPTOOLS_CHARSET);
+        $str = htmlentities(html_entity_decode($str, false, SJO_CHARSET), false, SJO_CHARSET);
         $str = preg_replace('#\&([A-za-z])(?:acute|cedil|circ|grave|ring|tilde|uml)\;#', '\1', $str);
         $str = preg_replace('#\&([A-za-z]{2})(?:lig)\;#', '\1', $str);
         $str = preg_replace('#\&[^;]+\;#', '', $str);

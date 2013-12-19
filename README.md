@@ -1,9 +1,9 @@
-PHPTools
+sJo
 =======
 
-[![Build Status](https://travis-ci.org/johnstyle/PHPTools.png?branch=master)](https://travis-ci.org/johnstyle/PHPTools)
+[![Build Status](https://travis-ci.org/johnstyle/sjo.png?branch=master)](https://travis-ci.org/johnstyle/sjo)
 
 <pre>
-$Loader = new \PHPTools\Loader();
+$Loader = new \sJo\Loader();
 $Loader->display();
 </pre>

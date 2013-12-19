@@ -1,16 +1,16 @@
 <?php
 /**
- * PHPTools
+ * sJo
  *
  * PHP version 5
  *
- * @package  PHPTools
+ * @package  sJo
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace PHPTools\Libraries;
+namespace sJo\Libraries;
 
 abstract class Number
 {

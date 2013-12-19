@@ -5,23 +5,23 @@
  *
  * PHP version 5
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Core
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace PHPTools;
+namespace sJo;
 
 /**
  * Gestion des Vues
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Core
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 final class View
 {
@@ -57,7 +57,7 @@ final class View
      * Constructor
      *
      * @param $instance
-     * @return \PHPTools\View
+     * @return \sJo\View
      */
     public function __construct(&$instance)
     {
@@ -105,7 +105,7 @@ final class View
      */
     public static function inc($filename, $vars = false)
     {
-        $file = PHPTOOLS_ROOT_VIEW . '/' . $filename . '.php';
+        $file = SJO_ROOT_VIEW . '/' . $filename . '.php';
 
         if (file_exists($file)) {
             if($vars) {
@@ -137,7 +137,7 @@ final class View
     public static function htmlStylesheet($root = './')
     {
         $filename = str_replace('\\', '/', strtolower(Loader::$controller)) . '.css';
-        if(file_exists(PHPTOOLS_ROOT_PUBLIC_HTML . '/css/' . $filename)) {
+        if(file_exists(SJO_ROOT_PUBLIC_HTML . '/css/' . $filename)) {
             echo '<link href="' . $root . 'css/' . $filename . '" rel="stylesheet" media="screen" />';
         }
     }
@@ -145,13 +145,13 @@ final class View
     public static function htmlScript($root = './')
     {
         $filename = str_replace('\\', '/', strtolower(Loader::$controller)) . '.js';
-        if(file_exists(PHPTOOLS_ROOT_PUBLIC_HTML . '/js/' . $filename)) {
+        if(file_exists(SJO_ROOT_PUBLIC_HTML . '/js/' . $filename)) {
             echo '<script type="text/javascript" src="' . $root . 'js/' . $filename . '"></script>';
         }
     }
 
     public static function basehref()
     {
-        return PHPTOOLS_BASEHREF;
+        return SJO_BASEHREF;
     }    
 }

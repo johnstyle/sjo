@@ -5,25 +5,25 @@
  *
  * PHP version 5
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Core
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace PHPTools;
+namespace sJo;
 
-use PHPTools\Libraries\I18n;
+use sJo\Libraries\I18n;
 
 /**
  * Gestion des Exception
  *
- * @package  PHPTools
+ * @package  sJo
  * @category Core
  * @author   Jonathan Sahm <contact@johnstyle.fr>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     https://github.com/johnstyle/PHPTools.git
+ * @link     https://github.com/johnstyle/sjo.git
  */
 class Exception extends \Exception
 {
@@ -32,7 +32,7 @@ class Exception extends \Exception
      *
      * @param null $msg
      * @param int $code
-     * @return \PHPTools\Exception
+     * @return \sJo\Exception
      */
     public function __construct($msg = null, $code = 0)
     {

@@ -1,9 +1,9 @@
 <?php
 
-namespace PHPTools\Modules\User\Core;
+namespace sJo\Modules\User\Core;
 
-use \PHPTools\Db\PDO\Drivers\Mysql as Db;
-use \PHPTools\Libraries as Lib;
+use \sJo\Db\PDO\Drivers\Mysql as Db;
+use \sJo\Libraries as Lib;
 
 class User extends Lib\DataObject
 {
