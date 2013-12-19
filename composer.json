@@ -1,0 +1,7 @@
+{
+    "name": "johnstyle/PHPTools",
+    "require": {
+        "php": ">=5.4.0",
+        "psr/log": "dev-master"
+    }
+}
