@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPTools\n"
-"POT-Creation-Date: 2013-10-03 22:16+0100\n"
-"PO-Revision-Date: 2013-10-03 22:17+0100\n"
-"Last-Translator: Jonathan SAHM <contact@johnstyle.fr>\n"
+"Project-Id-Version: sJo\n"
+"POT-Creation-Date: 2013-12-19 20:33+0100\n"
+"PO-Revision-Date: 2013-12-19 20:34+0100\n"
+"Last-Translator: Jonathan Sahm <contact@johnstyle.fr>\n"
 "Language-Team: Jonathan SAHM <contact@johnstyle.fr>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
@@ -15,26 +15,78 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: ../../..\n"
 
-#: ../../../Libraries/I18n.php:39
-#, fuzzy, php-format
-msgid "I18n locale %s do not exists."
-msgstr "Le contrôleur %s n'existe pas."
+#: ../../../system/Modules/User/View/Auth.php:3
+msgid "Authentification"
+msgstr ""
 
-#: ../../../Libraries/I18n.php:52
+#: ../../../system/Modules/User/View/Auth.php:8
+msgid "Adresse email"
+msgstr ""
+
+#: ../../../system/Modules/User/View/Auth.php:9
+msgid "Mot de passe"
+msgstr ""
+
+#: ../../../system/Modules/User/View/Auth.php:10
+msgid "Connexion"
+msgstr ""
+
+#: ../../../system/Modules/User/Controller/Auth.php:21
+msgid "Les informations de connexion sont incorrects"
+msgstr ""
+
+#: ../../../system/Modules/User/Controller/Auth.php:24
+msgid "Veuillez renseigner votre mot de passe"
+msgstr ""
+
+#: ../../../system/Modules/User/Controller/Auth.php:27
+msgid "Veuillez renseigner votre identifiant"
+msgstr ""
+
+#: ../../../system/Modules/ErrorDocument/Controller/http404.php:16
+#: ../../../system/Modules/ErrorDocument/Controller/http403.php:16
+msgid "From htaccess"
+msgstr ""
+
+#: ../../../system/Libraries/Event.php:54
+msgid "The second parameter must be a function"
+msgstr ""
+
+#: ../../../system/Core/Loader.php:83
 #, php-format
-msgid "I18n directory %s do not exists."
-msgstr "Le répertoire %s n'existe pas."
+msgid "Model %s is not extended to %s."
+msgstr ""
 
-#: ../../../Core/Loader.php:51
+#: ../../../system/Core/Loader.php:86
 #, php-format
 msgid "Controller %s is not extended to %s."
 msgstr ""
 
-#: ../../../Core/Loader.php:54
+#: ../../../system/Core/Loader.php:89
 #, php-format
 msgid "Controller %s do not exists."
 msgstr "Le contrôleur %s n'existe pas."
 
-#: ../../../Core/Loader.php:57
+#: ../../../system/Core/Loader.php:92
 msgid "CONTROLLER is undefined."
 msgstr ""
+
+#: ../../../system/Core/Loader.php:108 ../../../system/Core/Loader.php:119
+msgid "Warning ! Prohibited queries."
+msgstr ""
+
+#: ../../../system/Db/PDO/PDOCore.php:136
+msgid "Drivers bulk rollback."
+msgstr ""
+
+#: ../../../system/Db/PDO/PDOCore.php:198
+#, php-format
+msgid "Drivers Unknow Auth ID %s."
+msgstr ""
+
+#, fuzzy
+#~ msgid "I18n locale %s do not exists."
+#~ msgstr "Le contrôleur %s n'existe pas."
+
+#~ msgid "I18n directory %s do not exists."
+#~ msgstr "Le répertoire %s n'existe pas."
