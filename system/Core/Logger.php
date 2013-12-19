@@ -2,6 +2,7 @@
 
 namespace PHPTools;
 
+use \Psr\Log\AbstractLogger;
 use \PHPTools\Libraries as Lib;
 
 /**
@@ -12,7 +13,7 @@ use \PHPTools\Libraries as Lib;
  * is a good way to avoid littering your code with `if ($this->logger) { }`
  * blocks.
  */
-class Logger extends Log\AbstractLogger
+class Logger extends AbstractLogger
 {
     /**
      * Logs with an arbitrary level.
