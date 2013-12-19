@@ -13,7 +13,7 @@
 
 
 /** Vendor  */
-include dirname(dirname(__DIR__)) . '/vendor/autoload.php';
+include dirname(realpath(__DIR__)) . '/vendor/autoload.php';
 
 /** Settings */
 if (file_exists(realpath(__DIR__) . '/settings.ini')) {
