@@ -1,5 +1,18 @@
 {
     "name": "johnstyle/sjo",
+    "type": "library",
+    "description": "PHP 5 MVC Framework",
+    "keywords": ["PHP 5","PHP5","MVC","Framework","sJo","PHPTools"],
+    "homepage": "https://github.com/johnstyle/sjo",
+    "license": "GPL v3",
+    "authors": [
+        {
+            "name": "Jonathan Sahm",
+            "email": "contact@johnstyle.fr",
+            "homepage": "http://www.johnstyle.fr",
+            "role": "Developer"
+        }
+    ],
     "require": {
         "php": ">=5.4.0",
         "psr/log": "dev-master"
