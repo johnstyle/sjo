@@ -11,6 +11,10 @@
  * @link     https://github.com/johnstyle/phpTools
  */
 
+
+/** Vendor  */
+include dirname(dirname(__DIR__)) . '/vendor/autoload.php';
+
 /** Settings */
 if (file_exists(realpath(__DIR__) . '/settings.ini')) {
     $settings = parse_ini_file(realpath(__DIR__) . '/settings.ini', null, INI_SCANNER_RAW);
@@ -62,4 +66,4 @@ foreach (\PHPTools\Libraries\Dir::getFiles(realpath(__DIR__) . '/Helpers') as $h
 
 /** Locale */
 //$PHPToolsI18n = new \PHPTools\Libraries\I18n();
-//$PHPToolsI18n->load('default', realpath(__DIR__) . '/Locale');
+//$PHPToolsI18n->load('default', dirname(dirname(__DIR__)) . '/locale');
