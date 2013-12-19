@@ -11,10 +11,6 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-
-/** Vendor  */
-include dirname(realpath(__DIR__)) . '/vendor/autoload.php';
-
 /** Settings */
 if (file_exists(realpath(__DIR__) . '/settings.ini')) {
     $settings = parse_ini_file(realpath(__DIR__) . '/settings.ini', null, INI_SCANNER_RAW);
