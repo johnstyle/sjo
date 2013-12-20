@@ -12,7 +12,9 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo;
+namespace sJo\Core;
+
+use sJo\Libraries as Lib;
 
 /**
  * Alertes
@@ -31,14 +33,14 @@ class Alert
     {
         Session::start();
 
-        if (Libraries\Env::sessionExists('alerts')) {
-            $this->alerts = json_decode(Libraries\Env::session('alerts'));
+        if (Lib\Env::sessionExists('alerts')) {
+            $this->alerts = json_decode(Lib\Env::session('alerts'));
         }
     }
 
     public function __destruct()
     {
-        Libraries\Env::sessionSet('alerts', json_encode($this->alerts));
+        Lib\Env::sessionSet('alerts', json_encode($this->alerts));
     }
 
     public function add($message, $type = 'danger')
@@ -74,7 +76,7 @@ class Alert
             }
         }
 
-        Libraries\Env::sessionSet('alerts');
+        Lib\Env::sessionSet('alerts');
         $this->alerts = null;
     }
 }

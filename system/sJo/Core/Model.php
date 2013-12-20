@@ -12,7 +12,7 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo;
+namespace sJo\Core;
 
 /**
  * Gestion des Models

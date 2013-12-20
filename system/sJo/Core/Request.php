@@ -12,7 +12,7 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo;
+namespace sJo\Core;
 
 /**
  * Gestion des requêtes
@@ -35,7 +35,7 @@ class Request
     public function hasToken()
     {
         $controller = str_replace('\\', '/', Loader::$controller);
-        if (Libraries\Env::request('token') == $this->getToken(
+        if (Lib\Env::request('token') == $this->getToken(
                 $controller . SJO_CONTROLLER_METHOD_SEPARATOR . Loader::$method
             )
         ) {
@@ -46,7 +46,7 @@ class Request
 
     public function filter($key)
     {
-        return Libraries\Arr::getTree(Libraries\Env::get('filters'), $key);
+        return Lib\Arr::getTree(Lib\Env::get('filters'), $key);
     }
 
     public static function redirect($url = false)

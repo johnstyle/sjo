@@ -12,7 +12,7 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo;
+namespace sJo\Core;
 
 use sJo\Libraries\I18n;
 
@@ -32,7 +32,7 @@ class Exception extends \Exception
      *
      * @param null $msg
      * @param int $code
-     * @return \sJo\Exception
+     * @return \sJo\Core\Exception
      */
     public function __construct($msg = null, $code = 0)
     {

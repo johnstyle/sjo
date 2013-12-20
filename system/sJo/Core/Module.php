@@ -12,7 +12,9 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo;
+namespace sJo\Core;
+
+use sJo\Libraries as Lib;
 
 /**
  * Module

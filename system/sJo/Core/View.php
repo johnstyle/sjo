@@ -12,7 +12,7 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo;
+namespace sJo\Core;
 
 /**
  * Gestion des Vues
@@ -57,7 +57,7 @@ final class View
      * Constructor
      *
      * @param $instance
-     * @return \sJo\View
+     * @return \sJo\Core\View
      */
     public function __construct(&$instance)
     {

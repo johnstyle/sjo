@@ -12,7 +12,9 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo;
+namespace sJo\Core;
+
+use sJo\Libraries as Lib;
 
 /**
  * Gestion des sesions de connexion
@@ -48,13 +50,13 @@ class Session
 
         if (Loader::$controller != $auth) {
             if (!$this->isActive()) {
-                if (Libraries\Env::get('token')) {
-                    $this->isActive(Libraries\Env::get('token'));
+                if (Lib\Env::get('token')) {
+                    $this->isActive(Lib\Env::get('token'));
                 } else {
                     http_response_code(401);
                     $this->redirect(
                         SJO_BASEHREF . '/' . str_replace('\\', '/', $auth) . '/?redirect=' . urlencode(
-                            Libraries\Env::server('REQUEST_URI')
+                            Lib\Env::server('REQUEST_URI')
                         )
                     );
                 }
@@ -66,15 +68,15 @@ class Session
 
     public function signin($token, $url = SJO_BASEHREF)
     {
-        Libraries\Env::sessionSet('token', $token);
+        Lib\Env::sessionSet('token', $token);
         $this->redirect($url);
     }
 
     public function signout($url = SJO_BASEHREF)
     {
-        if (Libraries\Env::cookie()) {
-            foreach (Libraries\Env::cookie() as $name => $value) {
-                Libraries\Env::cookieSet($name);
+        if (Lib\Env::cookie()) {
+            foreach (Lib\Env::cookie() as $name => $value) {
+                Lib\Env::cookieSet($name);
             }
         }
         session_destroy();
@@ -83,8 +85,8 @@ class Session
 
     public function redirect($url = SJO_BASEHREF)
     {
-        if (preg_match("#^(\./|/)#", Libraries\Env::get('redirect'))) {
-            header('Location:' . Libraries\Env::get('redirect'));
+        if (preg_match("#^(\./|/)#", Lib\Env::get('redirect'))) {
+            header('Location:' . Lib\Env::get('redirect'));
         } else {
             header('Location:' . $url);
         }
@@ -93,7 +95,7 @@ class Session
 
     public function isActive()
     {
-        if (Libraries\Env::session('token')) {
+        if (Lib\Env::session('token')) {
             return true;
         }
         return false;
@@ -103,9 +105,9 @@ class Session
     {
         return md5(
             SJO_SALT
-            . Libraries\Env::server('REMOTE_ADDR')
-            . Libraries\Env::server('HTTP_USER_AGENT')
-            . Libraries\Env::server('HTTP_HOST')
+            . Lib\Env::server('REMOTE_ADDR')
+            . Lib\Env::server('HTTP_USER_AGENT')
+            . Lib\Env::server('HTTP_HOST')
             . $options
         );
     }
