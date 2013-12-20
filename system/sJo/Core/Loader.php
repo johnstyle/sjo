@@ -95,16 +95,16 @@ class Loader
 
                 $this->instance = new self::$controllerClass ();
 
-                if (get_parent_class($this->instance) == 'sJo\\Controller') {
+                if (get_parent_class($this->instance) == 'sJo\\Core\\Controller') {
 
                     $this->_load(self::$modelClass, 'Model');
 
-                    if (get_parent_class($this->instance->Model) == 'sJo\\Model') {
+                    if (get_parent_class($this->instance->Model) == 'sJo\\Core\\Model') {
 
-                        $this->_load('\\sJo\\Session', array('Core', 'Session'));
-                        $this->_load('\\sJo\\Request', array('Core', 'Request'));
-                        $this->_load('\\sJo\\Alert', array('Core', 'Alert'));
-                        $this->_load('\\sJo\\Logger', 'Logger');
+                        $this->_load('\\sJo\\Core\\Session', array('Core', 'Session'));
+                        $this->_load('\\sJo\\Core\\Request', array('Core', 'Request'));
+                        $this->_load('\\sJo\\Core\\Alert', array('Core', 'Alert'));
+                        $this->_load('\\sJo\\Core\\Logger', 'Logger');
 
                         $this->_loadModules();
 
@@ -113,10 +113,10 @@ class Loader
                         new View($this->instance);
 
                     } else {
-                        Exception::ErrorDocument('http403', Lib\I18n::__('Model %s is not extended to %s.', self::$modelClass, '\\sJo\\Model'));
+                        Exception::ErrorDocument('http403', Lib\I18n::__('Model %s is not extended to %s.', self::$modelClass, '\\sJo\\Core\\Model'));
                     }
                 } else {
-                    Exception::ErrorDocument('http403', Lib\I18n::__('Controller %s is not extended to %s.', self::$controllerClass, '\\sJo\\Controller'));
+                    Exception::ErrorDocument('http403', Lib\I18n::__('Controller %s is not extended to %s.', self::$controllerClass, '\\sJo\\Core\\Controller'));
                 }
             } else {
                 Exception::ErrorDocument('http404', Lib\I18n::__('Controller %s do not exists.', self::$controllerClass));
