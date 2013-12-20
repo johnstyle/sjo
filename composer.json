@@ -22,7 +22,8 @@
             "sJo\\": "sjo/system"
         },
         "files": [
-            "sjo/system/Helpers/Autoload.php"
+            "sjo/system/Helpers/Autoload.php",
+            "sjo/system/Helpers/DateInterval.php"
         ]
     },
     "minimum-stability": "dev"
