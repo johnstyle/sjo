@@ -19,11 +19,11 @@
     },
     "autoload": {
         "psr-0": {
-            "sJo\\": "sjo/system"
+            "sJo\\": "system"
         },
         "files": [
-            "sjo/system/sJo/Helpers/Autoload.php",
-            "sjo/system/sJo/Helpers/DateInterval.php"
+            "system/sJo/Helpers/Autoload.php",
+            "system/sJo/Helpers/DateInterval.php"
         ]
     },
     "minimum-stability": "dev"
