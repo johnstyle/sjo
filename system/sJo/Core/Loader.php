@@ -12,7 +12,10 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo;
+namespace sJo\Core;
+
+use sJo\Libraries as Lib;
+use sJo\Helpers;
 
 /**
  * Loader
@@ -27,6 +30,7 @@ class Loader
 {
     use Module;
 
+    private $root;
     private $instance;
     public static $controller;
     public static $controllerClass;
@@ -40,14 +44,43 @@ class Loader
      *
      * @param bool $controller
      * @param bool $method
-     * @return \sJo\Loader
+     * @return \sJo\Core\Loader
      */
     public function __construct($controller = false, $method = false)
     {
+        $this->root = dirname(dirname(dirname(realpath(__DIR__))));
+
+        /** Settings */
+        if (file_exists($this->root . '/system/settings.default.ini')) {
+            $settings = parse_ini_file($this->root . '/system/settings.default.ini', null, INI_SCANNER_RAW);
+            if ($settings) {
+                foreach ($settings as $name => $value) {
+                    $value = preg_replace_callback(
+                        "#\\$\{([A-Z0-9_]+)\}#",
+                        function ($match) {
+                            return constant($match[1]);
+                        },
+                        $value
+                    );
+                    if (!defined($name)) {
+                        define($name, $value);
+                    }
+                }
+            }
+        }
+
+        if (defined('SJO_TIMEZONE')) {
+            date_default_timezone_set(SJO_TIMEZONE);
+        }
+
+        /** Locale */
+        //$sJo_I18n = new \sJo\Libraries\I18n();
+        //$sJo_I18n->load('default', $this->root . '/locale');
+
         $this->_set('controller', $controller);
         $this->_set('method', $method);
 
-        \sJo\Helpers\Autoload(SJO_ROOT_APP);
+        Helpers\Autoload(SJO_ROOT_APP);
     }
 
     public function init()
@@ -80,16 +113,16 @@ class Loader
                         new View($this->instance);
 
                     } else {
-                        Exception::ErrorDocument('http403', Libraries\I18n::__('Model %s is not extended to %s.', self::$modelClass, '\\sJo\\Model'));
+                        Exception::ErrorDocument('http403', Lib\I18n::__('Model %s is not extended to %s.', self::$modelClass, '\\sJo\\Model'));
                     }
                 } else {
-                    Exception::ErrorDocument('http403', Libraries\I18n::__('Controller %s is not extended to %s.', self::$controllerClass, '\\sJo\\Controller'));
+                    Exception::ErrorDocument('http403', Lib\I18n::__('Controller %s is not extended to %s.', self::$controllerClass, '\\sJo\\Controller'));
                 }
             } else {
-                Exception::ErrorDocument('http404', Libraries\I18n::__('Controller %s do not exists.', self::$controllerClass));
+                Exception::ErrorDocument('http404', Lib\I18n::__('Controller %s do not exists.', self::$controllerClass));
             }
         } else {
-            Exception::ErrorDocument('http404', Libraries\I18n::__('CONTROLLER is undefined.'));
+            Exception::ErrorDocument('http404', Lib\I18n::__('CONTROLLER is undefined.'));
         }
     }
 
@@ -98,14 +131,14 @@ class Loader
         $this->event('viewLoaded');
 
         if (self::$method) {
-            switch (Libraries\Env::get('content_type')) {
+            switch (Lib\Env::get('content_type')) {
                 case 'json' :
                     header('Content-type:application/json; charset=' . SJO_CHARSET);
                     if (method_exists(self::$controllerClass, self::$method)) {
                         if ($this->instance->Core->Request->hasToken()) {
                             echo json_encode($this->instance->{self::$method}());
                         } else {
-                            Exception::ErrorDocument('http403', Libraries\I18n::__('Warning ! Prohibited queries.'));
+                            Exception::ErrorDocument('http403', Lib\I18n::__('Warning ! Prohibited queries.'));
                         }
                     }
                     exit;
@@ -116,7 +149,7 @@ class Loader
                         if ($this->instance->Core->Request->hasToken()) {
                             $this->instance->{self::$method}();
                         } else {
-                            Exception::ErrorDocument('http403', Libraries\I18n::__('Warning ! Prohibited queries.'));
+                            Exception::ErrorDocument('http403', Lib\I18n::__('Warning ! Prohibited queries.'));
                         }
                     }
                     break;
@@ -149,9 +182,9 @@ class Loader
             $hookName = '\\Hooks\\' . str_replace('\\sJo\\', '', $className);
 
             if (class_exists($hookName)) {
-                Libraries\Obj::tree($this->instance, $name, new $hookName ($this->instance));
+                Lib\Obj::tree($this->instance, $name, new $hookName ($this->instance));
             } else {
-                Libraries\Obj::tree($this->instance, $name, new $className ($this->instance));
+                Lib\Obj::tree($this->instance, $name, new $className ($this->instance));
             }
         }
     }
@@ -162,7 +195,7 @@ class Loader
             case 'controller':
                 self::$controller = $value;
                 if (!self::$controller) {
-                    self::$controller = Libraries\Env::request(SJO_CONTROLLER_NAME, SJO_CONTROLLER_DEFAULT);
+                    self::$controller = Lib\Env::request(SJO_CONTROLLER_NAME, SJO_CONTROLLER_DEFAULT);
                     self::$controller = trim(self::$controller, '/');
                     self::$controller = str_replace('/', '\\', self::$controller);
                 }
@@ -173,7 +206,7 @@ class Loader
             case 'method':
                 self::$method = $value;
                 if (!self::$method) {
-                    self::$method = Libraries\Env::request(SJO_METHOD_NAME, SJO_METHOD_DEFAULT);
+                    self::$method = Lib\Env::request(SJO_METHOD_NAME, SJO_METHOD_DEFAULT);
                 }
                 break;
         }
