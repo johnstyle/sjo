@@ -14,8 +14,6 @@
 
 namespace sJo\Core;
 
-use sJo\Libraries\I18n;
-
 /**
  * Gestion des Exception
  *

@@ -56,7 +56,7 @@ abstract class Controller
     /**
      * Constructeur
      *
-     * @return \sJo\Controller
+     * @return \sJo\Core\Controller
      */
     final public function __construct ()
     {

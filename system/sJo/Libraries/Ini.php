@@ -17,7 +17,7 @@ class Ini
     /**
      * Tableau des valeurs des fichiers .ini
      *
-     * @var private
+     * @access private
      */
     private $data = array();
 
@@ -39,8 +39,10 @@ class Ini
     /**
      * Chargement des fichiers .ini
      *
-     * @param string Chemin des fichiers .ini
-     * @return void
+     * @param $paths
+     * @param bool $regexp
+     * @param string $method
+     * @return object
      */
     public function loadPath($paths, $regexp = false, $method = '<name>')
     {

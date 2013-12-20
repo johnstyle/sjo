@@ -67,7 +67,7 @@ class Csv
     /**
      * Création du fichier
      *
-     * @param string chemin du fichier
+     * @param string $file chemin du fichier
      * @return object
      */
     public function create ($file)
@@ -81,7 +81,7 @@ class Csv
     /**
      * Ouverture du fichier
      *
-     * @param string chemin du fichier
+     * @param string $file chemin du fichier
      * @return object
      */
     public function open ($file)
@@ -244,6 +244,7 @@ class Csv
     /**
      * Ajoute plusieurs lignes de données
      *
+     * @param $items
      * @return void
      */
     public function addLines ($items)
@@ -265,6 +266,7 @@ class Csv
     /**
      * Ajoute une ligne de données
      *
+     * @param $item
      * @return object
      */
     public function addLine ($item)
@@ -364,6 +366,7 @@ class Csv
     /**
      * Affiche le CSV
      *
+     * @param $filename
      * @return void
      */
     public function display ($filename)
@@ -409,6 +412,7 @@ class Csv
     /**
      * Converti une ligne CSV en tableau de données
      *
+     * @param $line
      * @return array
      */
     public function fromRaw ($line)
@@ -432,13 +436,15 @@ class Csv
     /**
      * Converti un tableau de données en ligne CSV
      *
+     * @param $line
+     * @param string $break
      * @return array
      */
     public function toRaw ($line, $break = "\n")
     {
         $rawLine = false;
         if ($line) {
-            foreach ($line as $key => $val) {
+            foreach ($line as $val) {
                 $rawLine[] = $this->container . $val . $this->container;
             }
             $rawLine = implode($this->separator, $rawLine) . $break;
@@ -459,7 +465,7 @@ class Csv
     public static function arrayToRaw ($line, $break = "\n")
     {
         $csv = new self ();
-        return $csv->toRaw($line, $break = "\n");
+        return $csv->toRaw($line, $break);
     } 
 
     public static function arrayFromRaw ($lines, $options = array())

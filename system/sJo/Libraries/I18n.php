@@ -47,7 +47,7 @@ class I18n
         putenv('LC_ALL=' . $language);
 
         if(setlocale(LC_ALL, $language) != $language) {
-            \sJo\Exception::error('I18n locale ' . $language . ' do not exists.');
+            sJo\Exception::error('I18n locale ' . $language . ' do not exists.');
         }
     }
 
@@ -67,7 +67,7 @@ class I18n
                 bind_textdomain_codeset($domain, SJO_CHARSET);
             }
         } else {
-            \sJo\Exception::error('I18n directory ' . $directory . ' do not exists.');
+            sJo\Exception::error('I18n directory ' . $directory . ' do not exists.');
         }
     }
 
@@ -136,7 +136,7 @@ class I18n
     {
         $languages = false;
         foreach(self::$directories as $directory) {
-            $items = \sJo\Libraries\Dir::gets($directory);
+            $items = Dir::gets($directory);
             if($items) {
                 foreach($items as $item) {
                     if(!isset($languages[$item->title])) {

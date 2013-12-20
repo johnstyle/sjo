@@ -2,9 +2,9 @@
 
 namespace sJo\Modules\User\Model;
 
-use \sJo\Db\PDO\Drivers\Mysql as Db;
+use sJo\Core\Model;
 
-class Profile extends \sJo\Model
+class Profile extends Model
 {
 
 }

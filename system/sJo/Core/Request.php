@@ -14,6 +14,8 @@
 
 namespace sJo\Core;
 
+use sJo\Libraries as Lib;
+
 /**
  * Gestion des requêtes
  *

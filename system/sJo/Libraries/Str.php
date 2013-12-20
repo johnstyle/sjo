@@ -18,7 +18,7 @@ abstract class Str
      * Création d'une chaine d'URL
      *
      * @param string $str Chaine à traiter
-     * @param string $allowedChars Caractères autorisés
+     * @param bool|string $allowedChars Caractères autorisés
      * @return string
      */
     public static function toGuid($str, $allowedChars = false)

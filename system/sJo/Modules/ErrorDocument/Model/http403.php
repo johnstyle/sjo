@@ -2,6 +2,8 @@
 
 namespace sJo\Modules\ErrorDocument\Model;
 
-class http403 extends \sJo\Model
+use sJo\Core\Model;
+
+class http403 extends Model
 {
 }

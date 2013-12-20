@@ -2,11 +2,9 @@
 
 namespace sJo\Modules\User\Controller;
 
-use \sJo\Libraries as Lib;
-use \sJo\Libraries\I18n;
-use \sJo\Modules\User\Core\User;
+use sJo\Core\Controller;
 
-class Profile extends \sJo\Controller
+class Profile extends Controller
 {
     public function update()
     {

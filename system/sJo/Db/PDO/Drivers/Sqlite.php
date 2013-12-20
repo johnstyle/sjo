@@ -14,6 +14,8 @@
 
 namespace sJo\Db\PDO\Drivers;
 
+use sJo\Db\PDO\PDOCore;
+
 /**
  * Base de données Sqlite
  *
@@ -23,7 +25,7 @@ namespace sJo\Db\PDO\Drivers;
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/sjo.git
  */
-class Sqlite extends \sJo\Db\PDO\PDOCore
+class Sqlite extends PDOCore
 {
     /**
      * Constructeur

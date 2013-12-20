@@ -14,7 +14,8 @@
 
 namespace sJo\Db\PDO\Drivers;
 
-use \sJo\Libraries as Lib;
+use sJo\Db\PDO\PDOCore;
+use sJo\Libraries as Lib;
 
 /**
  * Base de données Mysql
@@ -25,7 +26,7 @@ use \sJo\Libraries as Lib;
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/sjo.git
  */
-class Mysql extends \sJo\Db\PDO\PDOCore
+class Mysql extends PDOCore
 {
     /**
      * Constructeur

@@ -17,7 +17,7 @@ abstract class Event
     /**
      * Actions enregistrés
      *
-     * @var private
+     * @access private
      */
     private static $registered = array();
 
@@ -44,7 +44,7 @@ abstract class Event
      * Enregistrement des actions
      *
      * @param string $name Nom de l'événement
-     * @param closure $callback Action à executer
+     * @param callable $callback Action à executer
      * @param int $priority Priorité de l'action
      * @return void
      */

@@ -19,7 +19,7 @@ abstract class Git
     /**
      * Récupère la branche active du projet courant
      *
-     * @param string $module Nom du sous-module, par défaut le projet principal
+     * @param bool|string $module Nom du sous-module, par défaut le projet principal
      * est sélectionné
      * @return string Nom de la branche
      */

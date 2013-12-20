@@ -14,7 +14,7 @@
 
 namespace sJo\Db\PDO;
 
-use \sJo\Libraries as Lib;
+use sJo\Libraries as Lib;
 
 /**
  * Base de données Drivers
@@ -130,7 +130,7 @@ abstract class PDOCore extends \PDO
             }
 
             $this->commit();
-        } catch (\sJo\Exception $Exception) {
+        } catch (sJo\Exception $Exception) {
 
             $this->rollback();
             $Exception::error(Lib\I18n::__('Drivers bulk rollback.'));
@@ -195,7 +195,7 @@ abstract class PDOCore extends \PDO
             }
             return self::$instances[$id];
         } else {
-            \sJo\Exception::error(Lib\I18n::__('Drivers Unknow Auth ID %s.', $id));
+            sJo\Exception::error(Lib\I18n::__('Drivers Unknow Auth ID %s.', $id));
         }
         return false;
     }

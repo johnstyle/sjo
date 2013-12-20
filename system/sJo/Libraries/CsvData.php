@@ -79,7 +79,7 @@ class CsvData extends Csv
 
     public function updateValue($matches, $data){
         if($this->lines){
-            foreach($this->lines as $i=>&$line){
+            foreach($this->lines as &$line){
                 $match = true;
                 foreach($matches as $key=>$val){
                     if(!isset($line->{$key}) || $line->{$key} != $val) {

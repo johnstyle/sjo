@@ -57,7 +57,7 @@ abstract class Model
      * Constructor
      *
      * @param $instance
-     * @return \sJo\Model
+     * @return \sJo\Core\Model
      */
     public function __construct(&$instance)
     {

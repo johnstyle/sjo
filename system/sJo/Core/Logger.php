@@ -2,8 +2,8 @@
 
 namespace sJo\Core;
 
-use \Psr\Log\AbstractLogger;
-use \sJo\Libraries as Lib;
+use Psr\Log\AbstractLogger;
+use sJo\Libraries as Lib;
 
 /**
  * This Logger can be used to avoid conditional log calls

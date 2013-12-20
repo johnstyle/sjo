@@ -2,9 +2,10 @@
 
 namespace sJo\Modules\ErrorDocument\Controller;
 
+use sJo\Core\Controller;
 use sJo\Libraries\I18n;
 
-class http403 extends \sJo\Controller
+class http403 extends Controller
 {
     public $message;
 

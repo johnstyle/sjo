@@ -9,6 +9,8 @@ abstract class DataObject
         if(isset($this->{$name})) {
             return $this->{$name};
         }
+
+        return false;
     }
 
     public function __set($name, $value)
@@ -16,6 +18,8 @@ abstract class DataObject
         if(isset($this->{$name})) {
             $this->{$name} = $value;
         }
+
+        return $this;
     }
 
     public function __isset($name)

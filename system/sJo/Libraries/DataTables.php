@@ -31,7 +31,7 @@ class DataTables
         if($data && count($data)) {
             foreach($data as $items) {
                 $aData = array();
-                foreach($items as $name=>$value) {
+                foreach($items as $value) {
                     $aData[] = $value;
                 }
                 $aaData[] = $aData;
