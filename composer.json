@@ -19,8 +19,11 @@
     },
     "autoload": {
         "psr-0": {
-            "sJo\\": "system"
-        }
+            "sJo\\": "sjo/system"
+        },
+        "files": [
+            "sjo/system/Helpers/Autoload.php"
+        ]
     },
     "minimum-stability": "dev"
 }
