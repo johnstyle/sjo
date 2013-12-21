@@ -14,6 +14,8 @@
 
 namespace sJo\Libraries;
 
+use sJo\Core\Session;
+
 /**
  * Variables d'environnement
  *
@@ -40,7 +42,6 @@ namespace sJo\Libraries;
  *
  * @method static session(string $attr, string $default)
  * @method static sessionExists(string $attr)
- * @method static sessionSet(string $attr, string $value)
  *
  * @method static server(string $attr, string $default)
  * @method static serverExists(string $attr)
@@ -96,6 +97,20 @@ abstract class Env
     public static function request($attr = false, $default = false)
     {
         return self::g($attr, self::g($attr, $default, $_GET), $_POST);
+    }
+
+    /**
+     * Définition d'une session
+     *
+     * @param mixed $attr Liste des options
+     * @param $value
+     * @return void
+     */
+    public static function sessionSet($attr, $value = false)
+    {
+        Session::write(function() use($attr, $value) {
+            $_SESSION[$attr] = $value;
+        });
     }
 
     /**
