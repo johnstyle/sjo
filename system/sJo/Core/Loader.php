@@ -50,24 +50,10 @@ class Loader
     {
         $this->root = dirname(dirname(dirname(realpath(__DIR__))));
 
-        /** Settings */
-        if (file_exists($this->root . '/system/settings.default.ini')) {
-            $settings = parse_ini_file($this->root . '/system/settings.default.ini', null, INI_SCANNER_RAW);
-            if ($settings) {
-                foreach ($settings as $name => $value) {
-                    $value = preg_replace_callback(
-                        "#\\$\{([A-Z0-9_]+)\}#",
-                        function ($match) {
-                            return constant($match[1]);
-                        },
-                        $value
-                    );
-                    if (!defined($name)) {
-                        define($name, $value);
-                    }
-                }
-            }
-        }
+        /** Load Settings */
+        Lib\Ini::load()
+            ->file($this->root . '/system/settings.default.ini')
+            ->toDefine();
 
         if (defined('SJO_TIMEZONE')) {
             date_default_timezone_set(SJO_TIMEZONE);
