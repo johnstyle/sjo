@@ -21,9 +21,19 @@ class Ini
      */
     private $data = array();
 
-    public function __construct(&$default = array())
+    private $process_sections;
+
+    private $scanner_mode;
+
+    public function __construct($process_sections = null, $scanner_mode = INI_SCANNER_RAW)
     {
-        $this->data =& $default;
+        $this->process_sections = $process_sections;
+        $this->scanner_mode = $scanner_mode;
+    }
+
+    public static function load ($process_sections = null, $scanner_mode = INI_SCANNER_RAW)
+    {
+        return new self($process_sections, $scanner_mode);
     }
 
     public function get($args = false)
@@ -36,15 +46,22 @@ class Ini
         return $this->data;
     }
 
+    public function merge (array $data)
+    {
+        Arr::setTree($this->data, $data);
+
+        return $this;
+    }
+
     /**
-     * Chargement des fichiers .ini
+     * Chargement d'un dossier contenant des fichiers ini
      *
      * @param $paths
      * @param bool $regexp
      * @param string $method
-     * @return object
+     * @return $this
      */
-    public function loadPath($paths, $regexp = false, $method = '<name>')
+    public function path($paths, $regexp = false, $method = '<name>')
     {
         $regexp = $regexp ? $regexp : "^(.+)\.ini$";
         foreach (Arr::to($paths) as $path) {
@@ -53,24 +70,89 @@ class Ini
                 foreach ($files as $file) {
                     $name = str_replace('-', '_', $file->match[1]);
                     $name = $file->parentname == $name ? $name : str_replace('<name>', $name, $method);
-                    $this->loadFile($file->path, $name);
+                    $this->parseIniFile($file->path, $name);
                 }
             }
         }
-        return $this->data;
+        return $this;
     }
 
-    public function loadFile($file, $name = false)
+    /**
+     * Chargement d'un fichier ini
+     *
+     * @param $file
+     * @return $this
+     */
+    public function file($file)
     {
-        if ($name) {
-            if (!isset($this->data[$name])) {
-                $this->data[$name] = array();
+        $this->parseIniFile($file);
+
+        return $this;
+    }
+
+    /**
+     * Transforme les valeurs en constantes
+     */
+    public function toDefine()
+    {
+        if ($this->data) {
+            foreach ($this->data as $name => $value) {
+                $name = strtoupper($name);
+                if (!defined($name)) {
+                    define($name, $value);
+                }
             }
-            Arr::setTree($this->data[$name], parse_ini_file($file, true));
-            return $this->data[$name];
-        } else {
-            Arr::setTree($this->data, parse_ini_file($file, true));
-            return $this->data;
+        }
+    }
+
+    private function parseIniFile ($file)
+    {
+        if(file_exists($file)) {
+            $ini = parse_ini_file($file, $this->process_sections, $this->scanner_mode);
+            $this->setValues($ini);
+        }
+    }
+
+    private function setValues($ini, &$data = null)
+    {
+        if ($ini) {
+
+            if(!isset($data)) {
+                $data =& $this->data;
+            }
+
+            foreach ($ini as $name => $value) {
+
+                if(is_array($value) || is_object($value)) {
+
+                    if(!isset($data[$name])) {
+                        $data[$name] = array();
+                    }
+
+                    $this->setValues($value, $data[$name]);
+
+                } else {
+
+                    $value = preg_replace_callback(
+                        '#\$\{([A-Z0-9_]+)(\.([A-Z0-9_]+))?\}#i',
+                        function ($match) {
+
+                            if(isset($match[3])) {
+                                $data = Arr::getTree($this->data, $match[1]);
+                                $var = $match[3];
+                            } else {
+                                $data = $this->data;
+                                $var = $match[1];
+                            }
+
+                            return Arr::getTree($data, $var);
+                        },
+                        $value
+                    );
+
+                    Arr::setTree($data, array($name => $value));
+                }
+            }
         }
     }
 }
