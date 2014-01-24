@@ -49,7 +49,7 @@ abstract class Controller
     /**
      * Module references
      *
-     * @var object
+     * @var Module
      */
     public $Module;
 
