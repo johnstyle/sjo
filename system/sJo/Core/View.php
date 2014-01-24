@@ -49,7 +49,7 @@ final class View
     /**
      * Module references
      *
-     * @var object
+     * @var Module
      */
     public static $Module;
 
