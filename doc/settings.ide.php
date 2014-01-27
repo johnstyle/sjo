@@ -15,6 +15,7 @@
 define('SJO_DEBUG', false);
 define('SJO_CHARSET', 'UTF-8');
 define('SJO_DEFAULT_LOCALE', 'en_US');
+define('SJO_TIMEZONE', 'Europe/Paris');
 
 define('SJO_ROOT', '..');
 define('SJO_ROOT_APP', SJO_ROOT . '/app');
