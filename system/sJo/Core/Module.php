@@ -34,6 +34,8 @@ trait Module
         if(!in_array($module, $this->modules)) {
             $this->modules[] = $module;
         }
+
+        return $this;
     }
 
     private function _setModule()

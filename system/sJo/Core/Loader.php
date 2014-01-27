@@ -110,6 +110,8 @@ class Loader
         } else {
             Exception::ErrorDocument('http404', Lib\I18n::__('CONTROLLER is undefined.'));
         }
+
+        return $this;
     }
 
     public function display()
