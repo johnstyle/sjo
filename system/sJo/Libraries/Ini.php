@@ -65,7 +65,7 @@ class Ini
     {
         $regexp = $regexp ? $regexp : "^(.+)\.ini$";
         foreach (Arr::to($paths) as $path) {
-            $files = Dir::getFiles($path, $regexp);
+            $files = Path::listFiles($path, $regexp);
             if ($files) {
                 foreach ($files as $file) {
                     $name = str_replace('-', '_', $file->match[1]);
@@ -137,15 +137,23 @@ class Ini
                         '#\$\{([A-Z0-9_]+)(\.([A-Z0-9_]+))?\}#i',
                         function ($match) {
 
-                            if(isset($match[3])) {
-                                $data = Arr::getTree($this->data, $match[1]);
-                                $var = $match[3];
-                            } else {
-                                $data = $this->data;
-                                $var = $match[1];
-                            }
+                            $name = strtoupper($match[1] . (isset($match[3]) ? '_' . $match[3] : ''));
 
-                            return Arr::getTree($data, $var);
+                            if(defined($name)) {
+
+                                return constant($name);
+                            } else {
+
+                                if(isset($match[3])) {
+                                    $data = Arr::getTree($this->data, $match[1]);
+                                    $var = $match[3];
+                                } else {
+                                    $data = $this->data;
+                                    $var = $match[1];
+                                }
+
+                                return Arr::getTree($data, $var);
+                            }
                         },
                         $value
                     );
