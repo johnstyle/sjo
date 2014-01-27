@@ -12,7 +12,7 @@
 
 namespace sJo\Libraries;
 
-abstract class Dir
+abstract class Path
 {
     public static function parent($path)
     {
@@ -27,7 +27,7 @@ abstract class Dir
         return $path;
     }
 
-    public static function getFiles($path, $regexp = false, $limit = false)
+    public static function filesList($path, $regexp = false, $limit = false)
     {
         return self::open('is_file', $path, $regexp, $limit);
     }
@@ -37,7 +37,7 @@ abstract class Dir
         return self::open('is_dir', $path, $regexp, $limit);
     }
 
-    private static function open($type, $path, $regexp = false, $limit = false)
+    public static function open($type, $path, $regexp = false, $limit = false)
     {
         $i = 0;
         $items = false;
