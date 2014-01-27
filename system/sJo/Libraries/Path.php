@@ -19,25 +19,26 @@ abstract class Path
         return preg_replace("#/[^/]+(/)?$#", "$1", $path);
     }
 
-    public static function create($path, $mode = 0755)
+    public static function create($path, $mode = 0755, $recursive = false, $context = null)
     {
         if (!is_dir($path)) {
-            mkdir($path, $mode);
+            mkdir($path, $mode, $recursive, $context);
         }
+
         return $path;
     }
 
-    public static function filesList($path, $regexp = false, $limit = false)
+    public static function listFiles($path, $regexp = false, $limit = false)
     {
         return self::open('is_file', $path, $regexp, $limit);
     }
 
-    public static function gets($path, $regexp = false, $limit = false)
+    public static function listDirectories($path, $regexp = false, $limit = false)
     {
         return self::open('is_dir', $path, $regexp, $limit);
     }
 
-    public static function open($type, $path, $regexp = false, $limit = false)
+    private static function open($type, $path, $regexp = false, $limit = false)
     {
         $i = 0;
         $items = false;
@@ -72,28 +73,5 @@ abstract class Path
             }
         }
         return $items;
-    }
-
-    public static function lastModifiedFile($path, $return='mtime')
-    {
-        $file   = false;
-        $mtime  = 0;
-        foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path)) as $fileinfo) {
-            if ($fileinfo->isFile()) {
-                if ($fileinfo->getMTime() > $mtime) {
-                    $file   = $fileinfo->getFilename();
-                    $mtime  = $fileinfo->getMTime();
-                }
-            }
-        }
-        switch($return) {
-            case 'mtime':
-                return $mtime;
-                break;
-            case 'file':
-                return $file;
-                break;
-        }
-        return false;
     }
 }

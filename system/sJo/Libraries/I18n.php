@@ -136,7 +136,7 @@ class I18n
     {
         $languages = false;
         foreach(self::$directories as $directory) {
-            $items = Dir::gets($directory);
+            $items = Path::listDirectories($directory);
             if($items) {
                 foreach($items as $item) {
                     if(!isset($languages[$item->title])) {
