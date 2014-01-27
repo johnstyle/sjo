@@ -29,25 +29,19 @@ use sJo\Libraries as Lib;
 abstract class PDOCore extends \PDO
 {
     /**
-     * Instances
-     *
-     * @var array
+     * @var array Instances
      * @access private
      */
     private static $instances = array();
 
     /**
-     * Liste des connexions
-     *
-     * @var array
+     * @var array Liste des connexions
      * @access private
      */
     private static $auth = array();
 
     /**
-     * Total Queries
-     *
-     * @var int
+     * @var int Total Queries
      * @access private
      */
     private static $count = 0;
