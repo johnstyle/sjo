@@ -25,13 +25,10 @@ class Logger extends AbstractLogger
      */
     public function log($level, $message, array $context = array())
     {
-        file_put_contents(
-            SJO_ROOT_LOG . '/app.' . $level . '.log',
-                date('Y-m-d H:i:s') . "\t" .
-                Lib\Env::server('REQUEST_URI') ."\t" .
-                self::interpolate($message, $context) . "\n",
-            FILE_APPEND | LOCK_EX
-        );
+        Lib\File::append(SJO_ROOT_LOG . '/app.' . $level . '.log',
+            date('Y-m-d H:i:s') . "\t" .
+            Lib\Env::server('REQUEST_URI') ."\t" .
+            self::interpolate($message, $context) . "\n");
     }
 
     public static function interpolate($message, array $context = array())
