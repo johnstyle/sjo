@@ -48,11 +48,11 @@ class Loader
      */
     public function __construct($controller = false, $method = false)
     {
-        $this->root = dirname(dirname(dirname(realpath(__DIR__))));
+        $this->root = dirname(realpath(__DIR__));
 
         /** Load Settings */
         Lib\Ini::load()
-            ->file($this->root . '/system/settings.default.ini')
+            ->file($this->root . '/settings.default.ini')
             ->toDefine();
 
         if (defined('SJO_TIMEZONE')) {
@@ -60,8 +60,8 @@ class Loader
         }
 
         /** Locale */
-        //$sJo_I18n = new \sJo\Libraries\I18n();
-        //$sJo_I18n->load('default', $this->root . '/locale');
+        $sJo_I18n = new Lib\I18n();
+        $sJo_I18n->load('default', $this->root . '/Locale');
 
         $this->_set('controller', $controller);
         $this->_set('method', $method);
