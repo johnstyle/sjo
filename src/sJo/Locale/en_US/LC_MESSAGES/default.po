@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sJo\n"
-"POT-Creation-Date: 2013-12-19 20:33+0100\n"
-"PO-Revision-Date: 2013-12-19 20:33+0100\n"
+"POT-Creation-Date: 2014-01-29 22:46+0100\n"
+"PO-Revision-Date: 2014-01-29 22:46+0100\n"
 "Last-Translator: Jonathan Sahm <contact@johnstyle.fr>\n"
 "Language-Team: Jonathan SAHM <contact@johnstyle.fr>\n"
 "Language: en_US\n"
@@ -10,76 +10,107 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.4\n"
-"X-Poedit-KeywordsList: __;__e;__n\n"
+"X-Poedit-KeywordsList: __;_e;_n\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-SearchPath-0: ../../..\n"
+"X-Poedit-SearchPath-0: ../../../..\n"
 
-#: ../../../system/Modules/User/View/Auth.php:3
+#: ../../../../sJo/Modules/User/View/Auth.php:3
 msgid "Authentification"
 msgstr ""
 
-#: ../../../system/Modules/User/View/Auth.php:8
+#: ../../../../sJo/Modules/User/View/Auth.php:8
 msgid "Adresse email"
 msgstr ""
 
-#: ../../../system/Modules/User/View/Auth.php:9
+#: ../../../../sJo/Modules/User/View/Auth.php:9
 msgid "Mot de passe"
 msgstr ""
 
-#: ../../../system/Modules/User/View/Auth.php:10
+#: ../../../../sJo/Modules/User/View/Auth.php:10
 msgid "Connexion"
 msgstr ""
 
-#: ../../../system/Modules/User/Controller/Auth.php:21
+#: ../../../../sJo/Modules/User/Controller/Auth.php:21
 msgid "Les informations de connexion sont incorrects"
 msgstr ""
 
-#: ../../../system/Modules/User/Controller/Auth.php:24
+#: ../../../../sJo/Modules/User/Controller/Auth.php:24
 msgid "Veuillez renseigner votre mot de passe"
 msgstr ""
 
-#: ../../../system/Modules/User/Controller/Auth.php:27
+#: ../../../../sJo/Modules/User/Controller/Auth.php:27
 msgid "Veuillez renseigner votre identifiant"
 msgstr ""
 
-#: ../../../system/Modules/ErrorDocument/Controller/http404.php:16
-#: ../../../system/Modules/ErrorDocument/Controller/http403.php:16
+#: ../../../../sJo/Modules/ErrorDocument/View/http404.php:11
+#: ../../../../sJo/Modules/ErrorDocument/View/http404.php:29
+msgid "Page Not Found!"
+msgstr ""
+
+#: ../../../../sJo/Modules/ErrorDocument/View/http404.php:32
+#: ../../../../sJo/Modules/ErrorDocument/View/http403.php:32
+msgid "We Are Sory"
+msgstr ""
+
+#: ../../../../sJo/Modules/ErrorDocument/View/http404.php:33
+msgid ""
+"This could be the result of the page being removed,\n"
+"             the name being changed or the page being temporarily "
+"unavailable."
+msgstr ""
+
+#: ../../../../sJo/Modules/ErrorDocument/View/http403.php:11
+#: ../../../../sJo/Modules/ErrorDocument/View/http403.php:29
+msgid "Forbidden!"
+msgstr ""
+
+#: ../../../../sJo/Modules/ErrorDocument/View/http403.php:33
+msgid "You do not have permission to access this page."
+msgstr ""
+
+#: ../../../../sJo/Modules/ErrorDocument/Controller/http404.php:17
+#: ../../../../sJo/Modules/ErrorDocument/Controller/http403.php:17
 msgid "From htaccess"
 msgstr ""
 
-#: ../../../system/Libraries/Event.php:54
+#: ../../../../sJo/Libraries/Event.php:54
 msgid "The second parameter must be a function"
 msgstr ""
 
-#: ../../../system/Core/Loader.php:83
+#: ../../../../sJo/Libraries/File.php:24
+#, php-format
+msgid "Unable to write to file %s"
+msgstr ""
+
+#: ../../../../sJo/Core/Loader.php:102
 #, php-format
 msgid "Model %s is not extended to %s."
 msgstr ""
 
-#: ../../../system/Core/Loader.php:86
+#: ../../../../sJo/Core/Loader.php:105
 #, php-format
 msgid "Controller %s is not extended to %s."
 msgstr ""
 
-#: ../../../system/Core/Loader.php:89
+#: ../../../../sJo/Core/Loader.php:108
 #, php-format
 msgid "Controller %s do not exists."
 msgstr ""
 
-#: ../../../system/Core/Loader.php:92
+#: ../../../../sJo/Core/Loader.php:111
 msgid "CONTROLLER is undefined."
 msgstr ""
 
-#: ../../../system/Core/Loader.php:108 ../../../system/Core/Loader.php:119
+#: ../../../../sJo/Core/Loader.php:129 ../../../../sJo/Core/Loader.php:140
 msgid "Warning ! Prohibited queries."
 msgstr ""
 
-#: ../../../system/Db/PDO/PDOCore.php:136
+#: ../../../../sJo/Db/PDO/PDOCore.php:131
 msgid "Drivers bulk rollback."
 msgstr ""
 
-#: ../../../system/Db/PDO/PDOCore.php:198
+#: ../../../../sJo/Db/PDO/PDOCore.php:193
 #, php-format
 msgid "Drivers Unknow Auth ID %s."
 msgstr ""
