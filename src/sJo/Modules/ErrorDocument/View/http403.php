@@ -1,10 +1,14 @@
-<!doctype html>
+<?php
+
+use sJo\Libraries as Libs;
+
+?><!doctype html>
 <html>
     <head>
         <meta charset="UTF-8">
         <meta name="description" content="403 | Forbidden!">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <title>403 | Forbidden!</title>
+        <title>403 | <?php Libs\I18n::_e('Forbidden!'); ?></title>
         <style type="text/css">
             *{margin:0;padding:0}
             body{font-family:"Times New Roman",Bodoni,Garamond,"Minion Web","ITC Stone Serif","MS Georgia","Bitstream Cyberbit",serif;overflow:auto;height:100%;text-align:center;line-height:1;color:#555;background:#eee;text-shadow:0 0 5px rgba(0,0,0,0.2);font-size:16px;margin-top:50px}
@@ -22,11 +26,11 @@
     <body>
         <div id="error">
             <h1>403</h1>
-            <h2>Forbidden!</h2>
+            <h2><?php Libs\I18n::_e('Forbidden!'); ?></h2>
         </div>
         <div id="message">
-            <h3>We Are Sory</h3>
-            <p>You do not have permission to access this page.</p>
+            <h3><?php Libs\I18n::_e('We Are Sory'); ?></h3>
+            <p><?php Libs\I18n::_e('You do not have permission to access this page.'); ?></p>
         </div>
     </body>
 </html>

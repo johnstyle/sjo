@@ -1,10 +1,14 @@
-<!doctype html>
+<?php
+
+use sJo\Libraries as Libs;
+
+?><!doctype html>
 <html>
     <head>
         <meta charset="UTF-8">
         <meta name="description" content="404 | Page Not Found!">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <title>404 | Page Not Found!</title>
+        <title>404 | <?php Libs\I18n::_e('Page Not Found!'); ?></title>
         <style type="text/css">
             *{margin:0;padding:0}
             body{font-family:"Times New Roman",Bodoni,Garamond,"Minion Web","ITC Stone Serif","MS Georgia","Bitstream Cyberbit",serif;overflow:auto;height:100%;text-align:center;line-height:1;color:#555;background:#eee;text-shadow:0 0 5px rgba(0,0,0,0.2);font-size:16px;margin-top:50px}
@@ -22,12 +26,12 @@
     <body>
         <div id="error">
             <h1>404</h1>
-            <h2>Page Not Found!</h2>
+            <h2><?php Libs\I18n::_e('Page Not Found!'); ?></h2>
         </div>
         <div id="message">
-            <h3>We Are Sory</h3>
-            <p>This could be the result of the page being removed, <br/>
-                the name being changed or the page being temporarily unavailable.</p>
+            <h3><?php Libs\I18n::_e('We Are Sory'); ?></h3>
+            <p><?php Libs\I18n::_e('This could be the result of the page being removed,
+             the name being changed or the page being temporarily unavailable.'); ?></p>
         </div>
     </body>
 </html>
