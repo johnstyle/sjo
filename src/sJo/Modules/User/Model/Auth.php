@@ -3,9 +3,9 @@
 namespace sJo\Modules\User\Model;
 
 use sJo\Db\PDO\Drivers\Mysql as Db;
-use sJo\Core\Model;
+use sJo\Core;
 
-class Auth extends Model
+class Auth extends Core\Model
 {
     public function exists($email, $password)
     {

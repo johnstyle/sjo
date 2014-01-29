@@ -2,9 +2,9 @@
 
 namespace sJo\Modules\User\Controller;
 
-use sJo\Core\Controller;
+use sJo\Core;
 
-class Profile extends Controller
+class Profile extends Core\Controller
 {
     public function update()
     {

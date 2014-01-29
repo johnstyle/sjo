@@ -2,11 +2,10 @@
 
 namespace sJo\Modules\User\Controller;
 
-use sJo\Core\Controller;
+use sJo\Core;
 use sJo\Libraries as Lib;
-use sJo\Libraries\I18n;
 
-class Auth extends Controller
+class Auth extends Core\Controller
 {
     public function signin()
     {
@@ -18,13 +17,13 @@ class Auth extends Controller
                     ));
                     $this->Core->Session->signin($token);
                 } else {
-                    $this->Core->Alert->add(I18n::__('Les informations de connexion sont incorrects'));
+                    $this->Core->Alert->add(Lib\I18n::__('Les informations de connexion sont incorrects'));
                 }
             } else {
-                $this->Core->Alert->add(I18n::__('Veuillez renseigner votre mot de passe'));
+                $this->Core->Alert->add(Lib\I18n::__('Veuillez renseigner votre mot de passe'));
             }
         } else {
-            $this->Core->Alert->add(I18n::__('Veuillez renseigner votre identifiant'));
+            $this->Core->Alert->add(Lib\I18n::__('Veuillez renseigner votre identifiant'));
         }
     }
 

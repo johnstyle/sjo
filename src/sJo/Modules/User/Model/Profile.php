@@ -2,9 +2,9 @@
 
 namespace sJo\Modules\User\Model;
 
-use sJo\Core\Model;
+use sJo\Core;
 
-class Profile extends Model
+class Profile extends Core\Model
 {
 
 }
