@@ -2,10 +2,10 @@
 
 namespace sJo\Modules\ErrorDocument\Controller;
 
-use sJo\Core\Controller;
-use sJo\Libraries\I18n;
+use sJo\Core;
+use sJo\Libraries as Libs;
 
-class http404 extends Controller
+class http404 extends Core\Controller
 {
     public $message;
 
@@ -14,7 +14,7 @@ class http404 extends Controller
         http_response_code(404);
 
         if(!$this->message) {
-            $this->message = I18n::__('From htaccess');
+            $this->message = Libs\I18n::__('From htaccess');
         }
 
         $this->Logger->error('Error 404: {message}', array(

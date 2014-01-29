@@ -2,10 +2,10 @@
 
 namespace sJo\Modules\ErrorDocument\Controller;
 
-use sJo\Core\Controller;
-use sJo\Libraries\I18n;
+use sJo\Core;
+use sJo\Libraries as Libs;
 
-class http403 extends Controller
+class http403 extends Core\Controller
 {
     public $message;
 
@@ -14,7 +14,7 @@ class http403 extends Controller
         http_response_code(403);
 
         if(!$this->message) {
-            $this->message = I18n::__('From htaccess');
+            $this->message = Libs\I18n::__('From htaccess');
         }
 
         $this->Logger->error('Error 403: {message}', array(

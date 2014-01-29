@@ -2,8 +2,8 @@
 
 namespace sJo\Modules\ErrorDocument\Model;
 
-use sJo\Core\Model;
+use sJo\Core;
 
-class http404 extends Model
+class http404 extends Core\Model
 {
 }
