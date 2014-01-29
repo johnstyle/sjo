@@ -14,6 +14,8 @@
 
 namespace sJo\Libraries;
 
+use sJo\Core;
+
 /**
  * Gestion du multilanguage
  *
@@ -24,7 +26,8 @@ namespace sJo\Libraries;
  * @link     https://github.com/johnstyle/sjo.git
  *
  * @method static __($message)
- * @method static n__($msgid1, $msgid2, $n)
+ * @method static _e($message)
+ * @method static _n($msgid1, $msgid2, $n)
  */
 class I18n
 {
@@ -47,7 +50,7 @@ class I18n
         putenv('LC_ALL=' . $language);
 
         if(setlocale(LC_ALL, $language) != $language) {
-            sJo\Exception::error('I18n locale ' . $language . ' do not exists.');
+            Core\Exception::error('I18n locale ' . $language . ' do not exists.');
         }
     }
 
@@ -67,7 +70,7 @@ class I18n
                 bind_textdomain_codeset($domain, SJO_CHARSET);
             }
         } else {
-            sJo\Exception::error('I18n directory ' . $directory . ' do not exists.');
+            Core\Exception::error('I18n directory ' . $directory . ' do not exists.');
         }
     }
 
@@ -79,28 +82,26 @@ class I18n
      */
     public static function __callStatic($method, $args = false)
     {
-        if (preg_match("#^(__|n__)(.*)$#", $method, $match)) {
+        if (preg_match("#^(__|_n|_e)(.*)$#", $method, $match)) {
 
             $domain = $match[2] ? $match[2] : 'default';
 
             textdomain($domain);
 
-            $message = false;
-            $argsNum = 0;
-
             switch ($match[1]) {
                 case '__':
-                    $message = gettext($args[0]);
-                    $argsNum = 1;
+                case '_e':
+                    $text = self::_replace(gettext($args[0]), $args, 1);
+                    if($match[1] == '_e') {
+                        echo $text;
+
+                    } else {
+                        return $text;
+                    }
                     break;
-                case 'n__':
-                    $message = ngettext($args[0], $args[1], $args[2]);
-                    $argsNum = 3;
+                case '_n':
+                    return self::_replace(ngettext($args[0], $args[1], $args[2]), $args, 3);
                     break;
-            }
-            
-            if($message) {
-                return self::_replace($message, $args, $argsNum);
             }
         }
         return false;
@@ -155,6 +156,7 @@ class I18n
 
     private static function _replace($message, $args, $start = 0)
     {
+        $message = nl2br($message);
         if (count($args) === $start) {
             return $message;
         }
