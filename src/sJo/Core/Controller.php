@@ -25,17 +25,10 @@ namespace sJo\Core;
  */
 abstract class Controller
 {
-    /**
-     * Model references
-     *
-     * @var Model
-     */
-    public $Model;
-
    /**
     * Core references
     *
-    * @var object
+    * @var \stdClass
     */
     public $Core;
 
@@ -61,7 +54,14 @@ abstract class Controller
     final public function __construct ()
     {
         $this->Core = new \stdClass();
-        $this->Module = new \stdClass();
+        /** @var Session */
+        $this->Core->Session = new Session($this);
+        /** @var Request */
+        $this->Core->Request = new Request($this);
+        /** @var Alert */
+        $this->Core->Alert = new Alert($this);
+        /** @var Logger */
+        $this->Logger = new Logger($this);
     }
 
     public function __viewPreload ()
