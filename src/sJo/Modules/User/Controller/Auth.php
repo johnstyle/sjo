@@ -4,6 +4,7 @@ namespace sJo\Modules\User\Controller;
 
 use sJo\Core;
 use sJo\Libraries as Lib;
+use sJo\Modules\User\Model\User;
 
 class Auth extends Core\Controller
 {
@@ -11,7 +12,7 @@ class Auth extends Core\Controller
     {
         if(Lib\Env::post('email')) {
             if(Lib\Env::post('password')) {
-                if($token = $this->Model->exists(Lib\Env::post('email'), Lib\Env::post('password'))) {
+                if($token = User::exists(Lib\Env::post('email'), Lib\Env::post('password'))) {
                     $this->Logger->info('Signin {user}', array(
                         'user' => Lib\Env::post('email')
                     ));
