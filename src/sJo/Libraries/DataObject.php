@@ -24,6 +24,22 @@ abstract class DataObject
 
     public function __isset($name)
     {
-        return isset($this->{$name});
+        return $name != '__map' && property_exists($this, $name);
+    }
+
+    public function __unset($name)
+    {
+        if(isset($this->{$name})) {
+            unset($this->{$name});
+        }
+    }
+
+    public function getProperties()
+    {
+        $vars = (object) get_object_vars($this);
+        if (isset($vars->__map)) {
+            unset($vars->__map);
+        }
+        return $vars;
     }
 }
