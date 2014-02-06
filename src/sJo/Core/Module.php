@@ -45,7 +45,6 @@ trait Module
             if(in_array($match[1], $this->modules)) {
                 self::$module = $match[1];
                 self::$controllerClass = '\\sJo\\Modules\\' . self::$module . '\\Controller\\' . $match[2];
-                self::$modelClass = '\\sJo\\Modules\\' . self::$module . '\\Model\\' . $match[2];
                 self::$viewFile = realpath(__DIR__) . '/' . SJO_ROOT . '/Modules/' . self::$module . '/View/' . str_replace('\\', '/', $match[2]) . '.php';
             }
         }
@@ -59,7 +58,7 @@ trait Module
                 if(class_exists($className)) {
                     $Loader = new $className ($this->instance);
                     if(method_exists($className, 'init')) {
-                        $this->instance->Module->{$module} = $Loader->init();
+                        $Loader->init();
                     }
                 }
             }
