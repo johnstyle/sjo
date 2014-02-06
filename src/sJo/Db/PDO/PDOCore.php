@@ -202,6 +202,8 @@ abstract class PDOCore extends \PDO
      */
     final public static function auth(array $data)
     {
+        Core\Dependencies::register(get_called_class());
+
         self::$auth = $data;
 
         if(!is_array(array_shift($data))) {
