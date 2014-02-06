@@ -34,7 +34,6 @@ class Loader
     private $instance;
     public static $controller;
     public static $controllerClass;
-    public static $modelClass;
     public static $viewFile;
     public static $method;
     public static $module;
@@ -83,24 +82,12 @@ class Loader
 
                 if (get_parent_class($this->instance) == 'sJo\\Core\\Controller') {
 
-                    $this->_load(self::$modelClass, 'Model');
+                    $this->_loadModules();
 
-                    if (get_parent_class($this->instance->Model) == 'sJo\\Core\\Model') {
+                    $this->event('viewPreload');
 
-                        $this->_load('\\sJo\\Core\\Session', array('Core', 'Session'));
-                        $this->_load('\\sJo\\Core\\Request', array('Core', 'Request'));
-                        $this->_load('\\sJo\\Core\\Alert', array('Core', 'Alert'));
-                        $this->_load('\\sJo\\Core\\Logger', 'Logger');
+                    new View($this->instance);
 
-                        $this->_loadModules();
-
-                        $this->event('viewPreload');
-
-                        new View($this->instance);
-
-                    } else {
-                        Exception::ErrorDocument('http403', Lib\I18n::__('Model %s is not extended to %s.', self::$modelClass, '\\sJo\\Core\\Model'));
-                    }
                 } else {
                     Exception::ErrorDocument('http403', Lib\I18n::__('Controller %s is not extended to %s.', self::$controllerClass, '\\sJo\\Core\\Controller'));
                 }
@@ -163,20 +150,6 @@ class Loader
         }
     }
 
-    private function _load($className, $name)
-    {
-        if (class_exists($className)) {
-
-            $hookName = '\\Hooks\\' . str_replace('\\sJo\\', '', $className);
-
-            if (class_exists($hookName)) {
-                Lib\Obj::tree($this->instance, $name, new $hookName ($this->instance));
-            } else {
-                Lib\Obj::tree($this->instance, $name, new $className ($this->instance));
-            }
-        }
-    }
-
     private function _set($type, $value = false)
     {
         switch($type) {
@@ -188,7 +161,6 @@ class Loader
                     self::$controller = str_replace('/', '\\', self::$controller);
                 }
                 self::$controllerClass = '\\Controller\\' . Loader::$controller;
-                self::$modelClass = '\\Model\\' . Loader::$controller;
                 self::$viewFile = SJO_ROOT_VIEW . '/' . str_replace('\\', '/', self::$controller) . '.php';
                 break;
             case 'method':
