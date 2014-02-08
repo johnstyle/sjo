@@ -12,7 +12,9 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Core;
+namespace sJo\View;
+
+use sJo\Core\Loader;
 
 /**
  * Gestion des Vues
@@ -28,7 +30,7 @@ final class View
     /**
      * Model references
      *
-     * @var Controller
+     * @var \sJo\Core\Controller\Controller
      */
     public static $Controller;
 
@@ -42,7 +44,7 @@ final class View
     /**
      * Logger references
      *
-     * @var Logger
+     * @var \sJo\Core\Logger
      */
     public static $Logger;
 
@@ -50,7 +52,7 @@ final class View
      * Constructor
      *
      * @param $instance
-     * @return \sJo\Core\View
+     * @return \sJo\View\View
      */
     public function __construct(&$instance)
     {
