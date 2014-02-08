@@ -16,6 +16,7 @@ namespace sJo\Core;
 
 use sJo\Libraries as Lib;
 use sJo\Helpers;
+use sJo\View\View;
 
 /**
  * Loader
