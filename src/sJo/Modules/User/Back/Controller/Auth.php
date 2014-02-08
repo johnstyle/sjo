@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Modules\User\Controller;
+namespace sJo\Modules\User\Back\Controller;
 
 use sJo\Core\Controller\Controller;
 use sJo\Libraries as Lib;

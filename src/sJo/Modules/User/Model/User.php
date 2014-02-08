@@ -7,31 +7,18 @@ use \sJo\Libraries as Lib;
 
 class User extends UserMap
 {
-    public function __construct($id = false)
+    public function __construct($id = null)
     {
-        if($id === false) {
+        if($id === null) {
             $id = Lib\Env::session('token');
         }
 
-        $user = Db::instance()->result("SELECT id, name, email FROM users WHERE id = :id ", array(
-            'id' => $id
-        ));
-
-        if($user) {
-            foreach($user as $name => $value) {
-                $this->{$name} = $value;
-            }
-        }
+        parent::__construct($id);
     }
 
-    public static function current()
+    public function exists($email, $password)
     {
-        return new self();
-    }
-
-    public static function exists($email, $password)
-    {
-        return Db::instance()->value("SELECT `id` FROM `users` WHERE `email` = :email AND `password` = :password", array(
+        return self::db()->value($this->getPrimaryKey(), array(
             'email' => $email,
             'password' => md5($password)
         ));
