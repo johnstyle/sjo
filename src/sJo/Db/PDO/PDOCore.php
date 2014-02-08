@@ -19,6 +19,7 @@ use sJo\Libraries as Lib;
 
 /**
  * Base de données Drivers
+ * Base de données Drivers
  *
  * @package  sJo
  * @category Db
@@ -28,11 +29,10 @@ use sJo\Libraries as Lib;
  */
 abstract class PDOCore extends \PDO
 {
-    /**
-     * @var array Instances
-     * @access private
-     */
-    private static $instances = array();
+    use PDOQuery;
+    use Core\Object\Singleton {
+        Core\Object\Singleton::getInstance as SingletonGetInstance;
+    }
 
     /**
      * @var array Liste des connexions
@@ -45,41 +45,6 @@ abstract class PDOCore extends \PDO
      * @access private
      */
     private static $count = 0;
-
-    /**
-     * Insertion / Mise à jour des données simplifiée
-     *
-     * @param string $table
-     * @param array $data
-     * @param array $where
-     * @return $this
-     */
-    public function update($table, array $data, array $where = array())
-    {
-        $keysQuery = array_keys($data);
-
-        if(count($where)) {
-            $itemsQuery = array();
-            foreach($keysQuery as $item) {
-                $itemsQuery[] = "`" . $item . "` = :" . $item;
-            }
-            $keysWhere = array_keys($where);
-            $itemsWhere = array();
-            foreach($keysWhere as $item) {
-                $itemsWhere[] = "`" . $item . "` = :" . $item;
-            }
-            foreach($where as $name=>$value) {
-                $data[$name] = $value;
-            }
-            $query = "UPDATE `" . $table . "` SET " . implode("`,`", $itemsQuery) . " WHERE " . implode(",", $itemsWhere);
-        } else {
-            $query = "INSERT INTO `" . $table . "` (`" . implode("`,`", $keysQuery) . "`) VALUES(:" . implode(", :", $keysQuery) . ")";
-        }
-
-        $this->req($query, (array) $data);
-
-        return $this;
-    }
 
     /**
      * Envoi d'une requete
@@ -139,10 +104,9 @@ abstract class PDOCore extends \PDO
      *
      * @param string $query
      * @param array $args
-     * @param int $type
-     * @return object
+     * @return string
      */
-    public function value($query, array $args = array(), $type = self::FETCH_OBJ)
+    public function fetchColumn($query, array $args = array())
     {
         return $this->req($query, $args)->fetchColumn(0);
     }
@@ -156,7 +120,7 @@ abstract class PDOCore extends \PDO
      * @param int $type
      * @return object
      */
-    public function result($query, array $args = array(), $type = self::FETCH_OBJ)
+    public function fetch($query, array $args = array(), $type = self::FETCH_OBJ)
     {
         return $this->req($query, $args)->fetch($type);
     }
@@ -169,7 +133,7 @@ abstract class PDOCore extends \PDO
      * @param int $type
      * @return array
      */
-    public function results($query, array $args = array(), $type = self::FETCH_OBJ)
+    public function fetchAll($query, array $args = array(), $type = self::FETCH_OBJ)
     {
         return $this->req($query, $args)->fetchAll($type);
     }
@@ -182,13 +146,10 @@ abstract class PDOCore extends \PDO
      * @param int $id
      * @return static
      */
-    final public static function instance($id = 0)
+    public static function getInstance($id = 0)
     {
         if (isset(self::$auth[$id])) {
-            if (!isset(self::$instances[$id])) {
-                self::$instances[$id] = new static(self::$auth[$id]);
-            }
-            return self::$instances[$id];
+            return static::SingletonGetInstance(self::$auth[$id], $id);
         } else {
             Core\Exception::error(Lib\I18n::__('Drivers Unknow Auth ID %s.', $id));
         }
