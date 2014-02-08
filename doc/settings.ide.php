@@ -19,9 +19,6 @@ define('SJO_TIMEZONE', 'Europe/Paris');
 
 define('SJO_ROOT', '..');
 define('SJO_ROOT_APP', SJO_ROOT . '/app');
-define('SJO_ROOT_MODEL', SJO_ROOT_APP . '/Model');
-define('SJO_ROOT_VIEW', SJO_ROOT_APP . '/View');
-define('SJO_ROOT_CONTROLLER', SJO_ROOT_APP . '/Controller');
 define('SJO_ROOT_PUBLIC_HTML', SJO_ROOT . '/public_html');
 define('SJO_ROOT_TMP', '/tmp');
 define('SJO_ROOT_LOG', SJO_ROOT . '/log');
@@ -30,6 +27,9 @@ define('SJO_DB_HOST', 'localhost');
 define('SJO_DB_USER', 'root');
 define('SJO_DB_PWD', '');
 define('SJO_DB_BASE', '');
+
+define('SJO_INTERFACE_NAME', 'interface');
+define('SJO_INTERFACE_DEFAULT', 'Front');
 
 define('SJO_CONTROLLER_NAME', 'controller');
 define('SJO_CONTROLLER_DEFAULT', 'Home');
