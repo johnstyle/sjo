@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Modules\ErrorDocument\Controller;
+namespace sJo\Modules\ErrorDocument\Front\Controller;
 
 use sJo\Core\Controller\Controller;
 use sJo\Libraries as Libs;
