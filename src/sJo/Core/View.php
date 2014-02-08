@@ -97,7 +97,7 @@ final class View
      */
     public static function inc($filename, $vars = false)
     {
-        $file = SJO_ROOT_VIEW . '/' . $filename . '.php';
+        $file = Loader::$viewRoot . '/' . $filename . '.php';
 
         if (file_exists($file)) {
             if($vars) {
