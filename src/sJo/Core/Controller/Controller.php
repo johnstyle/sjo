@@ -12,7 +12,9 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Core;
+namespace sJo\Core\Controller;
+
+use sJo\Core;
 
 /**
  * Gestion des Controlleurs
@@ -25,7 +27,8 @@ namespace sJo\Core;
  */
 abstract class Controller
 {
-
+    use Action;
+    use Event;
 
    /**
     * Core references
@@ -37,44 +40,32 @@ abstract class Controller
     /**
      * Logger references
      *
-     * @var Logger
+     * @var Core\Logger
      */
     public $Logger;
 
     /**
      * Module references
      *
-     * @var Module
+     * @var Core\Module
      */
     public $Module;
 
     /**
      * Constructeur
      *
-     * @return \sJo\Core\Controller
+     * @return \sJo\Core\Controller\Controller
      */
     final public function __construct ()
     {
         $this->Core = new \stdClass();
-        /** @var Session */
-        $this->Core->Session = new Session($this);
-        /** @var Request */
-        $this->Core->Request = new Request($this);
-        /** @var Alert */
-        $this->Core->Alert = new Alert($this);
-        /** @var Logger */
-        $this->Logger = new Logger($this);
-    }
-
-    public function __viewPreload ()
-    {
-    }
-
-    public function __viewLoaded ()
-    {
-    }   
-
-    public function __viewCompleted ()
-    {
+        /** @var Core\Session */
+        $this->Core->Session = new Core\Session($this);
+        /** @var Core\Request */
+        $this->Core->Request = new Core\Request($this);
+        /** @var Core\Alert */
+        $this->Core->Alert = new Core\Alert($this);
+        /** @var Core\Logger */
+        $this->Logger = new Core\Logger($this);
     }
 }
