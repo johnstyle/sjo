@@ -19,7 +19,7 @@ define('SJO_TIMEZONE', 'Europe/Paris');
 
 define('SJO_ROOT', '..');
 define('SJO_ROOT_APP', SJO_ROOT . '/app');
-define('SJO_ROOT_PUBLIC_HTML', SJO_ROOT . '/public_html');
+define('SJO_ROOT_PUBLIC_HTML', SJO_ROOT . '/public');
 define('SJO_ROOT_TMP', '/tmp');
 define('SJO_ROOT_LOG', SJO_ROOT . '/log');
 
