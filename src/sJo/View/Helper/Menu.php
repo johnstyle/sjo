@@ -1,10 +1,10 @@
 <?php
 
-namespace sJo\View\Builder;
+namespace sJo\View\Helper;
 
 use sJo\Core;
 use sJo\Libraries\I18n;
-use sJo\View\Builder\Framework\Framework;
+use sJo\View\Helper\Framework\Framework;
 
 class Menu
 {
@@ -14,21 +14,35 @@ class Menu
     public static function registrer($name, array $options = array())
     {
         self::$registered[$name] = array_merge(array(
-
+            'type' => 'navbar'
         ), $options);
     }
 
-    public static function addItem($name, $item)
+    public static function addItem($name, $options)
     {
         if (self::exists($name)) {
-            self::$menu[$name][] = $item;
+            self::$menu[$name][] = array_merge(array(
+                'icon' => null,
+                'title' => null,
+                'tooltip' => null,
+                'controller' => null,
+                'isActive' => false
+            ), $options);
         }
     }
 
     public static function display($name)
     {
-        if (isset(self::$registered[$name]) && isset(self::$menu[$name])) {
-            echo Framework::nav(self::$menu[$name]);
+        if (isset(self::$registered[$name])
+            && isset(self::$menu[$name])) {
+            switch(self::$registered[$name]['type']) {
+                case 'navbar';
+                    echo Framework::nav(self::$menu[$name]);
+                    break;
+                case 'sidebar';
+                    echo Framework::aside(self::$menu[$name]);
+                    break;
+            }
         }
     }
 
