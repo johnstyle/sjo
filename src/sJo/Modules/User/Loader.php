@@ -3,6 +3,8 @@
 namespace sJo\Modules\User;
 
 use sJo\Core\Dependencies;
+use sJo\View\Helper;
+use sJo\Libraries\I18n;
 
 class Loader
 {
@@ -12,7 +14,17 @@ class Loader
             'sJo\Db\PDO\Drivers\Mysql'
         ));
 
-        $instance->Core->Session->check('User\\Auth');
+        Helper\Menu::addItem('sidebar', array(
+            'title' => I18n::__('My profil'),
+            'controller' => 'User\Profile'
+        ));
+
+        Helper\Menu::addItem('top', array(
+            'title' => I18n::__('My profil'),
+            'controller' => 'User\Profile'
+        ));
+
+        $instance->Core->Session->check('User\Auth');
     }
 
     public function init()
