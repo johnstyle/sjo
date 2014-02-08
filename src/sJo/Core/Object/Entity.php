@@ -1,13 +1,18 @@
 <?php
 
-namespace sJo\Libraries;
+namespace sJo\Core\Object;
 
-abstract class DataObject
+use sJo\Core;
+use sJo\Libraries\I18n;
+
+trait Entity
 {
     public function __get($name)
     {
-        if(isset($this->{$name})) {
+        if($this->__isset($name)) {
             return $this->{$name};
+        } else {
+            Core\Exception::error(I18n::__('This property %s does not exist.', $name));
         }
 
         return false;
@@ -15,8 +20,10 @@ abstract class DataObject
 
     public function __set($name, $value)
     {
-        if(isset($this->{$name})) {
+        if($this->__isset($name)) {
             $this->{$name} = $value;
+        } else {
+            Core\Exception::error(I18n::__('This property %s does not exist.', $name));
         }
 
         return $this;
@@ -24,22 +31,28 @@ abstract class DataObject
 
     public function __isset($name)
     {
-        return $name != '__map' && property_exists($this, $name);
+        $class = new \ReflectionClass($this);
+        return $class->hasProperty($name) && $name != '__map';
     }
 
     public function __unset($name)
     {
-        if(isset($this->{$name})) {
+        if($this->__isset($name)) {
             unset($this->{$name});
+        } else {
+            Core\Exception::error(I18n::__('This property %s does not exist.', $name));
         }
     }
 
     public function getProperties()
     {
-        $vars = (object) get_object_vars($this);
-        if (isset($vars->__map)) {
-            unset($vars->__map);
+        $properties = new \stdClass();
+        $class = new \ReflectionClass($this);
+        foreach($class->getProperties() as $property) {
+            if(!in_array($property->name, array('__map', '__instance'))) {
+                $properties->{$property->name} = $this->{$property->name};
+            }
         }
-        return $vars;
+        return $properties ? $properties : null;
     }
 }
