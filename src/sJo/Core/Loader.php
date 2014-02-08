@@ -32,8 +32,10 @@ class Loader
 
     private $root;
     private $instance;
+    public static $interface;
     public static $controller;
     public static $controllerClass;
+    public static $viewRoot;
     public static $viewFile;
     public static $method;
     public static $module;
@@ -41,11 +43,12 @@ class Loader
     /**
      * Constructeur
      *
-     * @param bool $controller
-     * @param bool $method
+     * @param null|string $interface
+     * @param null|string $controller
+     * @param null|string $method
      * @return \sJo\Core\Loader
      */
-    public function __construct($controller = false, $method = false)
+    public function __construct($interface = null, $controller = null, $method = null)
     {
         $this->root = dirname(realpath(__DIR__));
 
@@ -62,6 +65,7 @@ class Loader
         $sJo_I18n = new Lib\I18n();
         $sJo_I18n->load('default', $this->root . '/Locale');
 
+        $this->_set('interface', $interface);
         $this->_set('controller', $controller);
         $this->_set('method', $method);
 
@@ -80,7 +84,7 @@ class Loader
 
                 $this->instance = new self::$controllerClass ();
 
-                if (get_parent_class($this->instance) == 'sJo\\Core\\Controller') {
+                if (get_parent_class($this->instance) == 'sJo\\Core\\Controller\\Controller') {
 
                     $this->_loadModules();
 
@@ -153,6 +157,12 @@ class Loader
     private function _set($type, $value = false)
     {
         switch($type) {
+            case 'interface':
+                self::$interface = $value;
+                if (!self::$interface) {
+                    self::$interface = Lib\Env::get(SJO_INTERFACE_NAME, SJO_INTERFACE_DEFAULT);
+                }
+                break;
             case 'controller':
                 self::$controller = $value;
                 if (!self::$controller) {
@@ -160,8 +170,9 @@ class Loader
                     self::$controller = trim(self::$controller, '/');
                     self::$controller = str_replace('/', '\\', self::$controller);
                 }
-                self::$controllerClass = '\\Controller\\' . Loader::$controller;
-                self::$viewFile = SJO_ROOT_VIEW . '/' . str_replace('\\', '/', self::$controller) . '.php';
+                self::$controllerClass = '\\' . self::$interface . '\\Controller\\' . Loader::$controller;
+                self::$viewRoot = SJO_ROOT_APP . '/' . self::$interface . '/View';
+                self::$viewFile = self::$viewRoot . '/' . str_replace('\\', '/', self::$controller) . '.php';
                 break;
             case 'method':
                 self::$method = $value;

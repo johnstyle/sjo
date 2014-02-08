@@ -52,7 +52,7 @@ class Exception extends \Exception
     {
         new self($msg, $code);
 
-        $Loader = new Loader('ErrorDocument\\' . $controller);
+        $Loader = new Loader('Front', 'ErrorDocument\\' . $controller);
         $Loader->init();
         $Loader->instance()->message = $msg;
         $Loader->display();
