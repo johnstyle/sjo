@@ -25,6 +25,8 @@ namespace sJo\Core;
  */
 abstract class Controller
 {
+
+
    /**
     * Core references
     *

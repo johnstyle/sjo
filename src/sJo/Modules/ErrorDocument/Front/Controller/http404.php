@@ -2,22 +2,22 @@
 
 namespace sJo\Modules\ErrorDocument\Controller;
 
-use sJo\Core;
+use sJo\Core\Controller\Controller;
 use sJo\Libraries as Libs;
 
-class http403 extends Core\Controller
+class http404 extends Controller
 {
     public $message;
 
     public function __viewLoaded()
     {
-        http_response_code(403);
+        http_response_code(404);
 
         if(!$this->message) {
             $this->message = Libs\I18n::__('From htaccess');
         }
 
-        $this->Logger->error('Error 403: {message}', array(
+        $this->Logger->error('Error 404: {message}', array(
                 'message' => $this->message
             ));
     }
