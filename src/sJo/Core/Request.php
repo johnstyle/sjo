@@ -14,6 +14,7 @@
 
 namespace sJo\Core;
 
+use sJo\Core\Object\Singleton;
 use sJo\Libraries as Lib;
 
 /**
@@ -27,6 +28,8 @@ use sJo\Libraries as Lib;
  */
 class Request
 {
+    use Singleton;
+
     public function getToken($method)
     {
         Session::start();

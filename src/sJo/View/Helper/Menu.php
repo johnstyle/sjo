@@ -4,55 +4,106 @@ namespace sJo\View\Helper;
 
 use sJo\Core;
 use sJo\Libraries\I18n;
-use sJo\View\Helper\Framework\Framework;
+use sJo\View\Helper\Dom\Dom;
 
-class Menu
+class Menu extends Dom
 {
     private static $registered;
-    private static $menu;
+    private static $items;
+    private $current;
 
-    public static function registrer($name, array $options = array())
+    public function __construct($menu, array $args = array())
     {
-        self::$registered[$name] = array_merge(array(
-            'type' => 'navbar'
-        ), $options);
+        $this->current = $menu;
     }
 
-    public static function addItem($name, $options)
+    public static function __callStatic($method, array $args = array())
     {
-        if (self::exists($name)) {
-            self::$menu[$name][] = array_merge(array(
-                'icon' => null,
-                'title' => null,
-                'tooltip' => null,
-                'controller' => null,
-                'isActive' => false
-            ), $options);
+        return new self($method);
+    }
+
+    public function register(array $options = array())
+    {
+        self::$registered[$this->current] = array_merge(
+            array(
+                'type' => 'navbar',
+                'items' => null,
+                'pull' => null,
+                'container' => null
+            ),
+            $options
+        );
+    }
+
+    public function addItem($options)
+    {
+        if (self::isRegistered()) {
+            self::$items[$this->current][] = array_merge(
+                array(
+                    'icon' => null,
+                    'title' => null,
+                    'tooltip' => null,
+                    'controller' => null,
+                    'isActive' => false
+                ),
+                $options
+            );
         }
     }
 
-    public static function display($name)
+    private function isRegistered()
     {
-        if (isset(self::$registered[$name])
-            && isset(self::$menu[$name])) {
-            switch(self::$registered[$name]['type']) {
+        if (isset(self::$registered[$this->current])) {
+            return true;
+        } else {
+            Core\Exception::error(I18n::__('Menu %s is nor registered.', $this->current));
+        }
+        return false;
+    }
+
+    public function html()
+    {
+        if (self::isRegistered()
+            && self::hasItems()
+        ) {
+            switch ($this->getRegistered()['type']) {
                 case 'navbar';
-                    echo Framework::nav(self::$menu[$name]);
+                    return $this->inc('nav', array_merge($this->getRegistered(), array(
+                        'items' => $this->getItems(),
+                        'container' => 'nav'
+                    )));
                     break;
                 case 'sidebar';
-                    echo Framework::aside(self::$menu[$name]);
+                    return $this->inc('nav', array_merge($this->getRegistered(), array(
+                        'items' => $this->getItems(),
+                        'container' => 'aside'
+                    )));
                     break;
             }
         }
     }
 
-    private static function exists($name)
+    public function hasItems()
     {
-        if (isset(self::$registered[$name])) {
+        if (isset(self::$items[$this->current])) {
             return true;
-        } else {
-            Core\Exception::error(I18n::__('Menu %s is nor registered.', $name));
         }
         return false;
+    }
+
+    private function getRegistered()
+    {
+        if ($this->isRegistered()) {
+            return self::$registered[$this->current];
+        }
+        return array();
+    }
+
+    private function getItems()
+    {
+        if ($this->hasItems()) {
+            return self::$items[$this->current];
+        }
+        return array();
     }
 }

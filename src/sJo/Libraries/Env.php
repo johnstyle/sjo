@@ -25,32 +25,32 @@ use sJo\Core\Session;
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/sjo.git
  *
- * @method static get(\string $attr, \string $default = false)
+ * @method static get(\string $attr = false, \string $default = false)
  * @method static getExists(\string $attr)
  * @method static getSet(\string $attr, \string $value)
  *
- * @method static post(\string $attr, \string $default = false)
+ * @method static post(\string $attr = false, \string $default = false)
  * @method static postExists(\string $attr)
  * @method static postSet(\string $attr, \string $value)
  *
- * @method static files(\string $attr, \string $default = false)
+ * @method static files(\string $attr = false, \string $default = false)
  * @method static filesExists(\string $attr)
  * @method static filesSet(\string $attr, \string $value)
  *
  * @method static requestExists(\string $attr)
  * @method static requestSet(\string $attr, \string $value)
  *
- * @method static session(\string $attr, \string $default = false)
+ * @method static session(\string $attr = false, \string $default = false)
  * @method static sessionExists(\string $attr)
  *
- * @method static server(\string $attr, \string $default = false)
+ * @method static server(\string $attr = false, \string $default = false)
  * @method static serverExists(\string $attr)
  * @method static serverSet(\string $attr, \string $value)
  *
- * @method static cookie(\string $attr, \string $default = false)
+ * @method static cookie(\string $attr = false, \string $default = false)
  * @method static cookieExists(\string $attr)
  *
- * @method static env(\string $attr, \string $default = false)
+ * @method static env(\string $attr = false, \string $default = false)
  * @method static envExists(\string $attr)
  * @method static envSet(\string $attr, \string $value)
  */

@@ -30,6 +30,20 @@ abstract class Controller
     use Action;
     use Event;
 
+    /**
+     * Controller class name
+     *
+     * @var string
+     */
+    public $className;
+
+    /**
+     * Controller name
+     *
+     * @var string
+     */
+    public $name;
+
    /**
     * Core references
     *
@@ -56,7 +70,7 @@ abstract class Controller
      *
      * @return \sJo\Core\Controller\Controller
      */
-    final public function __construct ()
+    public function __construct ()
     {
         $this->Core = new \stdClass();
         /** @var Core\Session */
@@ -67,5 +81,7 @@ abstract class Controller
         $this->Core->Alert = new Core\Alert($this);
         /** @var Core\Logger */
         $this->Logger = new Core\Logger($this);
+
+        $this->className = get_called_class();
     }
 }

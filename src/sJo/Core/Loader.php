@@ -70,6 +70,12 @@ class Loader
         $this->_set('controller', $controller);
         $this->_set('method', $method);
 
+        /** Bootstrap */
+        $bootstrap = SJO_ROOT_APP . '/' . self::$interface . '/bootstrap.php';
+        if(file_exists($bootstrap)) {
+            include $bootstrap;
+        }
+
         Helpers\Autoload(SJO_ROOT_APP);
     }
 

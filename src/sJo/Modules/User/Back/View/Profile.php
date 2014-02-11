@@ -1,32 +1,36 @@
-<?php use sJo\Modules\User\Model\User;
-self::header(); ?>
-    <form method="post">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">khhkj</h3>
-                    </div>
-                    <div class="panel-body">
-                        <fieldset>
-                            <input type="hidden" name="token" value="<?php echo self::$Core->Request->getToken('User/Profile::update'); ?>" />
-                            <input type="hidden" name="controller" value="User/Profile" />
-                            <input type="hidden" name="method" value="update" />
-                            <div class="form-group">
-                                <label for="email">Email address</label>
-                                <input type="email" name="email" id="email" class="form-control" placeholder="Enter email" value="<?php echo User::getInstance()->email; ?>" />
-                            </div>
-                            <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="text" name="name" id="name" class="form-control" placeholder="Enter name" value="<?php echo User::getInstance()->name; ?>" />
-                            </div>
-                        </fieldset>
-                    </div>
-                    <div class="panel-footer clearfix">
-                        <button type="submit" class="btn btn-primary pull-right">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-<?php self::footer(); ?>
+<?php
+
+use sJo\Modules\User\Model\User;
+use sJo\View\Helper;
+use sJo\Libraries as Lib;
+
+self::header();
+
+Helper\Panel::create(array(
+    'col' => 6,
+    'title' => 'Edition',
+    'type' => 'primary',
+    'elements' => Helper\Fieldset::create(array(
+        Helper\Token::create('User/Profile::update'),
+        Helper\Input::create(array(
+            'type' => 'email',
+            'name' => 'email',
+            'label' => Lib\I18n::__('Email address'),
+            'placeholder' => Lib\I18n::__('Enter email'),
+            'value' => User::getInstance()->email
+        )),
+        Helper\Input::create(array(
+            'type' => 'text',
+            'name' => 'name',
+            'label' => Lib\I18n::__('Name'),
+            'placeholder' => Lib\I18n::__('Enter name'),
+            'value' => User::getInstance()->name
+        ))
+    )),
+    'footer' => Helper\Button::create(array(
+        'class' => 'pull-right',
+        'value' => Lib\I18n::__('Save')
+    ))
+))->display();
+
+self::footer();
