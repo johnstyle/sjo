@@ -2,7 +2,7 @@
 
 namespace sJo\Modules\User\Back\Controller;
 
-use sJo\Core\Controller\Controller;
+use sJo\Controller\Controller;
 use sJo\Libraries\I18n;
 use sJo\Modules\User\Model\User;
 use sJo\View\Helper;

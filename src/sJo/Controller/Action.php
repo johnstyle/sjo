@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Core\Controller;
+namespace sJo\Controller;
 
 use sJo\Core\Object\MysqlObject;
 use sJo\Libraries as Lib;

@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Core\Controller;
+namespace sJo\Controller;
 
 trait Event
 {

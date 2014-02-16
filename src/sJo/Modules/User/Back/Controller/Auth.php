@@ -2,7 +2,7 @@
 
 namespace sJo\Modules\User\Back\Controller;
 
-use sJo\Core\Controller\Controller;
+use sJo\Controller\Controller;
 use sJo\Libraries as Lib;
 use sJo\Modules\User\Model\User;
 

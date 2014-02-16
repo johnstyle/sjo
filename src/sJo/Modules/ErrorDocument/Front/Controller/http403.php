@@ -2,7 +2,7 @@
 
 namespace sJo\Modules\ErrorDocument\Front\Controller;
 
-use sJo\Core\Controller\Controller;
+use sJo\Controller\Controller;
 use sJo\Libraries as Libs;
 
 class http403 extends Controller

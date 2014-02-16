@@ -91,7 +91,7 @@ class Loader
 
                 $this->instance = new self::$controllerClass ();
 
-                if (get_parent_class($this->instance) == 'sJo\\Core\\Controller\\Controller') {
+                if (get_parent_class($this->instance) == 'sJo\\Controller\\Controller') {
 
                     $this->_loadModules();
 
@@ -100,7 +100,7 @@ class Loader
                     new View($this->instance);
 
                 } else {
-                    Exception::ErrorDocument('http403', Lib\I18n::__('Controller %s is not extended to %s.', self::$controllerClass, '\\sJo\\Core\\Controller'));
+                    Exception::ErrorDocument('http403', Lib\I18n::__('Controller %s is not extended to %s.', self::$controllerClass, '\\sJo\\Controller'));
                 }
             } else {
                 Exception::ErrorDocument('http404', Lib\I18n::__('Controller %s do not exists.', self::$controllerClass));

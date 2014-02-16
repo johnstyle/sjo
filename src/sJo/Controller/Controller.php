@@ -12,7 +12,7 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Core\Controller;
+namespace sJo\Controller;
 
 use sJo\Core;
 
@@ -68,7 +68,7 @@ abstract class Controller
     /**
      * Constructeur
      *
-     * @return \sJo\Core\Controller\Controller
+     * @return \sJo\Controller\Controller
      */
     public function __construct ()
     {

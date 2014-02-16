@@ -30,7 +30,7 @@ final class View
     /**
      * Model references
      *
-     * @var \sJo\Core\Controller\Controller
+     * @var \sJo\Controller\Controller
      */
     public static $Controller;
 
