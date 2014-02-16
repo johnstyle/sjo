@@ -44,6 +44,7 @@ class Menu extends Dom
                     'title' => null,
                     'tooltip' => null,
                     'controller' => null,
+                    'link' => null,
                     'isActive' => false
                 ),
                 $options

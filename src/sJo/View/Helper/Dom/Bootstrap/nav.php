@@ -3,7 +3,12 @@
         <?php foreach(self::$view->items as $item): ?>
             <li<?php if($item['controller'] == \sJo\Core\Loader::$controller): ?> class="active"<?php endif; ?>>
                 <a
-                    href="<?php echo $item['controller']; ?>"
+                    <?php if($item['controller']): ?>
+                        href="<?php echo SJO_BASEHREF . '/' . $item['controller']; ?>"
+                    <?php elseif($item['link']): ?>
+                        href="<?php echo $item['link']; ?>"
+                        target="_blank"
+                    <?php endif; ?>
                     <?php if($item['tooltip']): ?>
                         data-toggle="tooltip"
                         <?php if($item['tooltip']): ?>
