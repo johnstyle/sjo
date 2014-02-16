@@ -22,7 +22,7 @@ class Http
     private $info;
     private $cache;
 
-    public function __construct($cache = false)
+    public function __construct()
     {
         $this->id = md5(microtime());
         $this->cookieFile = SJO_ROOT_TMP . '/' . $this->id . '.cookie';
