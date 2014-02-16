@@ -13,6 +13,12 @@ class Panel extends Dom
         return array_merge(array(
             'col' => null,
             'type' => 'default',
+            'container' => array(
+                'tagname' => 'form',
+                'attr' => array(
+                    'method' => 'post'
+                )
+            ),
             'title' => null,
             'elements' => null,
             'footer' => null

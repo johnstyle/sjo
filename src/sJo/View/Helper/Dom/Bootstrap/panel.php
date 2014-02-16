@@ -1,7 +1,13 @@
 <?php if(self::$view->col): ?>
-<div class="col-lg-<?php echo self::$view->col; ?>">
+    <div class="col-lg-<?php echo self::$view->col; ?>">
 <?php endif; ?>
-    <form method="post" action="">
+    <?php if(self::$view->container): ?>
+        <<?php echo self::$view->container['tagname']; ?>
+            <?php foreach(self::$view->container['attr'] as $attr=>$value): ?>
+                <?php echo $attr; ?>="<?php echo $value; ?>"
+            <?php endforeach; ?>
+            >
+    <?php endif; ?>
         <div class="panel panel-<?php echo self::$view->type; ?>">
             <?php if(self::$view->title): ?>
                 <div class="panel-heading">
@@ -21,7 +27,9 @@
                 </div>
             <?php endif; ?>
         </div>
-    </form>
+    <?php if(self::$view->container): ?>
+        </<?php echo self::$view->container['tagname']; ?>>
+    <?php endif; ?>
 <?php if(self::$view->col): ?>
-</div>
+    </div>
 <?php endif; ?>
