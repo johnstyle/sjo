@@ -19,10 +19,10 @@ abstract class Path
         return preg_replace("#/[^/]+(/)?$#", "$1", $path);
     }
 
-    public static function create($path, $mode = 0755, $recursive = false, $context = null)
+    public static function create($path, $mode = 0755, $recursive = false)
     {
         if (!is_dir($path)) {
-            mkdir($path, $mode, $recursive, $context);
+            mkdir($path, $mode, $recursive);
         }
 
         return $path;
