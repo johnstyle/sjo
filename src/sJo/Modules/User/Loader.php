@@ -19,11 +19,6 @@ class Loader
             'controller' => 'User\Profile'
         ));
 
-        Helper\Menu::sidebar()->addItem(array(
-            'title' => I18n::__('My profil'),
-            'controller' => 'User\Prosfile'
-        ));
-
         Helper\Menu::top()->addItem(array(
             'title' => I18n::__('My profil'),
             'controller' => 'User\Profile'
