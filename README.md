@@ -9,3 +9,5 @@ PHP 5 MVC Framework
 $Loader = new \sJo\Loader();
 $Loader->display();
 </pre>
+
+Projet soutenu par [PHPStorm](http://www.jetbrains.com/phpstorm/)
