@@ -14,6 +14,7 @@
 
 namespace sJo\Core;
 
+use sJo\Core\Object\Singleton;
 use sJo\Libraries as Lib;
 
 /**
@@ -27,56 +28,44 @@ use sJo\Libraries as Lib;
  */
 class Alert
 {
-    private $alerts;
+    private static $alerts;
 
     public function __construct()
     {
         Session::start();
 
         if (Lib\Env::sessionExists('alerts')) {
-            $this->alerts = json_decode(Lib\Env::session('alerts'));
+            self::$alerts = json_decode(Lib\Env::session('alerts'), true);
         }
     }
 
     public function __destruct()
     {
-        Lib\Env::sessionSet('alerts', json_encode($this->alerts));
+        if(self::$alerts) {
+            Lib\Env::sessionSet('alerts', json_encode(self::$alerts));
+        } else {
+            Lib\Env::sessionSet('alerts');
+        }
     }
 
-    public function add($message, $type = 'danger')
+    public static function get()
     {
-        $this->alerts[$type][] = $message;
+        $alert = self::$alerts;
+        Lib\Env::sessionSet('alerts');
+        self::$alerts = null;
+        return $alert;
     }
 
-    public function exists()
+    public function set($message, $type = 'danger')
     {
-        if ($this->alerts) {
+        self::$alerts[$type][] = $message;
+    }
+
+    public static function exists()
+    {
+        if (self::$alerts) {
             return true;
         }
         return false;
-    }
-
-    public function display()
-    {
-        if ($this->exists()) {
-            foreach ($this->alerts as $type => $alerts) {
-                echo '<div class="alert alert-' . $type . '">';
-                if (count($alerts) > 1) {
-                    echo '<ol>';
-                    foreach ($alerts as $alert) {
-                        echo '<li>' . $alert . '</li>';
-                    }
-                    echo '</ol>';
-                } else {
-                    foreach ($alerts as $alert) {
-                        echo '<p>' . $alert . '</p>';
-                    }
-                }
-                echo '</div>';
-            }
-        }
-
-        Lib\Env::sessionSet('alerts');
-        $this->alerts = null;
     }
 }

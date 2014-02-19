@@ -18,13 +18,13 @@ class Auth extends Controller
                     ));
                     $this->Core->Session->signin($token);
                 } else {
-                    $this->Core->Alert->add(Lib\I18n::__('Les informations de connexion sont incorrects'));
+                    $this->Core->Alert->set(Lib\I18n::__('Les informations de connexion sont incorrects'));
                 }
             } else {
-                $this->Core->Alert->add(Lib\I18n::__('Veuillez renseigner votre mot de passe'));
+                $this->Core->Alert->set(Lib\I18n::__('Veuillez renseigner votre mot de passe'));
             }
         } else {
-            $this->Core->Alert->add(Lib\I18n::__('Veuillez renseigner votre identifiant'));
+            $this->Core->Alert->set(Lib\I18n::__('Veuillez renseigner votre identifiant'));
         }
     }
 
