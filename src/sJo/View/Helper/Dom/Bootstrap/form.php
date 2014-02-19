@@ -9,7 +9,6 @@
         class="<?php echo self::$view->class; ?>"
     <?php endif; ?>
     >
-    <?php //self::$Core->Alert->display(); ?>
     <?php if(self::$view->elements): ?>
         <?php foreach(self::$view->elements as $element): ?>
             <?php echo $element; ?>

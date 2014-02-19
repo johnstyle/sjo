@@ -6,17 +6,23 @@ use sJo\Core;
 
 abstract class Dom
 {
+    const DEFAULT_ELEMENT = '__default__';
+
     private static $view;
     private static $frameworkName = 'Bootstrap';
     protected $elements;
 
-    public function __construct($elements)
+    public function __construct($elements = null)
     {
         $this->elements = $elements;
 
+        if(!$this->elements) {
+            $this->elements = array(array(self::DEFAULT_ELEMENT => null));
+        }
+
         foreach ($this->elements as &$element) {
             if (!is_array($element)) {
-                $element = array('__default__' => $element);
+                $element = array(self::DEFAULT_ELEMENT => $element);
             }
         }
 
@@ -49,15 +55,15 @@ abstract class Dom
     public static function create()
     {
         $class = get_called_class();
-        return new $class(func_get_args());
+        return new $class(func_num_args() ? func_get_args() : null);
     }
 
-    public function display(callable $callback = null)
+    public function display()
     {
-        echo $this->html($callback);
+        echo $this->html();
     }
 
-    public function html(callable $callback = null)
+    public function html()
     {
         $class = new \ReflectionClass(get_called_class());
         $method = strtolower($class->getShortName());

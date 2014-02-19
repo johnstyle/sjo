@@ -29,10 +29,10 @@ class Token extends Dom
             $element['token'] = Core\Request::getInstance()->getToken($element['token']);
         }
 
-        return array_merge(array(
+        return array('elements' => array_merge(array(
             'token' => null,
             'controller' => $controller,
             'method' => $method
-        ), $element);
+        ), $element));
     }
 }
