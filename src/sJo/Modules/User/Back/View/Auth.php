@@ -14,18 +14,8 @@ use sJo\View\Helper;
     <meta name="description" content="<?php Lib\I18n::_e('Authentification'); ?>">
     <?php Helper\Style::display(); ?>
     <style type="text/css">
-        body {
-            background:#333
-        }
-        .form-signin {
-            background:#fff;
-            width:300px;
-            margin:0 auto;
-            padding:0 20px 20px;
-            border:5px solid #000;
-            border-radius:10px;
-            box-shadow: 0 0 10px #000;
-        }
+        body{background:#333}
+        .form-signin{background:#fff;width:300px;margin:150px auto 0;padding:0 20px 20px;border:5px solid #000;border-radius:10px;box-shadow:0 0 10px #000}
     </style>
 </head>
 <body>
@@ -36,12 +26,13 @@ Helper\Form::create(array(
     'class' => 'form-signin',
     'method' => 'post',
     'elements' => Helper\Fieldset::create(array(
+        Helper\Token::create('User/Auth::signin'),
         Helper\Container::create(array(
             'tagname' => 'h2',
             'class' => 'form-signin-heading',
             'elements' => Lib\I18n::__('Authentification')
         )),
-        Helper\Token::create('User/Auth::signin'),
+        Helper\Alert::create(),
         Helper\Input::create(array(
             'name' => 'email',
             'value' => Lib\Env::post('email'),
