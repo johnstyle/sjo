@@ -14,12 +14,12 @@ class Loader
             'sJo\Db\PDO\Drivers\Mysql'
         ));
 
-        Helper\Menu::sidebar()->addItem(array(
+        Helper\Menu::addRegistry('sidebar', array(
             'title' => I18n::__('My profil'),
             'controller' => 'User\Profile'
         ));
 
-        Helper\Menu::top()->addItem(array(
+        Helper\Menu::addRegistry('top', array(
             'title' => I18n::__('My profil'),
             'controller' => 'User\Profile'
         ));

@@ -40,12 +40,12 @@ trait Module
 
     private function _setModule()
     {
-        $controller = '\\' . self::$interface . '\\Controller\\' . self::$controller;
-        if(!class_exists($controller) && preg_match("#^(.+?)\\\\([^\\\\]+)$#", self::$controller, $match)) {
+        $controller = '\\' . Router::$interface . '\\Controller\\' . Router::$controller;
+        if(!class_exists($controller) && preg_match("#^(.+?)\\\\([^\\\\]+)$#", Router::$controller, $match)) {
             if(in_array($match[1], $this->modules)) {
-                self::$module = $match[1];
-                self::$controllerClass = '\\sJo\\Modules\\' . self::$module . '\\' . self::$interface . '\\Controller\\' . $match[2];
-                self::$viewFile = realpath(__DIR__) . '/' . SJO_ROOT . '/Modules/' . self::$module . '/' . self::$interface . '/View/' . str_replace('\\', '/', $match[2]) . '.php';
+                Router::$module = $match[1];
+                Router::$controllerClass = '\\sJo\\Modules\\' . Router::$module . '\\' . Router::$interface . '\\Controller\\' . $match[2];
+                Router::$viewFile = realpath(__DIR__) . '/' . SJO_ROOT . '/Modules/' . Router::$module . '/' . Router::$interface . '/View/' . str_replace('\\', '/', $match[2]) . '.php';
             }
         }
     }
