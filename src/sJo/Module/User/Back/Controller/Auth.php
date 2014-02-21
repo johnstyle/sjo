@@ -1,10 +1,10 @@
 <?php
 
-namespace sJo\Modules\User\Back\Controller;
+namespace sJo\Module\User\Back\Controller;
 
 use sJo\Controller\Controller;
 use sJo\Libraries as Lib;
-use sJo\Modules\User\Model\User;
+use sJo\Module\User\Model\User;
 
 class Auth extends Controller
 {

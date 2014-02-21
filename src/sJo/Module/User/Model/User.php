@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Modules\User\Model;
+namespace sJo\Module\User\Model;
 
 use \sJo\Db\PDO\Drivers\Mysql as Db;
 use \sJo\Libraries as Lib;

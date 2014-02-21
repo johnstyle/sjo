@@ -1,10 +1,10 @@
 <?php
 
-namespace sJo\Modules\User\Back\Controller;
+namespace sJo\Module\User\Back\Controller;
 
 use sJo\Controller\Controller;
 use sJo\Libraries\I18n;
-use sJo\Modules\User\Model\User;
+use sJo\Module\User\Model\User;
 use sJo\View\Helper;
 
 class Profile extends Controller

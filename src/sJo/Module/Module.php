@@ -12,9 +12,10 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Core;
+namespace sJo\Module;
 
-use sJo\Libraries as Lib;
+use sJo\Controller\Controller;
+use sJo\Object\Event;
 
 /**
  * Module
@@ -25,43 +26,39 @@ use sJo\Libraries as Lib;
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/sjo.git
  */
-trait Module
+class Module
 {
-    private $modules = array();
+    use Event;
 
-    public function useModule($module)
+    private static $loadedModules = array();
+
+    public function __construct()
     {
-        if(!in_array($module, $this->modules)) {
-            $this->modules[] = $module;
-        }
+        if(count(self::$loadedModules)) {
 
-        return $this;
-    }
+            foreach(self::$loadedModules as $module=>$use) {
 
-    private function _setModule()
-    {
-        $controller = '\\' . Router::$interface . '\\Controller\\' . Router::$controller;
-        if(!class_exists($controller) && preg_match("#^(.+?)\\\\([^\\\\]+)$#", Router::$controller, $match)) {
-            if(in_array($match[1], $this->modules)) {
-                Router::$module = $match[1];
-                Router::$controllerClass = '\\sJo\\Modules\\' . Router::$module . '\\' . Router::$interface . '\\Controller\\' . $match[2];
-                Router::$viewFile = realpath(__DIR__) . '/' . SJO_ROOT . '/Modules/' . Router::$module . '/' . Router::$interface . '/View/' . str_replace('\\', '/', $match[2]) . '.php';
-            }
-        }
-    }
+                if ($use) {
 
-    private function _loadModules()
-    {
-        if(count($this->modules)) {
-            foreach($this->modules as $module) {
-                $className = '\\sJo\\Modules\\' . $module . '\\Loader';
-                if(class_exists($className)) {
-                    $Loader = new $className ($this->instance);
-                    if(method_exists($className, 'init')) {
-                        $Loader->init();
+                    $className = '\\sJo\\Module\\' . $module . '\\Loader';
+
+                    if(class_exists($className)) {
+                        $this->instance = new $className (new Controller());
+                        $this->event('init');
                     }
                 }
             }
         }
+    }
+
+    public static function load($module)
+    {
+        self::$loadedModules[$module] = true;
+    }
+
+    public static function loaded($module)
+    {
+        return isset(self::$loadedModules[$module])
+            && self::$loadedModules[$module] === true;
     }
 }

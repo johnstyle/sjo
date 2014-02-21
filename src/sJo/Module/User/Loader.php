@@ -1,14 +1,15 @@
 <?php
 
-namespace sJo\Modules\User;
+namespace sJo\Module\User;
 
+use sJo\Controller\Controller;
 use sJo\Core\Dependencies;
 use sJo\View\Helper;
 use sJo\Libraries\I18n;
 
 class Loader
 {
-    public function __construct($instance)
+    public function __construct(Controller $controller)
     {
         Dependencies::check(array(
             'sJo\Db\PDO\Drivers\Mysql'
@@ -24,10 +25,10 @@ class Loader
             'controller' => 'User\Profile'
         ));
 
-        $instance->Core->Session->check('User\Auth');
+        $controller->Core->Session->check('User\Auth');
     }
 
-    public function init()
+    public function __init()
     {
         return new Model\User();
     }

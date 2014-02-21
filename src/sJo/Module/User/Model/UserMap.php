@@ -1,10 +1,10 @@
 <?php
 
-namespace sJo\Modules\User\Model;
+namespace sJo\Module\User\Model;
 
-use sJo\Core\Object;
+use sJo\Object\MysqlObject;
 
-abstract class UserMap extends Object\MysqlObject
+abstract class UserMap extends MysqlObject
 {
     /** @var int ID */
     protected $id;
