@@ -3,6 +3,8 @@
 namespace sJo\View\Helper\Dom;
 
 use sJo\Core;
+use sJo\Libraries\File;
+use sJo\Libraries\I18n;
 
 abstract class Dom
 {
@@ -16,7 +18,7 @@ abstract class Dom
     {
         $this->elements = $elements;
 
-        if(!$this->elements) {
+        if (!$this->elements) {
             $this->elements = array(array(self::DEFAULT_ELEMENT => null));
         }
 
@@ -26,19 +28,19 @@ abstract class Dom
             }
         }
 
-        $this->elements();
+        $this->setElements();
     }
 
-    protected function elements()
+    protected function setElements()
     {
         foreach ($this->elements as &$element) {
-            $element = $this->element($element);
+            $element = $this->setElement($element);
         }
     }
 
-    protected function element($element)
+    protected function setElement($element)
     {
-        if(!isset($element['elements'])) {
+        if (!isset($element['elements'])) {
             $element = array('elements' => $element);
         }
 
@@ -47,6 +49,11 @@ abstract class Dom
         }
 
         return $element;
+    }
+
+    public static function setFrameworkName($name)
+    {
+        self::$frameworkName = $name;
     }
 
     /**
@@ -58,9 +65,9 @@ abstract class Dom
         return new $class(func_num_args() ? func_get_args() : null);
     }
 
-    public function display()
+    public function display($options = null)
     {
-        echo $this->html();
+        echo $this->html($options);
     }
 
     public function html()
@@ -102,9 +109,14 @@ abstract class Dom
             }
         }
 
-        ob_start();
-        include(self::$frameworkName . '/' . $file . '.php');
-        return ob_get_clean();
+        $filename = realpath(dirname(__FILE__)) . '/' . self::$frameworkName . '/' . $file . '.php';
+        if (file_exists($filename)) {
+            ob_start();
+            require $filename;
+            return ob_get_clean();
+        } else {
+            Core\Exception::error(I18n::__('helper %s/%s do not exists.', self::$frameworkName, ucfirst(basename($filename, '.php'))));
+        }
     }
 
     private function buildElements($elements)

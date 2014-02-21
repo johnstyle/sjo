@@ -4,32 +4,36 @@ namespace sJo\View\Helper;
 
 use sJo\Core;
 use sJo\Libraries as Lib;
+use sJo\View\Helper\Dom\Dom;
+use sJo\View\Helper\Dom\Register;
 
-class Style
+class Style extends Dom
 {
-    private static $registered = array();
+    use Register;
 
-    public static function register(array $items = array())
+    public function setElement($element)
     {
-        self::$registered = array_merge(self::$registered, $items);
+        foreach ($element as &$el) {
+            if (!is_array($el)) {
+                $el = array('link' => $el);
+            }
+        }
+
+        return array('elements' => $element);
     }
 
-    public static function display()
+    public static function create($registered)
     {
-        $cssPath = SJO_ROOT_PUBLIC_HTML . '/css/' . strtolower(Core\Loader::$interface);
+        $cssPath = SJO_ROOT_PUBLIC_HTML . '/css/' . strtolower(Core\Router::$interface);
         if (is_dir($cssPath)) {
             $files = Lib\Path::listFiles($cssPath);
             if($files) {
                 foreach($files as $file) {
-                    self::$registered[] = preg_replace("#^" . SJO_ROOT_PUBLIC_HTML . "/#", "", $file->path);
+                    $registered[] = preg_replace("#^" . SJO_ROOT_PUBLIC_HTML . "/#", "", $file->path);
                 }
             }
         }
 
-        if (count(self::$registered)) {
-            foreach(self::$registered as $link) {
-                echo '<link rel="stylesheet" href="' . $link . '" type="text/css">';
-            }
-        }
+        return parent::create($registered);
     }
 }

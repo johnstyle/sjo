@@ -7,7 +7,7 @@ use sJo\View\Helper\Dom\Dom;
 
 class Token extends Dom
 {
-    public function element($element)
+    public function setElement($element)
     {
         if (isset($element['__default__'])) {
             $element = array(

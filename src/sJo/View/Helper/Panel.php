@@ -6,9 +6,9 @@ use sJo\View\Helper\Dom\Dom;
 
 class Panel extends Dom
 {
-    public function element($element)
+    public function setElement($element)
     {
-        $element = parent::element($element);
+        $element = parent::setElement($element);
 
         return array_merge(array(
             'col' => null,
