@@ -25,7 +25,7 @@ use sJo\Core;
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/sjo.git
  */
-abstract class Controller
+class Controller
 {
     use Action;
     use Event;
