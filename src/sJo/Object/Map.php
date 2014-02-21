@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Core\Object;
+namespace sJo\Object;
 
 trait Map
 {

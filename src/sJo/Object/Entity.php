@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Core\Object;
+namespace sJo\Object;
 
 use sJo\Core;
 use sJo\Libraries\I18n;
