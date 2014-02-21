@@ -28,16 +28,6 @@ define('SJO_DB_USER', 'root');
 define('SJO_DB_PWD', '');
 define('SJO_DB_BASE', '');
 
-define('SJO_INTERFACE_NAME', 'interface');
-define('SJO_INTERFACE_DEFAULT', 'Front');
-
-define('SJO_CONTROLLER_NAME', 'controller');
-define('SJO_CONTROLLER_DEFAULT', 'Home');
-
-define('SJO_METHOD_NAME', 'method');
-define('SJO_METHOD_DEFAULT', '');
-
-define('SJO_CONTROLLER_METHOD_SEPARATOR', '::');
 define('SJO_BASEHREF', './');
 
 define('SJO_SALT', '1eecf9f2251f9ec8468a67df25154cb9');
