@@ -14,7 +14,7 @@
 
 namespace sJo\Core;
 
-use sJo\Core\Object\Singleton;
+use sJo\Object\Singleton;
 use sJo\Libraries as Lib;
 
 /**
@@ -39,9 +39,9 @@ class Request
 
     public function hasToken()
     {
-        $controller = str_replace('\\', '/', Loader::$controller);
+        $controller = str_replace('\\', '/', Router::$controller);
         if (Lib\Env::request('token') == $this->getToken(
-                $controller . SJO_CONTROLLER_METHOD_SEPARATOR . Loader::$method
+                $controller . Router::$__map['method']['separator'] . Router::$method
             )
         ) {
             return true;

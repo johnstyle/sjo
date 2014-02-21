@@ -47,15 +47,4 @@ class Exception extends \Exception
         $Exception = new self($msg, $code);
         $Exception->showError();
     }
-
-    public static function ErrorDocument($controller, $msg = false, $code = 0)
-    {
-        new self($msg, $code);
-
-        $Loader = new Loader('Front', 'ErrorDocument\\' . $controller);
-        $Loader->init();
-        $Loader->instance()->message = $msg;
-        $Loader->display();
-        exit;
-    }
 }

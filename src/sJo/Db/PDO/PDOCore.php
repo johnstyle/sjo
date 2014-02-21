@@ -15,6 +15,7 @@
 namespace sJo\Db\PDO;
 
 use sJo\Core;
+use sJo\Object;
 use sJo\Libraries as Lib;
 
 /**
@@ -30,8 +31,8 @@ use sJo\Libraries as Lib;
 abstract class PDOCore extends \PDO
 {
     use PDOQuery;
-    use Core\Object\Singleton {
-        Core\Object\Singleton::getInstance as SingletonGetInstance;
+    use Object\Singleton {
+        Object\Singleton::getInstance as SingletonGetInstance;
     }
 
     /**

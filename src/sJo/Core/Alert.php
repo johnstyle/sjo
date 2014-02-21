@@ -14,7 +14,7 @@
 
 namespace sJo\Core;
 
-use sJo\Core\Object\Singleton;
+use sJo\Object\Singleton;
 use sJo\Libraries as Lib;
 
 /**
