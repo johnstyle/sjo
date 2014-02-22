@@ -23,11 +23,6 @@ define('SJO_ROOT_PUBLIC_HTML', SJO_ROOT . '/public_html');
 define('SJO_ROOT_TMP', '/tmp');
 define('SJO_ROOT_LOG', SJO_ROOT . '/log');
 
-define('SJO_DB_HOST', 'localhost');
-define('SJO_DB_USER', 'root');
-define('SJO_DB_PWD', '');
-define('SJO_DB_BASE', '');
-
 define('SJO_BASEHREF', './');
 
 define('SJO_SALT', '1eecf9f2251f9ec8468a67df25154cb9');
