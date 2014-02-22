@@ -34,7 +34,7 @@ class Loader
 {
     use Event;
 
-    private $root;
+    public static $root;
 
     /**
      * Constructeur
@@ -43,11 +43,11 @@ class Loader
      */
     public function __construct()
     {
-        $this->root = dirname(realpath(__DIR__));
+        self::$root = realpath(dirname(__DIR__));
 
         /** Load Settings */
         Lib\Ini::load()
-            ->file($this->root . '/settings.default.ini')
+            ->file(self::$root . '/settings.default.ini')
             ->toDefine();
 
         if (defined('SJO_TIMEZONE')) {
@@ -56,7 +56,7 @@ class Loader
 
         /** Locale */
         $sJo_I18n = new Lib\I18n();
-        $sJo_I18n->load('default', $this->root . '/Locale');
+        $sJo_I18n->load('default', self::$root . '/Locale');
 
         /** Router */
         new Router($this);

@@ -82,11 +82,7 @@ class Session
         if (Router::$controller != $auth) {
             if (!$this->isActive()) {
                 http_response_code(401);
-                $this->redirect(
-                    SJO_BASEHREF . '/' . str_replace('\\', '/', $auth) . '/?redirect=' . urlencode(
-                        Lib\Env::server('REQUEST_URI')
-                    )
-                );
+                $this->redirect(Router::link($auth, array('redirect' => Lib\Env::server('REQUEST_URI'))));
             }
         } elseif ($this->isActive() && !Router::$method) {
             $this->redirect();

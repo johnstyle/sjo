@@ -34,19 +34,72 @@ class Router
     public function __construct(Loader $loader)
     {
         /** Interface */
-        self::setInterface();
+        self::loadInterface();
 
         /** Controller */
-        self::setController();
+        self::loadController();
 
         /** View */
-        self::setView();
+        self::loadView();
 
         /** Method */
-        self::setMethod();
+        self::loadMethod();
 
         /** Module */
-        self::setModule();
+        self::loadModule();
+    }
+
+    public static function defaultInterface($interface)
+    {
+        self::$__map['interface']['default'] = $interface;
+    }
+
+    public static function defaultController($controller)
+    {
+        self::$__map['controller']['default'] = $controller;
+    }
+
+    private static function loadInterface()
+    {
+        self::$interface = Lib\Env::get(self::$__map['interface']['name'], self::$__map['interface']['default']);
+    }
+
+    private static function loadController()
+    {
+        self::$controller = Lib\Env::request(self::$__map['controller']['name'], self::$__map['controller']['default']);
+        self::$controller = trim(self::$controller, '/');
+        self::$controller = str_replace('/', '\\', self::$controller);
+        self::$controllerClass = '\\' . self::$interface . '\\Controller\\' . self::$controller;
+    }
+
+    private static function loadView()
+    {
+        self::$viewRoot = SJO_ROOT_APP . '/' . self::$interface . '/View';
+        self::$viewFile = self::$viewRoot . '/' . str_replace('\\', '/', self::$controller) . '.php';
+    }
+
+    private static function loadMethod()
+    {
+        self::$method = Lib\Env::request(self::$__map['method']['name'], self::$__map['method']['default']);
+    }
+
+    private static function loadModule()
+    {
+        if(!class_exists(self::$controllerClass)
+            && preg_match("#^(.+?)\\\\([^\\\\]+)$#", self::$controller, $match)) {
+            if (Module::loaded($match[1])) {
+                self::$module = $match[1];
+                self::$controllerClass = '\\sJo\\Module\\' . self::$module . (self::$interface ? '\\' . self::$interface : '') . '\\Controller\\' . $match[2];
+                self::$viewFile = realpath(__DIR__) . '/' . SJO_ROOT . '/Module/' . self::$module . (self::$interface ? '/' . self::$interface : '') . '/View/' . str_replace('\\', '/', $match[2]) . '.php';
+            }
+        }
+    }
+
+    public static function ErrorDocument($controller)
+    {
+        self::reset();
+        self::$controller = 'ErrorDocument\\' . $controller;
+        self::loadModule();
     }
 
     private static function reset()
@@ -60,46 +113,10 @@ class Router
         self::$module = null;
     }
 
-    public static function ErrorDocument($controller)
+    public static function link($controller, array $params = null)
     {
-        self::reset();
-        self::$controller = 'ErrorDocument\\' . $controller;
-        self::setModule();
-    }
-
-    private static function setInterface()
-    {
-        self::$interface = Lib\Env::get(self::$__map['interface']['name'], self::$__map['interface']['default']);
-    }
-
-    private static function setController()
-    {
-        self::$controller = Lib\Env::request(self::$__map['controller']['name'], self::$__map['controller']['default']);
-        self::$controller = trim(self::$controller, '/');
-        self::$controller = str_replace('/', '\\', self::$controller);
-        self::$controllerClass = '\\' . self::$interface . '\\Controller\\' . self::$controller;
-    }
-
-    private static function setView()
-    {
-        self::$viewRoot = SJO_ROOT_APP . '/' . self::$interface . '/View';
-        self::$viewFile = self::$viewRoot . '/' . str_replace('\\', '/', self::$controller) . '.php';
-    }
-
-    private static function setMethod()
-    {
-        self::$method = Lib\Env::request(self::$__map['method']['name'], self::$__map['method']['default']);
-    }
-
-    private static function setModule()
-    {
-        if(!class_exists(self::$controllerClass)
-            && preg_match("#^(.+?)\\\\([^\\\\]+)$#", self::$controller, $match)) {
-            if (Module::loaded($match[1])) {
-                self::$module = $match[1];
-                self::$controllerClass = '\\sJo\\Module\\' . self::$module . (self::$interface ? '\\' . self::$interface : '') . '\\Controller\\' . $match[2];
-                self::$viewFile = realpath(__DIR__) . '/' . SJO_ROOT . '/Module/' . self::$module . (self::$interface ? '/' . self::$interface : '') . '/View/' . str_replace('\\', '/', $match[2]) . '.php';
-            }
-        }
+        return SJO_BASEHREF
+            . '/' . str_replace('\\', '/', $controller)
+            . ($params ? '/?' . http_build_query($params) : '');
     }
 }
