@@ -14,7 +14,7 @@
 
 namespace sJo\Libraries;
 
-use sJo\Core\Session;
+use sJo\Controller\Component\Session;
 
 /**
  * Variables d'environnement

@@ -9,7 +9,7 @@ class User extends UserMap
     public function __construct($id = null)
     {
         if($id === null) {
-            $id = Lib\Env::session('token');
+            $id = Lib\Env::session('id');
         }
 
         parent::__construct($id);

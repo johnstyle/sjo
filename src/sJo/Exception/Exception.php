@@ -12,7 +12,7 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Core;
+namespace sJo\Exception;
 
 /**
  * Gestion des Exception
@@ -30,7 +30,7 @@ class Exception extends \Exception
      *
      * @param null $msg
      * @param int $code
-     * @return \sJo\Core\Exception
+     * @return \sJo\Exception\Exception
      */
     public function __construct($msg = null, $code = 0)
     {

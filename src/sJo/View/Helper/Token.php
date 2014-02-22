@@ -2,7 +2,7 @@
 
 namespace sJo\View\Helper;
 
-use sJo\Core;
+use sJo\Controller\Component\Component;
 use sJo\View\Helper\Dom\Dom;
 
 class Token extends Dom
@@ -26,7 +26,7 @@ class Token extends Dom
                 $method = $match[5];
             }
 
-            $element['token'] = Core\Request::getInstance()->getToken($element['token']);
+            $element['token'] = Component::getInstance()->request->getToken($element['token']);
         }
 
         return array('elements' => array_merge(array(

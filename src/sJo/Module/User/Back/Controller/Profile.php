@@ -15,7 +15,7 @@ class Profile extends Controller
 
         $this->name = I18n::__('My profil');
 
-        Helper\Menu::main(array(
+        Helper\Menu::addRegistry('main', array(
             'title' => I18n::__('My profil'),
             'controller' => 'User\Profile'
         ));

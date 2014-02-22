@@ -2,7 +2,7 @@
 
 namespace sJo\View\Helper\Dom;
 
-use sJo\Core;
+use sJo\Exception\Exception;
 use sJo\Libraries\I18n;
 
 trait Register
@@ -44,7 +44,7 @@ trait Register
         if (isset(self::$registry[$name])) {
             return true;
         } else {
-            Core\Exception::error(I18n::__('%s element %s is nor registered.', __CLASS__, $name));
+            Exception::error(I18n::__('%s element %s is nor registered.', __CLASS__, $name));
         }
         return false;
     }

@@ -2,7 +2,7 @@
 
 namespace sJo\Object;
 
-use sJo\Core;
+use sJo\Exception\Exception;
 use sJo\Libraries\I18n;
 
 trait Entity
@@ -12,7 +12,7 @@ trait Entity
         if($this->__isset($name)) {
             return $this->{$name};
         } else {
-            Core\Exception::error(I18n::__('This property %s does not exist.', $name));
+            Exception::error(I18n::__('This property %s does not exist.', $name));
         }
 
         return false;
@@ -23,7 +23,7 @@ trait Entity
         if($this->__isset($name)) {
             $this->{$name} = $value;
         } else {
-            Core\Exception::error(I18n::__('This property %s does not exist.', $name));
+            Exception::error(I18n::__('This property %s does not exist.', $name));
         }
 
         return $this;
@@ -40,7 +40,7 @@ trait Entity
         if($this->__isset($name)) {
             unset($this->{$name});
         } else {
-            Core\Exception::error(I18n::__('This property %s does not exist.', $name));
+            Exception::error(I18n::__('This property %s does not exist.', $name));
         }
     }
 

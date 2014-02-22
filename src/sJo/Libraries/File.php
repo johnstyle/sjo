@@ -12,7 +12,7 @@
 
 namespace sJo\Libraries;
 
-use sJo\Core;
+use sJo\Exception\Exception;
 
 abstract class File
 {
@@ -21,7 +21,7 @@ abstract class File
         if(is_writable(Path::parent($file))) {
             return file_put_contents($file, $content, $options);
         } else {
-            Core\Exception::error(I18n::__('Unable to write to file %s', $file));
+            Exception::error(I18n::__('Unable to write to file %s', $file));
         }
 
         return false;
@@ -60,7 +60,7 @@ abstract class File
         if(file_exists($file)) {
             require $file;
         } else {
-            Core\Exception::error(I18n::__('File %s do not exists', $file));
+            Exception::error(I18n::__('File %s do not exists', $file));
         }
     }
 

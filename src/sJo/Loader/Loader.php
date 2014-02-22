@@ -14,6 +14,7 @@
 
 namespace sJo\Loader;
 
+use sJo\Exception\Exception;
 use sJo\Object\Event;
 use sJo\Libraries as Lib;
 use sJo\Helpers;
@@ -117,7 +118,7 @@ class Loader
                 case 'json' :
                     header('Content-type:application/json; charset=' . SJO_CHARSET);
                     if (method_exists(Router::$controllerClass, Router::$method)) {
-                        if ($this->instance->Core->Request->hasToken()) {
+                        if ($this->instance->component->request->hasToken()) {
                             echo json_encode($this->instance->{Router::$method}());
                         } else {
                             $this->ErrorDocument('http403', Lib\I18n::__('Warning ! Prohibited queries.'));
@@ -128,7 +129,7 @@ class Loader
                 default :
                     header('Content-type:text/html; charset=' . SJO_CHARSET);
                     if (method_exists(Router::$controllerClass, Router::$method)) {
-                        if ($this->instance->Core->Request->hasToken()) {
+                        if ($this->instance->component->request->hasToken()) {
                             $this->instance->{Router::$method}();
                         } else {
                             $this->ErrorDocument('http403', Lib\I18n::__('Warning ! Prohibited queries.'));

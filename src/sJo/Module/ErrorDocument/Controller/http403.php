@@ -17,7 +17,7 @@ class http403 extends Controller
             $this->message = Libs\I18n::__('From htaccess');
         }
 
-        $this->Logger->error('Error 403: {message}', array(
+        $this->component->logger->error('Error 403: {message}', array(
             'message' => $this->message
         ));
     }

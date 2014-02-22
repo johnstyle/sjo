@@ -61,7 +61,7 @@ class Ini
      * @param string $method
      * @return $this
      */
-    public function path($paths, $regexp = false, $method = '<name>')
+    public function path($paths, $regexp = false, $method = '{name}')
     {
         $regexp = $regexp ? $regexp : "^(.+)\.ini$";
         foreach (Arr::to($paths) as $path) {
@@ -69,7 +69,7 @@ class Ini
             if ($files) {
                 foreach ($files as $file) {
                     $name = str_replace('-', '_', $file->match[1]);
-                    $name = $file->parentname == $name ? $name : str_replace('<name>', $name, $method);
+                    $name = $file->parentname == $name ? $name : str_replace('{name}', $name, $method);
                     $this->parseIniFile($file->path, $name);
                 }
             }

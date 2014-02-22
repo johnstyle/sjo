@@ -14,7 +14,8 @@
 
 namespace sJo\Db\PDO;
 
-use sJo\Core;
+use sJo\Exception\Exception;
+use sJo\Module\Dependencies;
 use sJo\Object;
 use sJo\Libraries as Lib;
 
@@ -91,7 +92,7 @@ abstract class PDOCore extends \PDO
             }
 
             $this->commit();
-        } catch (Core\Exception $Exception) {
+        } catch (Exception $Exception) {
 
             $this->rollback();
             $Exception::error(Lib\I18n::__('Drivers bulk rollback.'));
@@ -152,7 +153,7 @@ abstract class PDOCore extends \PDO
         if (isset(self::$auth[$id])) {
             return static::SingletonGetInstance(self::$auth[$id], $id);
         } else {
-            Core\Exception::error(Lib\I18n::__('Drivers Unknow Auth ID %s.', $id));
+            Exception::error(Lib\I18n::__('Drivers Unknow Auth ID %s.', $id));
         }
         return false;
     }
@@ -164,7 +165,7 @@ abstract class PDOCore extends \PDO
      */
     final public static function auth(array $data)
     {
-        Core\Dependencies::register(get_called_class());
+        Dependencies::register(get_called_class());
 
         self::$auth = $data;
 

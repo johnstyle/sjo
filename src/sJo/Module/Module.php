@@ -14,7 +14,7 @@
 
 namespace sJo\Module;
 
-use sJo\Controller\Controller;
+use sJo\Controller\Component\Component;
 use sJo\Object\Event;
 
 /**
@@ -43,7 +43,7 @@ class Module
                     $className = '\\sJo\\Module\\' . $module . '\\Loader';
 
                     if(class_exists($className)) {
-                        $this->instance = new $className (new Controller());
+                        $this->instance = new $className (new Component());
                         $this->event('init');
                     }
                 }

@@ -14,7 +14,7 @@
 
 namespace sJo\Libraries;
 
-use sJo\Core;
+use sJo\Exception\Exception;
 
 /**
  * Gestion du multilanguage
@@ -50,7 +50,7 @@ class I18n
         putenv('LC_ALL=' . $language);
 
         if(setlocale(LC_ALL, $language) != $language) {
-            Core\Exception::error('I18n locale ' . $language . ' do not exists.');
+            Exception::error('I18n locale ' . $language . ' do not exists.');
         }
     }
 
@@ -70,7 +70,7 @@ class I18n
                 bind_textdomain_codeset($domain, SJO_CHARSET);
             }
         } else {
-            Core\Exception::error('I18n directory ' . $directory . ' do not exists.');
+            Exception::error('I18n directory ' . $directory . ' do not exists.');
         }
     }
 

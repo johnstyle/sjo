@@ -13,26 +13,26 @@ class Auth extends Controller
         if(Lib\Env::post('email')) {
             if(Lib\Env::post('password')) {
                 if($token = User::getInstance()->exists(Lib\Env::post('email'), Lib\Env::post('password'))) {
-                    $this->Logger->info('Signin {user}', array(
+                    $this->component->logger->info('Signin {user}', array(
                         'user' => Lib\Env::post('email')
                     ));
-                    $this->Core->Session->signin($token);
+                    $this->component->session->signin($token);
                 } else {
-                    $this->Core->Alert->set(Lib\I18n::__('Les informations de connexion sont incorrects'));
+                    $this->component->alert->set(Lib\I18n::__('Les informations de connexion sont incorrects'));
                 }
             } else {
-                $this->Core->Alert->set(Lib\I18n::__('Veuillez renseigner votre mot de passe'));
+                $this->component->alert->set(Lib\I18n::__('Veuillez renseigner votre mot de passe'));
             }
         } else {
-            $this->Core->Alert->set(Lib\I18n::__('Veuillez renseigner votre identifiant'));
+            $this->component->alert->set(Lib\I18n::__('Veuillez renseigner votre identifiant'));
         }
     }
 
     public function signout ()
     {
-        $this->Logger->info('Signout {user}', array(
+        $this->component->logger->info('Signout {user}', array(
             'user' => Lib\Env::session('token')
         ));
-        $this->Core->Session->signout();
+        $this->component->session->signout();
     }
 }

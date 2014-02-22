@@ -12,9 +12,10 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Core;
+namespace sJo\Module;
 
 use sJo\Libraries as Lib;
+use sJo\Exception\Exception;
 
 /**
  * Gestion des Dépendances

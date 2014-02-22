@@ -1,9 +1,9 @@
 <?php
 
-use sJo\Core\Alert;
+use sJo\Controller\Component\Component;
 
-if(Alert::exists()): ?>
-    <?php foreach (Alert::get() as $type => $alerts): ?>
+if(Component::getInstance()->alert->exists()): ?>
+    <?php foreach (Component::getInstance()->alert->get() as $type => $alerts): ?>
         <div class="alert alert-<?php echo $type; ?>">
         <?php if(count($alerts) > 1): ?>
             <ol>

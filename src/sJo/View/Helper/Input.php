@@ -2,7 +2,6 @@
 
 namespace sJo\View\Helper;
 
-use sJo\Core;
 use sJo\View\Helper\Dom\Dom;
 
 class Input extends Dom

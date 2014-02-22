@@ -17,7 +17,7 @@ class http404 extends Controller
             $this->message = Libs\I18n::__('From htaccess');
         }
 
-        $this->Logger->error('Error 404: {message}', array(
+        $this->component->logger->error('Error 404: {message}', array(
             'message' => $this->message
         ));
     }

@@ -2,7 +2,7 @@
 
 namespace sJo\View\Helper\Dom;
 
-use sJo\Core;
+use sJo\Exception\Exception;
 use sJo\Libraries\I18n;
 
 abstract class Dom
@@ -114,7 +114,7 @@ abstract class Dom
             require $filename;
             return ob_get_clean();
         } else {
-            Core\Exception::error(I18n::__('helper %s/%s do not exists.', self::$frameworkName, ucfirst(basename($filename, '.php'))));
+            Exception::error(I18n::__('helper %s/%s do not exists.', self::$frameworkName, ucfirst(basename($filename, '.php'))));
         }
         return false;
     }

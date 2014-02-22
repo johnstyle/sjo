@@ -14,6 +14,7 @@
 
 namespace sJo\View;
 
+use sJo\Controller\Controller;
 use sJo\Loader\Router;
 
 /**
@@ -30,23 +31,9 @@ final class View
     /**
      * Model references
      *
-     * @var \sJo\Controller\Controller
+     * @var Controller
      */
-    public static $Controller;
-
-    /**
-     * Core references
-     *
-     * @var object
-     */
-    public static $Core;
-
-    /**
-     * Logger references
-     *
-     * @var \sJo\Core\Logger
-     */
-    public static $Logger;
+    public static $controller;
 
     /**
      * Constructor
@@ -54,11 +41,9 @@ final class View
      * @param $instance
      * @return \sJo\View\View
      */
-    public function __construct(&$instance)
+    public function __construct(Controller &$instance)
     {
-        self::$Controller =& $instance;
-        self::$Core =& $instance->Core;
-        self::$Logger =& $instance->Logger;
+        self::$controller =& $instance;
     }
 
     /**
