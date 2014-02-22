@@ -61,7 +61,7 @@ class Controller
     /**
      * Module references
      *
-     * @var Core\Module
+     * @var \sJo\Module\Module
      */
     public $Module;
 
