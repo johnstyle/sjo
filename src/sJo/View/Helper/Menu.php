@@ -59,5 +59,6 @@ class Menu extends Dom
                 }
             }
         }
+        return false;
     }
 }

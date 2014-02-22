@@ -117,6 +117,7 @@ abstract class Dom
         } else {
             Core\Exception::error(I18n::__('helper %s/%s do not exists.', self::$frameworkName, ucfirst(basename($filename, '.php'))));
         }
+        return false;
     }
 
     private function buildElements($elements)

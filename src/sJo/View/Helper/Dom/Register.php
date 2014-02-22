@@ -36,6 +36,7 @@ trait Register
         if (self::isRegistered($name)) {
             return count(self::$registry[$name]['elements']);
         }
+        return false;
     }
 
     private static function isRegistered($name = null)
