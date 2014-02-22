@@ -5,6 +5,7 @@ namespace sJo\View\Helper;
 use sJo\Loader\Router;
 use sJo\View\Helper\Dom\Dom;
 use sJo\View\Helper\Dom\Register;
+use sJo\Libraries as Lib;
 
 class Menu extends Dom
 {
@@ -12,16 +13,13 @@ class Menu extends Dom
 
     public static function setRegistry($element)
     {
-        return array_merge(
-            array(
-                'type' => 'navbar',
-                'items' => null,
-                'pull' => null,
-                'container' => null,
-                'elements' => array()
-            ),
-            $element
-        );
+        return Lib\Arr::extend(array(
+            'type' => 'navbar',
+            'items' => null,
+            'pull' => null,
+            'container' => null,
+            'elements' => array()
+        ), $element);
     }
 
     public static function addRegistry($name, $options)
@@ -32,32 +30,29 @@ class Menu extends Dom
                 $options['controller'] = Router::link($options['controller']);
             }
 
-            self::$registry[$name]['elements'][] = array_merge(
-                array(
-                    'icon' => null,
-                    'title' => null,
-                    'tooltip' => null,
-                    'controller' => null,
-                    'link' => null,
-                    'isActive' => false
-                ),
-                $options
-            );
+            self::$registry[$name]['elements'][] = Lib\Arr::extend(array(
+                'icon' => null,
+                'title' => null,
+                'tooltip' => null,
+                'controller' => null,
+                'link' => null,
+                'isActive' => false
+            ), $options);
         }
     }
 
-    public function html($name = null)
+    public function html(array $options = null)
     {
-        if (self::isRegistered($name)) {
-            if(count(self::$registry[$name]['elements'])) {
-                switch (self::$registry[$name]['type']) {
+        if (self::isRegistered($options['method'])) {
+            if(count(self::$registry[$options['method']]['elements'])) {
+                switch (self::$registry[$options['method']]['type']) {
                     case 'navbar';
-                        return $this->inc('nav', array_merge(self::$registry[$name], array(
+                        return $this->inc('nav', Lib\Arr::extend(self::$registry[$options['method']], array(
                             'container' => 'nav'
                         )));
                         break;
                     case 'sidebar';
-                        return $this->inc('nav', array_merge(self::$registry[$name], array(
+                        return $this->inc('nav', Lib\Arr::extend(self::$registry[$options['method']], array(
                             'container' => 'aside'
                         )));
                         break;

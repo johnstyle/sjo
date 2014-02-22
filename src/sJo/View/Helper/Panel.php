@@ -3,6 +3,7 @@
 namespace sJo\View\Helper;
 
 use sJo\View\Helper\Dom\Dom;
+use sJo\Libraries as Lib;
 
 class Panel extends Dom
 {
@@ -10,7 +11,7 @@ class Panel extends Dom
     {
         $element = parent::setElement($element);
 
-        return array_merge(array(
+        return Lib\Arr::extend(array(
             'col' => null,
             'type' => 'default',
             'container' => array(

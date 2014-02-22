@@ -64,22 +64,23 @@ abstract class Dom
         return new $class(func_num_args() ? func_get_args() : null);
     }
 
-    public function display($options = null)
+    public function display(array $options = null)
     {
         echo $this->html($options);
     }
 
-    public function html()
+    public function html(array $options = null)
     {
-        $class = new \ReflectionClass(get_called_class());
-        $method = strtolower($class->getShortName());
-        $method = str_replace('dom', '', $method);
+        if(!isset($options['method'])) {
+            $class = new \ReflectionClass(get_called_class());
+            $options['method'] = str_replace('dom', '', strtolower($class->getShortName()));
+        }
 
         $html = '';
 
         if ($this->elements) {
             foreach ($this->elements as $element) {
-                $html .= $this->inc($method, $this->buildElements($element));
+                $html .= $this->inc($options['method'], $this->buildElements($element));
             }
         }
 

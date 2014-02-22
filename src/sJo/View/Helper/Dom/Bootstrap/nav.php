@@ -8,11 +8,11 @@ use sJo\Loader\Router;
         <?php foreach(self::$view->elements as $element): ?>
             <li<?php if($element['controller'] == Router::$controller): ?> class="active"<?php endif; ?>>
                 <a
-                    <?php if($element['controller']): ?>
-                        href="<?php echo $element['controller']; ?>"
-                    <?php elseif($element['link']): ?>
+                    <?php if($element['link']): ?>
                         href="<?php echo $element['link']; ?>"
                         target="_blank"
+                    <?php else: ?>
+                        href="<?php echo $element['controller']; ?>"
                     <?php endif; ?>
                     <?php if($element['tooltip']): ?>
                         data-toggle="tooltip"

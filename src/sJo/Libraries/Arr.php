@@ -19,21 +19,27 @@ abstract class Arr
      *
      * return array
      */
-    public static function extend(array $array, array $array2 = array())
+    public static function extend(array $default = null, array $array = null)
     {
-        foreach($array2 as $name=>$value) {
-            if(is_array($value)) {
-                $default = array();
-                if(isset($array[$name])) {
-                    $default = $array[$name];
+        if (is_null($default)) {
+            $default = array();
+        }
+
+        if(!is_null($array)) {
+            foreach($array as $name=>$value) {
+                if(is_array($value)) {
+                    $defaultValue = array();
+                    if(isset($default[$name])) {
+                        $defaultValue = $default[$name];
+                    }
+                    $default[$name] = self::extend($defaultValue, $value);
+                } else {
+                    $default[$name] = $value;
                 }
-                $array[$name] = self::extend($default, $value);
-            } else {
-                $array[$name] = $value;
             }
         }
 
-        return $array;
+        return $default;
     }
 
     /**

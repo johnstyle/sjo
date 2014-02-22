@@ -4,6 +4,7 @@ namespace sJo\View\Helper;
 
 use sJo\Controller\Component\Component;
 use sJo\View\Helper\Dom\Dom;
+use sJo\Libraries as Lib;
 
 class Token extends Dom
 {
@@ -29,7 +30,7 @@ class Token extends Dom
             $element['token'] = Component::getInstance()->request->getToken($element['token']);
         }
 
-        return array('elements' => array_merge(array(
+        return array('elements' => Lib\Arr::extend(array(
             'token' => null,
             'controller' => $controller,
             'method' => $method

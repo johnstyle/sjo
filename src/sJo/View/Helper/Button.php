@@ -3,6 +3,7 @@
 namespace sJo\View\Helper;
 
 use sJo\View\Helper\Dom\Dom;
+use sJo\Libraries as Lib;
 
 class Button extends Dom
 {
@@ -12,7 +13,7 @@ class Button extends Dom
             $element = array('value' => $element);
         }
 
-        return array_merge(array(
+        return Lib\Arr::extend(array(
             'type' => 'submit',
             'class' => null,
             'name' => null,

@@ -12,6 +12,8 @@
 
 namespace sJo\Libraries;
 
+use sJo\Libraries as Lib;
+
 class Csv
 {
     protected $file;
@@ -32,7 +34,7 @@ class Csv
     public function __construct ($options = array())
     {
         /** @formatter:off */
-        $this->options = array_merge(array(
+        $this->options = Lib\Arr::extend(array(
             'hasHeader'     => true,
             'lineStart'     => 0,
             'isArray'       => false,

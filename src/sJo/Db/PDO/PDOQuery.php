@@ -2,6 +2,8 @@
 
 namespace sJo\Db\PDO;
 
+use sJo\Libraries as Lib;
+
 trait PDOQuery
 {
     private $table;
@@ -84,7 +86,7 @@ trait PDOQuery
         if ($where) {
 
             $set = self::setValues($values);
-            $values = array_merge($values, $where);
+            $values = Lib\Arr::extend($values, $where);
 
             $query = '
                 UPDATE `' . $this->table . '`

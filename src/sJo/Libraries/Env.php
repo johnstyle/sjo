@@ -189,7 +189,7 @@ abstract class Env
                     array_push($longopts, $item);
                 }
             }
-            self::$opt = array_merge(self::$opt, getopt($options, $longopts));
+            self::$opt = Arr::extend(self::$opt, getopt($options, $longopts));
         }
     }
 
