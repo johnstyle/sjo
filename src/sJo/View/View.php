@@ -14,7 +14,7 @@
 
 namespace sJo\View;
 
-use sJo\Core\Router;
+use sJo\Loader\Router;
 
 /**
  * Gestion des Vues

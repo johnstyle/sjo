@@ -16,6 +16,7 @@ namespace sJo\Core;
 
 use sJo\Object\Singleton;
 use sJo\Libraries as Lib;
+use sJo\Loader\Router;
 
 /**
  * Gestion des requêtes

@@ -15,6 +15,7 @@
 namespace sJo\Core;
 
 use sJo\Libraries as Lib;
+use sJo\Loader\Router;
 
 /**
  * Gestion des sesions de connexion
@@ -80,25 +81,22 @@ class Session
 
         if (Router::$controller != $auth) {
             if (!$this->isActive()) {
-                if (Lib\Env::get('token')) {
-                    $this->isActive(Lib\Env::get('token'));
-                } else {
-                    http_response_code(401);
-                    $this->redirect(
-                        SJO_BASEHREF . '/' . str_replace('\\', '/', $auth) . '/?redirect=' . urlencode(
-                            Lib\Env::server('REQUEST_URI')
-                        )
-                    );
-                }
+                http_response_code(401);
+                $this->redirect(
+                    SJO_BASEHREF . '/' . str_replace('\\', '/', $auth) . '/?redirect=' . urlencode(
+                        Lib\Env::server('REQUEST_URI')
+                    )
+                );
             }
         } elseif ($this->isActive() && !Router::$method) {
             $this->redirect();
         }
     }
 
-    public function signin($token, $url = SJO_BASEHREF)
+    public function signin($id, $url = SJO_BASEHREF)
     {
-        Lib\Env::sessionSet('token', $token);
+        Lib\Env::sessionSet('token', Lib\Crypto\Crypto::md5($id));
+        Lib\Env::sessionSet('id', $id);
         $this->redirect($url);
     }
 
@@ -129,7 +127,8 @@ class Session
 
     public function isActive()
     {
-        if (Lib\Env::session('token')) {
+        if (Lib\Env::session('id')
+            && Lib\Env::session('token') === Lib\Crypto\Crypto::md5(Lib\Env::session('id'))) {
             return true;
         }
         return false;
@@ -137,9 +136,8 @@ class Session
 
     public static function getToken($options = false)
     {
-        return md5(
-            SJO_SALT
-            . Lib\Env::server('REMOTE_ADDR')
+        return Lib\Crypto\Crypto::md5(
+              Lib\Env::server('REMOTE_ADDR')
             . Lib\Env::server('HTTP_USER_AGENT')
             . Lib\Env::server('HTTP_HOST')
             . $options

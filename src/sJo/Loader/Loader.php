@@ -12,7 +12,7 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Core;
+namespace sJo\Loader;
 
 use sJo\Object\Event;
 use sJo\Libraries as Lib;
@@ -38,7 +38,7 @@ class Loader
     /**
      * Constructeur
      *
-     * @return \sJo\Core\Loader
+     * @return \sJo\Loader\Loader
      */
     public function __construct()
     {

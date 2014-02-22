@@ -2,7 +2,7 @@
 
 namespace sJo\View\Helper;
 
-use sJo\Core;
+use sJo\Loader\Router;
 use sJo\Libraries as Lib;
 use sJo\View\Helper\Dom\Dom;
 use sJo\View\Helper\Dom\Register;
@@ -24,7 +24,7 @@ class Style extends Dom
 
     public static function create($registered)
     {
-        $cssPath = SJO_ROOT_PUBLIC_HTML . '/css/' . strtolower(Core\Router::$interface);
+        $cssPath = SJO_ROOT_PUBLIC_HTML . '/css/' . strtolower(Router::$interface);
         if (is_dir($cssPath)) {
             $files = Lib\Path::listFiles($cssPath);
             if($files) {

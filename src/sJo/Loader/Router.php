@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Core;
+namespace sJo\Loader;
 
 use sJo\Libraries as Lib;
 use sJo\Module\Module;
