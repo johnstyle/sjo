@@ -4,36 +4,42 @@ namespace sJo\Module\User\Model;
 
 use sJo\Object\MysqlObject;
 
+/**
+ * @property $id int
+ * @property $name string
+ * @property $email string
+ * @property $password string
+ */
 abstract class UserMap extends MysqlObject
 {
-    /** @var int ID */
+    /** @var int $id ID */
     protected $id;
-    /** @var string Name */
+    /** @var string $name Name */
     protected $name;
-    /** @var string Email */
+    /** @var string $email Email */
     protected $email;
-    /** @var string Password */
+    /** @var string $password Password */
     protected $password;
-    /** @var array DB map */
+    /** @var array $__map DB map */
     protected $__map = array(
         'table' => 'users',
         'columns' => array(
-            'id'    => array(
-                'primary'   => true,
-                'type'      => 'int',
-                'length'    => 11
+            'id' => array(
+                'primary' => true,
+                'type' => 'int',
+                'length' => 11
             ),
-            'name'  => array(
-                'type'      => 'varchar',
-                'length'    => 20
+            'name' => array(
+                'type' => 'varchar',
+                'length' => 20
             ),
-            'email'     => array(
-                'type'      => 'varchar',
-                'length'    => 100
+            'email' => array(
+                'type' => 'varchar',
+                'length' => 100
             ),
-            'password'  => array(
-                'type'      => 'char',
-                'length'    => 32
+            'password' => array(
+                'type' => 'char',
+                'length' => 32
             )
         )
     );

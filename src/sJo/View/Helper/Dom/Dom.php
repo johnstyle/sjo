@@ -3,7 +3,6 @@
 namespace sJo\View\Helper\Dom;
 
 use sJo\Core;
-use sJo\Libraries\File;
 use sJo\Libraries\I18n;
 
 abstract class Dom

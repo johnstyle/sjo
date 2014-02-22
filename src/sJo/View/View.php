@@ -15,7 +15,6 @@
 namespace sJo\View;
 
 use sJo\Core\Router;
-use sJo\Libraries\File;
 
 /**
  * Gestion des Vues
@@ -92,10 +91,10 @@ final class View
      * Inclusion d'un fichier du template
      *
      * @param $filename
-     * @param bool $vars
+     * @param array $vars
      * @return void
      */
-    public static function inc($filename, $vars = false)
+    public static function inc($filename, array $vars = null)
     {
         $file = Router::$viewRoot . '/' . $filename . '.php';
 

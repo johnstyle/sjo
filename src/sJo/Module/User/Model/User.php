@@ -2,7 +2,6 @@
 
 namespace sJo\Module\User\Model;
 
-use \sJo\Db\PDO\Drivers\Mysql as Db;
 use \sJo\Libraries as Lib;
 
 class User extends UserMap
