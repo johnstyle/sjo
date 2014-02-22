@@ -12,7 +12,9 @@ use sJo\View\Helper;
     <base href="<?php echo SJO_BASEHREF; ?>" />
     <title><?php Lib\I18n::_e('Authentification'); ?></title>
     <meta name="description" content="<?php Lib\I18n::_e('Authentification'); ?>">
-    <?php Helper\Style::applyRegistry(); ?>
+    <?php if(Helper\Style::hasRegistry()): ?>
+        <?php Helper\Style::applyRegistry(); ?>
+    <?php endif; ?>
     <style type="text/css">
         body{background:#333}
         .form-signin{background:#fff;width:300px;margin:150px auto 0;padding:0 20px 20px;border:5px solid #000;border-radius:10px;box-shadow:0 0 10px #000}
