@@ -25,4 +25,4 @@ define('SJO_ROOT_LOG', SJO_ROOT . '/log');
 
 define('SJO_BASEHREF', './');
 
-define('SJO_SALT', '1eecf9f2251f9ec8468a67df25154cb9');
+define('SJO_CRYPTO_SALT', null);
