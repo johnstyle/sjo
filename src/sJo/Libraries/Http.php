@@ -100,10 +100,10 @@ class Http
         return Arr::getTree($this->info, $name);
     }
 
-    public function response($format = false, $options = false, $callback = false)
+    public function response($format = null, $options = null, callable $callback = null)
     {
         if ($this->info('http_code') == 200) {
-            if ($callback && is_callable($callback)) {
+            if ($callback) {
                 $this->response = call_user_func($callback, $this->response);
             }
             switch ($format) {

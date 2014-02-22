@@ -54,4 +54,20 @@ abstract class File
         }
         return false;
     }
+
+    public static function __require($file)
+    {
+        if(file_exists($file)) {
+            require $file;
+        } else {
+            Core\Exception::error(I18n::__('File %s do not exists', $file));
+        }
+    }
+
+    public static function __include($file)
+    {
+        if(file_exists($file)) {
+            require $file;
+        }
+    }
 }

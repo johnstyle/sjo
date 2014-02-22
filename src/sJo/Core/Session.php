@@ -78,7 +78,7 @@ class Session
     {
         self::start();
 
-        if (Loader::$controller != $auth) {
+        if (Router::$controller != $auth) {
             if (!$this->isActive()) {
                 if (Lib\Env::get('token')) {
                     $this->isActive(Lib\Env::get('token'));
@@ -91,7 +91,7 @@ class Session
                     );
                 }
             }
-        } elseif ($this->isActive() && !Loader::$method) {
+        } elseif ($this->isActive() && !Router::$method) {
             $this->redirect();
         }
     }

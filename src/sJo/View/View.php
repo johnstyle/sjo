@@ -14,7 +14,7 @@
 
 namespace sJo\View;
 
-use sJo\Core\Loader;
+use sJo\Core\Router;
 
 /**
  * Gestion des Vues
@@ -82,24 +82,21 @@ final class View
     }
 
 
-    public static function load()
+    public static function display()
     {
-        if(file_exists(Loader::$viewFile)) {
-            include Loader::$viewFile;
-        }
+        require Router::$viewFile;
     }
-
 
     /**
      * Inclusion d'un fichier du template
      *
      * @param $filename
-     * @param bool $vars
+     * @param array $vars
      * @return void
      */
-    public static function inc($filename, $vars = false)
+    public static function inc($filename, array $vars = null)
     {
-        $file = Loader::$viewRoot . '/' . $filename . '.php';
+        $file = Router::$viewRoot . '/' . $filename . '.php';
 
         if (file_exists($file)) {
             if($vars) {
@@ -109,7 +106,7 @@ final class View
                 }
             }
 
-            include $file;
+            require $file;
 
             if($vars) {
                 foreach($vars as $var=>$value) {
@@ -121,16 +118,16 @@ final class View
 
     public static function htmlClasses()
     {
-        $classes =  'c-' . str_replace('/', '-', strtolower(Loader::$controller));
-        if(Loader::$module) {
-            $classes .=  ' m-' . strtolower(Loader::$module);
+        $classes =  'c-' . str_replace('/', '-', strtolower(Router::$controller));
+        if(Router::$module) {
+            $classes .=  ' m-' . strtolower(Router::$module);
         }
         echo $classes;
     }
 
     public static function htmlStylesheet($root = './')
     {
-        $filename = str_replace('\\', '/', strtolower(Loader::$controller)) . '.css';
+        $filename = str_replace('\\', '/', strtolower(Router::$controller)) . '.css';
         if(file_exists(SJO_ROOT_PUBLIC_HTML . '/css/' . $filename)) {
             echo '<link href="' . $root . 'css/' . $filename . '" rel="stylesheet" media="screen" />';
         }
@@ -138,7 +135,7 @@ final class View
 
     public static function htmlScript($root = './')
     {
-        $filename = str_replace('\\', '/', strtolower(Loader::$controller)) . '.js';
+        $filename = str_replace('\\', '/', strtolower(Router::$controller)) . '.js';
         if(file_exists(SJO_ROOT_PUBLIC_HTML . '/js/' . $filename)) {
             echo '<script type="text/javascript" src="' . $root . 'js/' . $filename . '"></script>';
         }

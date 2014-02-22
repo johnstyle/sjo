@@ -92,8 +92,8 @@ trait PDOQuery
                 WHERE ' . self::where($where);
         } else {
             $query = '
-                INSERT INTO `' . $this->table . '` (`' . implode('`, `', $keysQuery) . '`)
-                VALUES(:' . implode(', :', $keysQuery) . ')';
+                INSERT INTO `' . $this->table . '` (`' . implode('`, `', array_keys($values)) . '`)
+                VALUES(:' . implode(', :', $values) . ')';
         }
 
         $this->req($query, $values);
@@ -122,7 +122,7 @@ trait PDOQuery
             DELETE FROM `' . $this->table . '`
             WHERE ' . self::where($where);
 
-        $this->req($query, (array)$data);
+        $this->req($query);
 
         return $this;
     }

@@ -26,14 +26,14 @@ abstract class TesseractOcr
 
     public static function convertImageToTif($originalImage)
     {
-        $tifImage = ROOT_TMP . '/tesseract-ocr-tif-' . rand() . '.tif';
+        $tifImage = SJO_ROOT_TMP . '/tesseract-ocr-tif-' . rand() . '.tif';
         exec("convert -colorspace gray +matte $originalImage $tifImage");
         return $tifImage;
     }
 
     public static function generateConfigFile($arguments)
     {
-        $configFile = ROOT_TMP . '/tesseract-ocr-config-' . rand() . '.conf';
+        $configFile = SJO_ROOT_TMP . '/tesseract-ocr-config-' . rand() . '.conf';
         exec("touch $configFile");
         $whitelist = self::generateWhitelist($arguments);
         if (!empty($whitelist)) {
@@ -55,7 +55,7 @@ abstract class TesseractOcr
 
     public static function executeTesseract($tifImage, $configFile)
     {
-        $outputFile = ROOT_TMP . '/tesseract-ocr-output-' . rand();
+        $outputFile = SJO_ROOT_TMP . '/tesseract-ocr-output-' . rand();
         exec("tesseract $tifImage $outputFile nobatch $configFile 2> /dev/null");
         return $outputFile . '.txt';
     }

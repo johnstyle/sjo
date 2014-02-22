@@ -1,6 +1,6 @@
 <?php
 
-use sJo\Modules\User\Model\User;
+use sJo\Module\User\Model\User;
 use sJo\View\Helper;
 use sJo\Libraries as Lib;
 

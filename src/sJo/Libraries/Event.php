@@ -12,6 +12,8 @@
 
 namespace sJo\Libraries;
 
+use sJo\Core\Exception;
+
 abstract class Event
 {
     /**

@@ -1,11 +1,15 @@
 <?php
 
-namespace sJo\Core\Object;
+namespace sJo\Object;
 
 trait Map
 {
+    /** @var string $primaryKey Primary key name */
     private $primaryKey;
+    /** @var string $tableName Table name */
     private $tableName;
+    /** @var array $__map DB map */
+    protected $__map;
 
     public function setPrimaryValue ($value)
     {

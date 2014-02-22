@@ -7,7 +7,7 @@ use sJo\View\Helper\Dom\Dom;
 
 class Button extends Dom
 {
-    public function element($element)
+    public function setElement($element)
     {
         if (!is_array($element)) {
             $element = array('value' => $element);

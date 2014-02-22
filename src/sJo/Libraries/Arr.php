@@ -78,7 +78,7 @@ abstract class Arr
                 return self::getTree($array, $items);
             }
         } else {
-            $name = $items;
+            $name = (string) $items;
             if (isset($array[$name]) && $array[$name] !== false) {
                 return $array[$name];
             }

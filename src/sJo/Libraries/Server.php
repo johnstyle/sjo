@@ -30,6 +30,8 @@ abstract class Server
 
     public static function getVersion ($type)
     {
+        $version = null;
+
         switch($type) {
             case 'git' :
                 $version = 'git --version';
@@ -38,12 +40,19 @@ abstract class Server
                 $version = 'mysql --version | cut -d"," -f1';
                 break;
         }
-        exec($version, $response);
-        return (string)$response[0];
+
+        if ($version) {
+            exec($version, $response);
+            return (string)$response[0];
+        }
+
+        return false;
     }
 
     public static function getProcess ($type)
     {
+        $grep = null;
+
         switch($type) {
             case 'php' :
                 $grep = '[.]php';
@@ -58,7 +67,12 @@ abstract class Server
                 $grep = 'ssh[d]:';
                 break;
         }
-        exec('ps -ef | grep "' . $grep . '" | wc -l', $total);
-        return (int)$total[0];
+
+        if ($grep) {
+            exec('ps -ef | grep "' . $grep . '" | wc -l', $total);
+            return (int)$total[0];
+        }
+
+        return false;
     }
 }

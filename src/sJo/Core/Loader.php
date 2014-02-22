@@ -14,8 +14,10 @@
 
 namespace sJo\Core;
 
+use sJo\Object\Event;
 use sJo\Libraries as Lib;
 use sJo\Helpers;
+use sJo\Module\Module;
 use sJo\View\View;
 
 /**
@@ -29,27 +31,16 @@ use sJo\View\View;
  */
 class Loader
 {
-    use Module;
+    use Event;
 
     private $root;
-    private $instance;
-    public static $interface;
-    public static $controller;
-    public static $controllerClass;
-    public static $viewRoot;
-    public static $viewFile;
-    public static $method;
-    public static $module;
 
     /**
      * Constructeur
      *
-     * @param null|string $interface
-     * @param null|string $controller
-     * @param null|string $method
      * @return \sJo\Core\Loader
      */
-    public function __construct($interface = null, $controller = null, $method = null)
+    public function __construct()
     {
         $this->root = dirname(realpath(__DIR__));
 
@@ -66,47 +57,54 @@ class Loader
         $sJo_I18n = new Lib\I18n();
         $sJo_I18n->load('default', $this->root . '/Locale');
 
-        $this->_set('interface', $interface);
-        $this->_set('controller', $controller);
-        $this->_set('method', $method);
+        /** Router */
+        new Router($this);
 
         /** Bootstrap */
-        $bootstrap = SJO_ROOT_APP . '/' . self::$interface . '/bootstrap.php';
-        if(file_exists($bootstrap)) {
-            include $bootstrap;
-        }
+        Lib\File::__include(SJO_ROOT_APP . '/' . Router::$interface . '/bootstrap.php');
 
+        /** App autoload */
         Helpers\Autoload(SJO_ROOT_APP);
+
+        /** Load modules */
+        new Module();
+    }
+
+    public static function quickStart()
+    {
+        $Loader = new self ();
+        $Loader->init();
+        $Loader->display();
+
+        return $Loader;
     }
 
     public function init()
     {
-        $this->useModule('ErrorDocument');
+        if (Router::$controller) {
 
-        $this->_setModule();
+            if (class_exists(Router::$controllerClass)) {
 
-        if (self::$controller) {
+                $this->instance = new Router::$controllerClass ();
 
-            if (class_exists(self::$controllerClass)) {
-
-                $this->instance = new self::$controllerClass ();
+                $this->event('initController');
 
                 if (get_parent_class($this->instance) == 'sJo\\Controller\\Controller') {
 
-                    $this->_loadModules();
-
-                    $this->event('viewPreload');
+                    $this->event('preloadView');
 
                     new View($this->instance);
 
+                    $this->event('initView');
+
                 } else {
-                    Exception::ErrorDocument('http403', Lib\I18n::__('Controller %s is not extended to %s.', self::$controllerClass, '\\sJo\\Controller'));
+                    $this->ErrorDocument('http403', Lib\I18n::__('Controller %s is not extended to %s.', Router::$controllerClass, '\\sJo\\Controller'));
                 }
             } else {
-                Exception::ErrorDocument('http404', Lib\I18n::__('Controller %s do not exists.', self::$controllerClass));
+                $this->ErrorDocument('http404', Lib\I18n::__('Controller %s do not exists.', Router::$controllerClass));
             }
         } else {
-            Exception::ErrorDocument('http404', Lib\I18n::__('CONTROLLER is undefined.'));
+            $this->ErrorDocument('http404', Lib\I18n::__('CONTROLLER is undefined.'));
         }
 
         return $this;
@@ -114,79 +112,44 @@ class Loader
 
     public function display()
     {
-        $this->event('viewLoaded');
-
-        if (self::$method) {
+        if (Router::$method) {
             switch (Lib\Env::get('content_type')) {
                 case 'json' :
                     header('Content-type:application/json; charset=' . SJO_CHARSET);
-                    if (method_exists(self::$controllerClass, self::$method)) {
+                    if (method_exists(Router::$controllerClass, Router::$method)) {
                         if ($this->instance->Core->Request->hasToken()) {
-                            echo json_encode($this->instance->{self::$method}());
+                            echo json_encode($this->instance->{Router::$method}());
                         } else {
-                            Exception::ErrorDocument('http403', Lib\I18n::__('Warning ! Prohibited queries.'));
+                            $this->ErrorDocument('http403', Lib\I18n::__('Warning ! Prohibited queries.'));
                         }
                     }
                     exit;
                     break;
                 default :
                     header('Content-type:text/html; charset=' . SJO_CHARSET);
-                    if (method_exists(self::$controllerClass, self::$method)) {
+                    if (method_exists(Router::$controllerClass, Router::$method)) {
                         if ($this->instance->Core->Request->hasToken()) {
-                            $this->instance->{self::$method}();
+                            $this->instance->{Router::$method}();
                         } else {
-                            Exception::ErrorDocument('http403', Lib\I18n::__('Warning ! Prohibited queries.'));
+                            $this->ErrorDocument('http403', Lib\I18n::__('Warning ! Prohibited queries.'));
                         }
                     }
                     break;
             }
         }
 
-        $this->event('viewCompleted');
+        $this->event('loadedView');
 
-        View::load();
+        View::display();
+
+        $this->event('displayedView');
     }
 
-    public function instance()
+    private function ErrorDocument ($controller, $msg, $code = 0)
     {
-        return $this->instance;
-    }
-
-    public function event($event, $options = false)
-    {
-        $event = '__' . $event;
-
-        if (method_exists($this->instance, $event)) {
-            $this->instance->{$event}($options);
-        }
-    }
-
-    private function _set($type, $value = false)
-    {
-        switch($type) {
-            case 'interface':
-                self::$interface = $value;
-                if (!self::$interface) {
-                    self::$interface = Lib\Env::get(SJO_INTERFACE_NAME, SJO_INTERFACE_DEFAULT);
-                }
-                break;
-            case 'controller':
-                self::$controller = $value;
-                if (!self::$controller) {
-                    self::$controller = Lib\Env::request(SJO_CONTROLLER_NAME, SJO_CONTROLLER_DEFAULT);
-                    self::$controller = trim(self::$controller, '/');
-                    self::$controller = str_replace('/', '\\', self::$controller);
-                }
-                self::$controllerClass = '\\' . self::$interface . '\\Controller\\' . Loader::$controller;
-                self::$viewRoot = SJO_ROOT_APP . '/' . self::$interface . '/View';
-                self::$viewFile = self::$viewRoot . '/' . str_replace('\\', '/', self::$controller) . '.php';
-                break;
-            case 'method':
-                self::$method = $value;
-                if (!self::$method) {
-                    self::$method = Lib\Env::request(SJO_METHOD_NAME, SJO_METHOD_DEFAULT);
-                }
-                break;
-        }
+        Router::ErrorDocument($controller);
+        new Exception($msg, $code);
+        $this->init();
+        $this->instance->message = $msg;
     }
 }

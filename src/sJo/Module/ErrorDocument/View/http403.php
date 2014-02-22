@@ -10,9 +10,9 @@ use sJo\View\Helper\Style;
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base href="<?php echo SJO_BASEHREF; ?>" />
-    <title>404 | <?php Lib\I18n::_e('Page Not Found!'); ?></title>
-    <meta name="description" content="404 | Page Not Found!">
-    <?php Style::display(); ?>
+    <title>403 | <?php Lib\I18n::_e('Forbidden!'); ?></title>
+    <meta name="description" content="403 | Forbidden!">
+    <?php Style::applyRegistry(); ?>
     <style type="text/css">
         *{margin:0;padding:0}
         body{font-family:"Times New Roman",Bodoni,Garamond,"Minion Web","ITC Stone Serif","MS Georgia","Bitstream Cyberbit",serif;overflow:auto;height:100%;text-align:center;line-height:1;color:#555;background:#eee;text-shadow:0 0 5px rgba(0,0,0,0.2);font-size:16px;margin-top:50px}
@@ -29,13 +29,12 @@ use sJo\View\Helper\Style;
 </head>
 <body>
     <div id="error">
-        <h1>404</h1>
-        <h2><?php Lib\I18n::_e('Page Not Found!'); ?></h2>
+        <h1>403</h1>
+        <h2><?php Lib\I18n::_e('Forbidden!'); ?></h2>
     </div>
     <div id="message">
         <h3><?php Lib\I18n::_e('We Are Sory'); ?></h3>
-        <p><?php Lib\I18n::_e('This could be the result of the page being removed,
-         the name being changed or the page being temporarily unavailable.'); ?></p>
+        <p><?php Lib\I18n::_e('You do not have permission to access this page.'); ?></p>
     </div>
 </body>
 </html>

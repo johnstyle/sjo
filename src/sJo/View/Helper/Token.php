@@ -7,7 +7,7 @@ use sJo\View\Helper\Dom\Dom;
 
 class Token extends Dom
 {
-    public function element($element)
+    public function setElement($element)
     {
         if (isset($element['__default__'])) {
             $element = array(
@@ -29,10 +29,10 @@ class Token extends Dom
             $element['token'] = Core\Request::getInstance()->getToken($element['token']);
         }
 
-        return array_merge(array(
+        return array('elements' => array_merge(array(
             'token' => null,
             'controller' => $controller,
             'method' => $method
-        ), $element);
+        ), $element));
     }
 }

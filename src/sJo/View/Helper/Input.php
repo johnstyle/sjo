@@ -7,7 +7,7 @@ use sJo\View\Helper\Dom\Dom;
 
 class Input extends Dom
 {
-    public function element($element)
+    public function setElement($element)
     {
         return array_merge(array(
             'type' => 'text',

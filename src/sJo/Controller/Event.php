@@ -4,16 +4,23 @@ namespace sJo\Controller;
 
 trait Event
 {
-
-    public function __viewPreload ()
+    public function __initController ()
     {
     }
 
-    public function __viewLoaded ()
+    public function __preloadView ()
     {
     }
 
-    public function __viewCompleted ()
+    public function __initView ()
+    {
+    }
+
+    public function __loadedView ()
+    {
+    }
+
+    public function __displayedView ()
     {
     }
 }
