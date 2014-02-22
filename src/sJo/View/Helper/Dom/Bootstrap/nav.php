@@ -9,7 +9,7 @@ use sJo\Loader\Router;
             <li<?php if($element['controller'] == Router::$controller): ?> class="active"<?php endif; ?>>
                 <a
                     <?php if($element['controller']): ?>
-                        href="<?php echo SJO_BASEHREF . '/' . $element['controller']; ?>"
+                        href="<?php echo $element['controller']; ?>"
                     <?php elseif($element['link']): ?>
                         href="<?php echo $element['link']; ?>"
                         target="_blank"

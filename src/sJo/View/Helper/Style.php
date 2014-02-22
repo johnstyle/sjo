@@ -13,13 +13,13 @@ class Style extends Dom
 
     public function setElement($element)
     {
-        foreach ($element as &$el) {
+        foreach ($element['elements'] as &$el) {
             if (!is_array($el)) {
                 $el = array('link' => $el);
             }
         }
 
-        return array('elements' => $element);
+        return $element;
     }
 
     public static function create($registered)
@@ -29,7 +29,7 @@ class Style extends Dom
             $files = Lib\Path::listFiles($cssPath);
             if($files) {
                 foreach($files as $file) {
-                    $registered[] = preg_replace("#^" . SJO_ROOT_PUBLIC_HTML . "/#", "", $file->path);
+                    $registered['elements'][] = preg_replace("#^" . SJO_ROOT_PUBLIC_HTML . "/#", "", $file->path);
                 }
             }
         }

@@ -2,6 +2,7 @@
 
 namespace sJo\View\Helper;
 
+use sJo\Loader\Router;
 use sJo\View\Helper\Dom\Dom;
 use sJo\View\Helper\Dom\Register;
 
@@ -26,6 +27,11 @@ class Menu extends Dom
     public static function addRegistry($name, $options)
     {
         if (self::isRegistered($name)) {
+
+            if (isset($options['controller'])) {
+                $options['controller'] = Router::link($options['controller']);
+            }
+
             self::$registry[$name]['elements'][] = array_merge(
                 array(
                     'icon' => null,
