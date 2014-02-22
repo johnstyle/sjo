@@ -12,7 +12,7 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Core;
+namespace sJo\Controller\Component;
 
 use sJo\Object\Singleton;
 use sJo\Libraries as Lib;
@@ -29,8 +29,6 @@ use sJo\Loader\Router;
  */
 class Request
 {
-    use Singleton;
-
     public function getToken($method)
     {
         Session::start();

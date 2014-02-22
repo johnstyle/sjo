@@ -14,8 +14,6 @@
 
 namespace sJo\Controller;
 
-use sJo\Core;
-
 /**
  * Gestion des Controlleurs
  *
@@ -30,58 +28,21 @@ class Controller
     use Action;
     use Event;
 
-    /**
-     * Controller class name
-     *
-     * @var string
-     */
+    /** @var string $className Controller class name */
     public $className;
-
-    /**
-     * Controller name
-     *
-     * @var string
-     */
+    /** @var string $name */
     public $name;
-
-   /**
-    * Core references
-    *
-    * @var \stdClass
-    */
-    public $Core;
-
-    /**
-     * Logger references
-     *
-     * @var Core\Logger
-     */
-    public $Logger;
-
-    /**
-     * Module references
-     *
-     * @var \sJo\Module\Module
-     */
-    public $Module;
+    /** @var Component\Component $component */
+    public $component;
 
     /**
      * Constructeur
      *
      * @return \sJo\Controller\Controller
      */
-    public function __construct ()
+    public function __construct()
     {
-        $this->Core = new \stdClass();
-        /** @var Core\Session */
-        $this->Core->Session = new Core\Session($this);
-        /** @var Core\Request */
-        $this->Core->Request = new Core\Request($this);
-        /** @var Core\Alert */
-        $this->Core->Alert = new Core\Alert($this);
-        /** @var Core\Logger */
-        $this->Logger = new Core\Logger($this);
-
+        $this->component = new Component\Component($this);
         $this->className = get_called_class();
     }
 }

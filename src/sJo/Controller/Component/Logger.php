@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Core;
+namespace sJo\Controller\Component;
 
 use Psr\Log\AbstractLogger;
 use sJo\Libraries as Lib;

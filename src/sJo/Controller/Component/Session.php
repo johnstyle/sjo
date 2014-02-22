@@ -12,7 +12,7 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Core;
+namespace sJo\Controller\Component;
 
 use sJo\Libraries as Lib;
 use sJo\Loader\Router;
