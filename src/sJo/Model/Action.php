@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Object;
+namespace sJo\Model;
 
 trait Action
 {

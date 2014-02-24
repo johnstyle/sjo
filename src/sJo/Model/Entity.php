@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Object;
+namespace sJo\Model;
 
 use sJo\Exception\Exception;
 use sJo\Libraries\I18n;

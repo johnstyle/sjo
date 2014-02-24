@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Object;
+namespace sJo\Model;
 
 use sJo\Db\PDO\Drivers\Mysql as Db;
 
