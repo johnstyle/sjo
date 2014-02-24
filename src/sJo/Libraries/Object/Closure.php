@@ -47,8 +47,22 @@ class Closure
         }
     }
 
-    public function inc($filename)
+    public function inc($filename, array $properties = null)
     {
-        require $filename;
+        if($properties) {
+            foreach($properties as $name=>$value) {
+                $this->{$name} = $value;
+            }
+        }
+
+        if (file_exists($filename)) {
+            require $filename;
+        }
+
+        if($properties) {
+            foreach($properties as $name=>$value) {
+                unset($this->{$name});
+            }
+        }
     }
 }

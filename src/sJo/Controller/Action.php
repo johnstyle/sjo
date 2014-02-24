@@ -2,7 +2,7 @@
 
 namespace sJo\Controller;
 
-use sJo\Object\MysqlObject;
+use sJo\Model\MysqlObject;
 use sJo\Libraries as Lib;
 
 trait Action

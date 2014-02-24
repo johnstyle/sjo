@@ -2,7 +2,7 @@
 
 namespace sJo\Module\User\Model;
 
-use sJo\Object\MysqlObject;
+use sJo\Model\MysqlObject;
 
 /**
  * @property $id int

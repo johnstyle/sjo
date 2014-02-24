@@ -4,7 +4,7 @@ use sJo\Module\User\Model\User;
 use sJo\View\Helper;
 use sJo\Libraries as Lib;
 
-self::header();
+$this->header();
 
 Helper\Panel::create(array(
     'col' => 6,
@@ -33,4 +33,4 @@ Helper\Panel::create(array(
     ))
 ))->display();
 
-self::footer();
+$this->footer();

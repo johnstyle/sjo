@@ -15,7 +15,7 @@
 namespace sJo\Loader;
 
 use sJo\Exception\Exception;
-use sJo\Object\Event;
+use sJo\Model\Event;
 use sJo\Libraries as Lib;
 use sJo\Helpers;
 use sJo\Module\Module;
@@ -35,6 +35,7 @@ class Loader
     use Event;
 
     public static $root;
+    private $view;
 
     /**
      * Constructeur
@@ -94,7 +95,7 @@ class Loader
 
                     $this->event('preloadView');
 
-                    new View($this->instance);
+                    $this->view = new View($this->instance);
 
                     $this->event('initView');
 
@@ -140,9 +141,7 @@ class Loader
         }
 
         $this->event('loadedView');
-
-        View::display();
-
+        $this->view->display();
         $this->event('displayedView');
     }
 

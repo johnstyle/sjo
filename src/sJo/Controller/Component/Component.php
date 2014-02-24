@@ -3,7 +3,7 @@
 namespace sJo\Controller\Component;
 
 use sJo\Controller\Controller;
-use sJo\Object\Singleton;
+use sJo\Model\Singleton;
 
 class Component
 {

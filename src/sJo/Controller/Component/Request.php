@@ -14,7 +14,7 @@
 
 namespace sJo\Controller\Component;
 
-use sJo\Object\Singleton;
+use sJo\Model\Singleton;
 use sJo\Libraries as Lib;
 use sJo\Loader\Router;
 

@@ -16,7 +16,7 @@ namespace sJo\Module;
 
 use sJo\Controller\Component\Component;
 use sJo\Loader\Router;
-use sJo\Object\Event;
+use sJo\Model\Event;
 use sJo\Libraries as Lib;
 
 /**
