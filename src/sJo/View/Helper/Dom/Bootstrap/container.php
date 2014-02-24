@@ -1,9 +1,9 @@
-<<?php echo self::$view->tagname; ?>
-    <?php if(self::$view->class): ?>
-        class="<?php echo self::$view->class; ?>"
+<<?php echo $this->tagname; ?>
+    <?php if($this->class): ?>
+        class="<?php echo $this->class; ?>"
     <?php endif; ?>
     >
-    <?php foreach(self::$view->elements as $element): ?>
+    <?php foreach($this->elements as $element): ?>
         <?php echo $element; ?>
     <?php endforeach; ?>
-</<?php echo self::$view->tagname; ?>>
+</<?php echo $this->tagname; ?>>

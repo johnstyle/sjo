@@ -1,4 +1,4 @@
-<?php foreach(self::$view->elements as $name=>$value): ?>
+<?php foreach($this->elements as $name=>$value): ?>
     <input
         type="hidden"
         name="<?php echo $name; ?>"

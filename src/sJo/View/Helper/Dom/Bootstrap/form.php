@@ -1,16 +1,16 @@
 <form
-    <?php if(self::$view->method): ?>
-        method="<?php echo self::$view->method; ?>"
+    <?php if($this->method): ?>
+        method="<?php echo $this->method; ?>"
     <?php endif; ?>
-    <?php if(self::$view->action): ?>
-        action="<?php echo self::$view->action; ?>"
+    <?php if($this->action): ?>
+        action="<?php echo $this->action; ?>"
     <?php endif; ?>
-    <?php if(self::$view->class): ?>
-        class="<?php echo self::$view->class; ?>"
+    <?php if($this->class): ?>
+        class="<?php echo $this->class; ?>"
     <?php endif; ?>
     >
-    <?php if(self::$view->elements): ?>
-        <?php foreach(self::$view->elements as $element): ?>
+    <?php if($this->elements): ?>
+        <?php foreach($this->elements as $element): ?>
             <?php echo $element; ?>
         <?php endforeach; ?>
     <?php endif; ?>

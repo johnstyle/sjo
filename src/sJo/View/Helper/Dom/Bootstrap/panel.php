@@ -1,35 +1,39 @@
-<?php if(self::$view->col): ?>
-    <div class="col-lg-<?php echo self::$view->col; ?>">
+<?php if($this->col): ?>
+    <div class="col-lg-<?php echo $this->col; ?>">
 <?php endif; ?>
-    <?php if(self::$view->container): ?>
-        <<?php echo self::$view->container['tagname']; ?>
-            <?php foreach(self::$view->container['attr'] as $attr=>$value): ?>
+    <?php if($this->container): ?>
+        <<?php echo $this->container['tagname']; ?>
+            <?php foreach($this->container['attr'] as $attr=>$value): ?>
                 <?php echo $attr; ?>="<?php echo $value; ?>"
             <?php endforeach; ?>
             >
     <?php endif; ?>
-        <div class="panel panel-<?php echo self::$view->type; ?>">
-            <?php if(self::$view->title): ?>
+        <div class="panel panel-<?php echo $this->type; ?>">
+            <?php if($this->title): ?>
                 <div class="panel-heading">
-                    <h3 class="panel-title"><?php echo self::$view->title; ?></h3>
+                    <h3 class="panel-title"><?php echo $this->title; ?></h3>
                 </div>
             <?php endif; ?>
-            <?php if(self::$view->elements): ?>
-                <div class="panel-body">
-                    <?php foreach(self::$view->elements as $element): ?>
+            <?php if($this->elements): ?>
+                <?php foreach($this->elements as $element): ?>
+                    <?php if(1 == 'Table'): ?>
                         <?php echo $element; ?>
-                    <?php endforeach; ?>
-                </div>
+                    <?php else: ?>
+                        <div class="panel-body">
+                            <?php echo $element; ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
             <?php endif; ?>
-            <?php if(self::$view->footer): ?>
+            <?php if($this->footer): ?>
                 <div class="panel-footer clearfix">
-                    <?php echo self::$view->footer; ?>
+                    <?php echo $this->footer; ?>
                 </div>
             <?php endif; ?>
         </div>
-    <?php if(self::$view->container): ?>
-        </<?php echo self::$view->container['tagname']; ?>>
+    <?php if($this->container): ?>
+        </<?php echo $this->container['tagname']; ?>>
     <?php endif; ?>
-<?php if(self::$view->col): ?>
+<?php if($this->col): ?>
     </div>
 <?php endif; ?>

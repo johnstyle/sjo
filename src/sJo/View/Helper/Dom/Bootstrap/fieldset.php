@@ -1,9 +1,9 @@
 <fieldset>
-    <?php if(self::$view->legend): ?>
-        <legend><?php echo self::$view->legend; ?></legend>
+    <?php if($this->legend): ?>
+        <legend><?php echo $this->legend; ?></legend>
     <?php endif; ?>
-    <?php if(self::$view->elements): ?>
-        <?php foreach(self::$view->elements as $element): ?>
+    <?php if($this->elements): ?>
+        <?php foreach($this->elements as $element): ?>
             <?php echo $element; ?>
         <?php endforeach; ?>
     <?php endif; ?>

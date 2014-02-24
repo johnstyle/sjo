@@ -3,9 +3,9 @@
 use sJo\Loader\Router;
 
 ?>
-<<?php echo self::$view->container; ?>>
-    <ul class="nav <?php echo self::$view->container == 'aside' ? 'nav-sidebar' : 'navbar-nav'; ?><?php if(isset(self::$view->pull)): ?> navbar-<?php echo self::$view->pull; ?><?php endif; ?>">
-        <?php foreach(self::$view->elements as $element): ?>
+<<?php echo $this->container; ?>>
+    <ul class="nav <?php echo $this->container == 'aside' ? 'nav-sidebar' : 'navbar-nav'; ?><?php if(isset($this->pull)): ?> navbar-<?php echo $this->pull; ?><?php endif; ?>">
+        <?php foreach($this->elements as $element): ?>
             <li<?php if($element['controller'] == Router::$controller): ?> class="active"<?php endif; ?>>
                 <a
                     <?php if($element['link']): ?>
@@ -30,4 +30,4 @@ use sJo\Loader\Router;
             </li>
         <?php endforeach; ?>
     </ul>
-</<?php echo self::$view->container; ?>>
+</<?php echo $this->container; ?>>

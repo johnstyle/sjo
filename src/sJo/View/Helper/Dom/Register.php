@@ -65,7 +65,13 @@ trait Register
     public static function applyRegistry($name = null)
     {
         if (self::isRegistered($name)) {
-            self::create(self::$registry[$name])->display(array('method' => $name));
+
+            $options = null;
+            if ($name) {
+                $options = array('method' => $name);
+            }
+
+            self::create(self::$registry[$name])->display($options);
         }
     }
 }

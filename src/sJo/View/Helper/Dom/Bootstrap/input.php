@@ -1,22 +1,22 @@
-<?php if(self::$view->type != 'hidden'): ?>
+<?php if($this->type != 'hidden'): ?>
 <div class="form-group">
-    <?php if(self::$view->label): ?>
-        <label for="<?php echo self::$view->id; ?>"><?php echo self::$view->label; ?></label>
+    <?php if($this->label): ?>
+        <label for="<?php echo $this->id; ?>"><?php echo $this->label; ?></label>
     <?php endif; ?>
 <?php endif; ?>
     <input
-        type="<?php echo self::$view->type; ?>"
-        name="<?php echo self::$view->name; ?>"
-        id="<?php echo self::$view->id; ?>"
-        class="form-control <?php echo self::$view->class; ?>"
-        <?php if(self::$view->label): ?>
-            placeholder="<?php echo self::$view->placeholder; ?>"
+        type="<?php echo $this->type; ?>"
+        name="<?php echo $this->name; ?>"
+        id="<?php echo $this->id; ?>"
+        class="form-control <?php echo $this->class; ?>"
+        <?php if($this->label): ?>
+            placeholder="<?php echo $this->placeholder; ?>"
         <?php endif; ?>
-        value="<?php echo self::$view->value; ?>"
-        <?php if(self::$view->autofocus): ?>
+        value="<?php echo $this->value; ?>"
+        <?php if($this->autofocus): ?>
             autofocus
         <?php endif; ?>
         />
-<?php if(self::$view->type != 'hidden'): ?>
+<?php if($this->type != 'hidden'): ?>
 </div>
 <?php endif; ?>

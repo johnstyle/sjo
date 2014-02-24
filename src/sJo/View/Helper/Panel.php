@@ -26,7 +26,7 @@ class Panel extends Dom
         ), $element);
     }
 
-    public function display()
+    public function display(array $options = null)
     {
         if ($this->elements) {
             $container = false;
@@ -39,12 +39,14 @@ class Panel extends Dom
             if ($container) {
                 Container::create(array(
                     'class' => 'row',
-                    'elements' => parent::html(function ($element) {
-                        if(!$element['col']) {
-                            $element['col'] = 12;
-                        }
-                        return $element;
-                    })
+                    'elements' => parent::html(array(
+                        'callback' => function ($element) {
+                            if(!$element['col']) {
+                                $element['col'] = 12;
+                            }
+                            return $element;
+                        })
+                    )
                 ))->display();
             } else {
                 parent::display();

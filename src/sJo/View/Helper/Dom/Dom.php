@@ -3,13 +3,14 @@
 namespace sJo\View\Helper\Dom;
 
 use sJo\Exception\Exception;
+use sJo\Libraries\Arr;
 use sJo\Libraries\I18n;
+use sJo\Libraries\Object\Closure;
 
 abstract class Dom
 {
     const DEFAULT_ELEMENT = '__default__';
 
-    private static $view;
     private static $frameworkName = 'Bootstrap';
     protected $elements;
 
@@ -71,16 +72,19 @@ abstract class Dom
 
     public function html(array $options = null)
     {
-        if(!isset($options['method'])) {
-            $class = new \ReflectionClass(get_called_class());
-            $options['method'] = str_replace('dom', '', strtolower($class->getShortName()));
-        }
+        $options = Arr::extend(array(
+            'method' => $this->getClass($this),
+            'callback' => null
+        ), $options);
 
         $html = '';
 
         if ($this->elements) {
             foreach ($this->elements as $element) {
-                $html .= $this->inc($options['method'], $this->buildElements($element));
+                if($options['callback'] && is_callable($options['callback'])) {
+                    $element = call_user_func($options['callback'], $element);
+                }
+                $html .= $this->inc(strtolower($options['method']), $this->buildElements($element));
             }
         }
 
@@ -92,19 +96,19 @@ abstract class Dom
         $args = func_get_args();
         $file = array_shift($args);
 
-        self::$view = new \stdClass();
+        $closure = new Closure();
 
         if (count($args)) {
             foreach ($args as $arg) {
                 if (is_array($arg)) {
                     foreach ($arg as $name => $value) {
-                        self::$view->{$name} = $value;
+                        $closure->{$name} = $value;
                     }
                 } else {
-                    if (!isset(self::$view->elements)) {
-                        self::$view->elements = array();
+                    if (!isset($closure->elements)) {
+                        $closure->elements = array();
                     }
-                    self::$view->elements[] = $arg;
+                    $closure->elements[] = $arg;
                 }
             }
         }
@@ -112,7 +116,7 @@ abstract class Dom
         $filename = realpath(dirname(__FILE__)) . '/' . self::$frameworkName . '/' . $file . '.php';
         if (file_exists($filename)) {
             ob_start();
-            require $filename;
+            $closure->inc($filename);
             return ob_get_clean();
         } else {
             Exception::error(I18n::__('helper %s/%s do not exists.', self::$frameworkName, ucfirst(basename($filename, '.php'))));
@@ -135,5 +139,15 @@ abstract class Dom
         }
 
         return $elements;
+    }
+
+    final public function getClass($element)
+    {
+        if (is_object($element)) {
+            $class = new \ReflectionClass($element);
+            return $class->getShortName();
+        }
+
+        return null;
     }
 }
