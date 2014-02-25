@@ -32,6 +32,7 @@ class Menu extends Dom
 
             self::$registry[$name]['elements'][] = Lib\Arr::extend(array(
                 'icon' => null,
+                'class' => null,
                 'title' => null,
                 'tooltip' => null,
                 'controller' => null,
