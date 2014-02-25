@@ -6,7 +6,14 @@ use sJo\Loader\Router;
 <<?php echo $this->container; ?>>
     <ul class="nav <?php echo $this->container == 'aside' ? 'nav-sidebar' : 'navbar-nav'; ?><?php if(isset($this->pull)): ?> navbar-<?php echo $this->pull; ?><?php endif; ?>">
         <?php foreach($this->elements as $element): ?>
-            <li<?php if($element['controller'] == Router::$controller): ?> class="active"<?php endif; ?>>
+            <li  class="
+                <?php if($element['controller'] == Router::$controller): ?>
+                    active
+                <?php endif; ?>
+                <?php if($element['class']): ?>
+                   <?php echo $element['class']; ?>
+                <?php endif; ?>
+                ">
                 <a
                     <?php if($element['link']): ?>
                         href="<?php echo $element['link']; ?>"
@@ -23,7 +30,7 @@ use sJo\Loader\Router;
                     <?php endif; ?>
                     >
                     <?php if($element['icon']): ?>
-                        <span class="glyphicon glyphicon-<?php echo $element['icon']; ?>>"></span>
+                        <span class="glyphicon glyphicon-<?php echo $element['icon']; ?>"></span>
                     <?php endif; ?>
                     <span class="title"><?php echo $element['title']; ?></span>
                 </a>
