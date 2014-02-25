@@ -11,7 +11,10 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Libraries;
+namespace sJo\Libraries\Http;
+
+use sJo\Libraries\Arr;
+use sJo\Libraries\Csv;
 
 class Curl
 {
