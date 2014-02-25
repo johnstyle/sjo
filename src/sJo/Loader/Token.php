@@ -12,9 +12,8 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Controller\Component;
+namespace sJo\Controller;
 
-use sJo\Model\Singleton;
 use sJo\Libraries as Lib;
 use sJo\Loader\Router;
 
@@ -27,31 +26,25 @@ use sJo\Loader\Router;
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/sjo.git
  */
-class Request
+class Token
 {
-    public function getToken($method)
+    public static function get($method = null)
     {
-        Session::start();
+        Component\Session::start();
 
-        return Session::getToken(Session::$id  . $method);
+        return Lib\Crypto\Crypto::md5(
+            Lib\Env::server('REMOTE_ADDR')
+            . Lib\Env::server('HTTP_USER_AGENT')
+            . Lib\Env::server('HTTP_HOST')
+            . Component\Session::$id  . $method
+        );
     }
 
-    public function hasToken()
+    public static function has()
     {
-        if (Lib\Env::request('token') == $this->getToken(Router::getToken())) {
+        if (Lib\Env::request('token') == self::get(Router::getToken())) {
             return true;
         }
         return false;
-    }
-
-    public function filter($key)
-    {
-        return Lib\Arr::getTree(Lib\Env::get('filters'), $key);
-    }
-
-    public static function redirect($url = false)
-    {
-        header('Location:' . ($url ? $url : './'));
-        exit;
     }
 }

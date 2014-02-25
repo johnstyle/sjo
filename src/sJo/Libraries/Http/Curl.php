@@ -13,7 +13,7 @@
 
 namespace sJo\Libraries;
 
-class Http
+class Curl
 {
     private $id;
     private $cookieFile;
@@ -84,8 +84,8 @@ class Http
 
             if ($this->cache) {
                 file_put_contents($cacheFile, serialize((object) array(
-                                    'response' => $this->response,
-                                    'info' => $this->info
+                    'response' => $this->response,
+                    'info' => $this->info
                 )));
             }
         } else {
