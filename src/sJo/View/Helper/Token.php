@@ -2,7 +2,7 @@
 
 namespace sJo\View\Helper;
 
-use sJo\Controller\Component\Component;
+use sJo\Loader;
 use sJo\Loader\Router;
 use sJo\View\Helper\Dom\Dom;
 use sJo\Libraries as Lib;
@@ -28,7 +28,7 @@ class Token extends Dom
                 $method = $match[5];
             }
 
-            $element['token'] = Component::getInstance()->request->getToken($element['token']);
+            $element['token'] = Loader\Token::get($element['token']);
         }
 
         return array('elements' => Lib\Arr::extend(array(
