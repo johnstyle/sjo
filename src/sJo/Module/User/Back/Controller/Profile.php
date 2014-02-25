@@ -14,11 +14,6 @@ class Profile extends Controller
         parent::__construct();
 
         $this->name = I18n::__('My profil');
-
-        Helper\Menu::addRegistry('main', array(
-            'title' => I18n::__('My profil'),
-            'controller' => 'User\Profile'
-        ));
     }
 
     public function update ()
