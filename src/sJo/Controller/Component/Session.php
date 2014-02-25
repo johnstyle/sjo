@@ -14,7 +14,9 @@
 
 namespace sJo\Controller\Component;
 
+use sJo\Loader\Token;
 use sJo\Libraries as Lib;
+use sJo\Libraries\Http\Http;
 use sJo\Loader\Router;
 
 /**
@@ -79,7 +81,7 @@ class Session
     {
         self::start();
 
-        if (Router::$controller != $auth) {
+        if (Router::$controller !== $auth) {
             if (!$this->isActive()) {
                 http_response_code(401);
                 $this->redirect(Router::link($auth, array('redirect' => Lib\Env::server('REQUEST_URI'))));
@@ -91,14 +93,14 @@ class Session
 
     public function signin($id, $url = SJO_BASEHREF)
     {
-        Lib\Env::sessionSet('token', Lib\Crypto\Crypto::md5($id));
         Lib\Env::sessionSet('id', $id);
+        Lib\Env::sessionSet('token', Token::get($id));
         $this->redirect($url);
     }
 
     public function signout($url = SJO_BASEHREF)
     {
-        if (Lib\Env::cookie()) {
+        if (Lib\Env::cookieExists()) {
             foreach (Lib\Env::cookie() as $name => $value) {
                 Lib\Env::cookieSet($name);
             }
@@ -114,29 +116,18 @@ class Session
     public function redirect($url = SJO_BASEHREF)
     {
         if (preg_match("#^(\./|/)#", Lib\Env::get('redirect'))) {
-            header('Location:' . Lib\Env::get('redirect'));
+            Http::redirect(Lib\Env::get('redirect'));
         } else {
-            header('Location:' . $url);
+            Http::redirect($url);
         }
-        exit;
     }
 
     public function isActive()
     {
         if (Lib\Env::session('id')
-            && Lib\Env::session('token') === Lib\Crypto\Crypto::md5(Lib\Env::session('id'))) {
+            && Lib\Env::session('token') === Token::get(Lib\Env::session('id'))) {
             return true;
         }
         return false;
-    }
-
-    public static function getToken($options = false)
-    {
-        return Lib\Crypto\Crypto::md5(
-              Lib\Env::server('REMOTE_ADDR')
-            . Lib\Env::server('HTTP_USER_AGENT')
-            . Lib\Env::server('HTTP_HOST')
-            . $options
-        );
     }
 }

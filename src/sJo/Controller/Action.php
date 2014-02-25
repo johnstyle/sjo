@@ -2,8 +2,10 @@
 
 namespace sJo\Controller;
 
+use sJo\Loader\Router;
 use sJo\Model\MysqlObject;
 use sJo\Libraries as Lib;
+use sJo\Libraries\Http\Http;
 
 trait Action
 {
@@ -11,13 +13,13 @@ trait Action
 
     protected function create (MysqlObject $instance)
     {
-        if ($post = Lib\Env::post()) {
+        if (Lib\Env::postExists()) {
 
-            unset($post['controller']);
-            unset($post['method']);
-            unset($post['token']);
+            Lib\Env::postSet('controller');
+            Lib\Env::postSet('method');
+            Lib\Env::postSet('token');
 
-            foreach ($post as $name => $value) {
+            foreach (Lib\Env::post() as $name => $value) {
                 $instance->{$name} = $value;
             }
 
@@ -33,25 +35,23 @@ trait Action
 
             if (!$this->error) {
                 $instance->save();
+                Http::redirect(Router::link(null, array($instance->getPrimaryKey() => $instance->getPrimaryValue())));
             }
         }
     }
 
     protected function update (MysqlObject $instance)
     {
-        $pk = $instance->getPrimaryKey();
-
-        if ($instance->{$pk} || Lib\Env::post($pk)) {
+        if ($instance->{$instance->getPrimaryKey()}
+            || Lib\Env::postExists($instance->getPrimaryKey())) {
             $this->create($instance);
         }
     }
 
     protected function delete (MysqlObject $instance)
     {
-        $pk = $instance->getPrimaryKey();
-
-        if ($id = Lib\Env::post($pk)) {
-            $instance->delete($id);
+        if (Lib\Env::postExists($instance->getPrimaryKey())) {
+            $instance->delete(Lib\Env::post($instance->getPrimaryKey()));
         }
     }
 }
