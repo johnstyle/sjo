@@ -40,6 +40,11 @@ trait Action
             );
         }
 
-        return self::db()->update((array) $this->getProperties(), $where);
+        $db = self::db()->update((array) $this->getProperties(), $where);
+        if ($db->lastinsertid()) {
+            $this->setPrimaryValue($db->lastinsertid());
+        }
+
+        return $db;
     }
 }

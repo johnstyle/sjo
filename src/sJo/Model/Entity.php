@@ -4,6 +4,7 @@ namespace sJo\Model;
 
 use sJo\Exception\Exception;
 use sJo\Libraries\I18n;
+use sJo\Libraries as Lib;
 
 trait Entity
 {
@@ -54,5 +55,14 @@ trait Entity
             }
         }
         return $properties ? $properties : null;
+    }
+
+    public function request($name)
+    {
+        if (Lib\Env::postExists($name)) {
+            return Lib\Env::post($name);
+        }
+
+        return $this->{$name};
     }
 }
