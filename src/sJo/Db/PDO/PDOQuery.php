@@ -28,20 +28,22 @@ trait PDOQuery
      */
     final public function value($key, array $where = null)
     {
-        $query = '
-            SELECT `' . $key . '` FROM `' . $this->table . '`
-            WHERE ' . self::where($where);
+        $query = 'SELECT `' . $key . '` FROM `' . $this->table . '`' .  self::where($where);
 
         return $this->fetchColumn($query, $where);
     }
 
     final public static function where(array $where = null)
     {
-        $query = array();
-        foreach (array_keys($where) as $item) {
-            $query[] = "`" . $item . "` = :" . $item;
+        if ($where) {
+            $query = array();
+            foreach (array_keys($where) as $item) {
+                $query[] = "`" . $item . "` = :" . $item;
+            }
+            return ' WHERE ' . implode(' AND ', $query);
         }
-        return implode(' AND ', $query);
+
+        return false;
     }
 
     /**
@@ -52,9 +54,7 @@ trait PDOQuery
      */
     final public function results(array $where = null)
     {
-        $query = '
-            SELECT * FROM `' . $this->table . '`
-            WHERE ' . self::where($where);
+        $query = 'SELECT * FROM `' . $this->table . '`' . self::where($where);
 
         return $this->fetchAll($query, $where);
     }
@@ -67,9 +67,7 @@ trait PDOQuery
      */
     final public function result(array $where = null)
     {
-        $query = '
-            SELECT * FROM `' . $this->table . '`
-            WHERE ' . self::where($where);
+        $query = 'SELECT * FROM `' . $this->table . '`' . self::where($where);
 
         return $this->fetch($query, $where);
     }
@@ -90,12 +88,15 @@ trait PDOQuery
 
             $query = '
                 UPDATE `' . $this->table . '`
-                SET ' . $set . '
-                WHERE ' . self::where($where);
+                SET ' . $set .
+                self::where($where);
         } else {
+
+            $valuesKeys = array_keys($values);
+
             $query = '
-                INSERT INTO `' . $this->table . '` (`' . implode('`, `', array_keys($values)) . '`)
-                VALUES(:' . implode(', :', $values) . ')';
+                INSERT INTO `' . $this->table . '` (`' . implode('`, `', $valuesKeys) . '`)
+                VALUES(:' . implode(', :', $valuesKeys) . ')';
         }
 
         $this->req($query, $values);
@@ -120,9 +121,7 @@ trait PDOQuery
      */
     final public function delete(array $where = null)
     {
-        $query = '
-            DELETE FROM `' . $this->table . '`
-            WHERE ' . self::where($where);
+        $query = 'DELETE FROM `' . $this->table . '`' . self::where($where);
 
         $this->req($query);
 

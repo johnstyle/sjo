@@ -59,6 +59,8 @@ class Alert
     public function set($message, $type = 'danger')
     {
         self::$alerts[$type][] = $message;
+
+        return true;
     }
 
     public function exists()

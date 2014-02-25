@@ -47,4 +47,9 @@ trait Map
 
         return $this->tableName;
     }
+
+    public function getTableFields ()
+    {
+        return $this->__map['columns'];
+    }
 }

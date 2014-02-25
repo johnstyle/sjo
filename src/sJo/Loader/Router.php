@@ -119,4 +119,10 @@ class Router
             . '/' . str_replace('\\', '/', $controller)
             . ($params ? '/?' . http_build_query($params) : '');
     }
+
+    public static function getToken($method = null)
+    {
+        $method = $method ? $method : self::$method;
+        return self::$controller . ($method ? self::$__map['method']['separator'] . $method : '');
+    }
 }

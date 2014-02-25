@@ -130,10 +130,14 @@ class Loader
                 default :
                     header('Content-type:text/html; charset=' . SJO_CHARSET);
                     if (method_exists(Router::$controllerClass, Router::$method)) {
-                        if ($this->instance->component->request->hasToken()) {
-                            $this->instance->{Router::$method}();
+                        if(Lib\Env::post()) {
+                            if ($this->instance->component->request->hasToken()) {
+                                $this->instance->{Router::$method}();
+                            } else {
+                                $this->ErrorDocument('http403', Lib\I18n::__('Warning ! Prohibited queries.'));
+                            }
                         } else {
-                            $this->ErrorDocument('http403', Lib\I18n::__('Warning ! Prohibited queries.'));
+                            $this->instance->{Router::$method}();
                         }
                     }
                     break;

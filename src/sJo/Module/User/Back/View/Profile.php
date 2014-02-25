@@ -1,5 +1,6 @@
 <?php
 
+use sJo\Loader\Router;
 use sJo\Module\User\Model\User;
 use sJo\View\Helper;
 use sJo\Libraries as Lib;
@@ -11,7 +12,7 @@ Helper\Panel::create(array(
     'title' => 'Edition',
     'type' => 'primary',
     'elements' => Helper\Fieldset::create(array(
-        Helper\Token::create('User/Profile::update'),
+        Helper\Token::create(Router::getToken('update')),
         Helper\Input::create(array(
             'type' => 'email',
             'name' => 'email',

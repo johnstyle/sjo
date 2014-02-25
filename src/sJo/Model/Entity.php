@@ -12,7 +12,7 @@ trait Entity
         if($this->__isset($name)) {
             return $this->{$name};
         } else {
-            Exception::error(I18n::__('This property %s does not exist.', $name));
+            Exception::error(I18n::__('Property %s->%s does not exist.', get_called_class(), $name));
         }
 
         return false;
@@ -23,7 +23,7 @@ trait Entity
         if($this->__isset($name)) {
             $this->{$name} = $value;
         } else {
-            Exception::error(I18n::__('This property %s does not exist.', $name));
+            Exception::error(I18n::__('Property %s->%s does not exist.', get_called_class(), $name));
         }
 
         return $this;
@@ -40,7 +40,7 @@ trait Entity
         if($this->__isset($name)) {
             unset($this->{$name});
         } else {
-            Exception::error(I18n::__('This property %s does not exist.', $name));
+            Exception::error(I18n::__('Property %s->%s does not exist.', get_called_class(), $name));
         }
     }
 

@@ -3,6 +3,7 @@
 namespace sJo\View\Helper;
 
 use sJo\Controller\Component\Component;
+use sJo\Loader\Router;
 use sJo\View\Helper\Dom\Dom;
 use sJo\Libraries as Lib;
 
@@ -22,7 +23,7 @@ class Token extends Dom
         if(isset($element['token'])
             && $element['token']) {
 
-            if(preg_match("#^([a-z]+(/([a-z]+))?)(::([a-z]+))?$#i", $element['token'], $match)) {
+            if(preg_match("#^([a-z]+(\\\\([a-z]+))?)(" . Router::$__map['method']['separator'] . "([a-z]+))?$#i", $element['token'], $match)) {
                 $controller = $match[1];
                 $method = $match[5];
             }

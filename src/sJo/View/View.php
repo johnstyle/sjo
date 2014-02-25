@@ -63,6 +63,11 @@ final class View extends Closure
         $this->inc('footer');
     }
 
+    public function method()
+    {
+        $this->inc(Router::$controller . '/' . (Router::$method ? Router::$method : 'index'));
+    }
+
     /**
      * Affichage de la vue courante
      *
@@ -70,7 +75,13 @@ final class View extends Closure
      */
     public function display()
     {
-        $this->inc(Router::$viewFile);
+        if (file_exists(Router::$viewFile)) {
+            $this->inc(Router::$viewFile);
+        } else {
+            $this->header();
+            $this->method();
+            $this->footer();
+        }
     }
 
     /**

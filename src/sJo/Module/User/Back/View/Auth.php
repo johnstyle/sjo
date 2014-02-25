@@ -1,7 +1,7 @@
 <?php
 
 use sJo\Libraries as Lib;
-use sJo\View\Helper;
+use sJo\Loader\Router;use sJo\View\Helper;
 
 ?><!DOCTYPE html>
 <html lang="<?php echo Lib\I18n::country(); ?>">
@@ -28,7 +28,7 @@ Helper\Form::create(array(
     'class' => 'form-signin',
     'method' => 'post',
     'elements' => Helper\Fieldset::create(array(
-        Helper\Token::create('User/Auth::signin'),
+        Helper\Token::create(Router::getToken('signin')),
         Helper\Container::create(array(
             'tagname' => 'h2',
             'class' => 'form-signin-heading',

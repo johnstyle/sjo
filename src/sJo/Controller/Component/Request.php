@@ -38,11 +38,7 @@ class Request
 
     public function hasToken()
     {
-        $controller = str_replace('\\', '/', Router::$controller);
-        if (Lib\Env::request('token') == $this->getToken(
-                $controller . Router::$__map['method']['separator'] . Router::$method
-            )
-        ) {
+        if (Lib\Env::request('token') == $this->getToken(Router::getToken())) {
             return true;
         }
         return false;

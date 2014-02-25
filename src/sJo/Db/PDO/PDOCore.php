@@ -55,11 +55,11 @@ abstract class PDOCore extends \PDO
      * @param array $args
      * @return \PDOStatement
      */
-    public function req($query, array $args = array())
+    public function req($query, array $args = null)
     {
         $req = $this->prepare($query);
 
-        if(count($args)) {
+        if($args) {
             $tmp = $args;
             if(!is_array(array_shift($tmp))) {
                 $args = array($args);
@@ -108,7 +108,7 @@ abstract class PDOCore extends \PDO
      * @param array $args
      * @return string
      */
-    public function fetchColumn($query, array $args = array())
+    public function fetchColumn($query, array $args = null)
     {
         return $this->req($query, $args)->fetchColumn(0);
     }
@@ -122,7 +122,7 @@ abstract class PDOCore extends \PDO
      * @param int $type
      * @return object
      */
-    public function fetch($query, array $args = array(), $type = self::FETCH_OBJ)
+    public function fetch($query, array $args = null, $type = self::FETCH_OBJ)
     {
         return $this->req($query, $args)->fetch($type);
     }
@@ -135,7 +135,7 @@ abstract class PDOCore extends \PDO
      * @param int $type
      * @return array
      */
-    public function fetchAll($query, array $args = array(), $type = self::FETCH_OBJ)
+    public function fetchAll($query, array $args = null, $type = self::FETCH_OBJ)
     {
         return $this->req($query, $args)->fetchAll($type);
     }
