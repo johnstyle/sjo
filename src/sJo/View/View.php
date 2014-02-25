@@ -65,7 +65,7 @@ final class View extends Closure
 
     public function method()
     {
-        $this->inc(Router::$controller . '/' . (Router::$method ? Router::$method : 'index'));
+        $this->inc(Router::$controller . '/' . Router::$method);
     }
 
     /**
