@@ -25,34 +25,42 @@ use sJo\Controller\Component\Session;
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/sjo.git
  *
- * @method static get(\string $attr = false, \string $default = false)
- * @method static getExists(\string $attr)
- * @method static getSet(\string $attr, \string $value)
+ * @method static get(\string $attr = null, \string $default = null)
+ * @method static getExists(\string $attr = null)
+ * @method static getSet(\string $attr, \string $value = null)
+ * @method static getHas(\string $attr, \string $value = null)
  *
- * @method static post(\string $attr = false, \string $default = false)
- * @method static postExists(\string $attr)
- * @method static postSet(\string $attr, \string $value)
+ * @method static post(\string $attr = null, \string $default = null)
+ * @method static postExists(\string $attr = null)
+ * @method static postSet(\string $attr, \string $value = null)
+ * @method static postHas(\string $attr, \string $value = null)
  *
- * @method static files(\string $attr = false, \string $default = false)
- * @method static filesExists(\string $attr)
- * @method static filesSet(\string $attr, \string $value)
+ * @method static files(\string $attr = null, \string $default = null)
+ * @method static filesExists(\string $attr = null)
+ * @method static filesSet(\string $attr, \string $value = null)
+ * @method static filesHas(\string $attr, \string $value = null)
  *
- * @method static requestExists(\string $attr)
- * @method static requestSet(\string $attr, \string $value)
+ * @method static requestExists(\string $attr = null)
+ * @method static requestSet(\string $attr, \string $value = null)
+ * @method static requestHas(\string $attr, \string $value = null)
  *
- * @method static session(\string $attr = false, \string $default = false)
- * @method static sessionExists(\string $attr)
+ * @method static session(\string $attr = null, \string $default = null)
+ * @method static sessionExists(\string $attr = null)
+ * @method static sessionHas(\string $attr, \string $value = null)
  *
- * @method static server(\string $attr = false, \string $default = false)
- * @method static serverExists(\string $attr)
- * @method static serverSet(\string $attr, \string $value)
+ * @method static server(\string $attr = null, \string $default = null)
+ * @method static serverExists(\string $attr = null)
+ * @method static serverSet(\string $attr, \string $value = null)
+ * @method static serverHas(\string $attr, \string $value = null)
  *
- * @method static cookie(\string $attr = false, \string $default = false)
- * @method static cookieExists(\string $attr)
+ * @method static cookie(\string $attr = null, \string $default = null)
+ * @method static cookieExists(\string $attr = null)
+ * @method static cookieHas(\string $attr = null, \string $value = null)
  *
- * @method static env(\string $attr = false, \string $default = false)
- * @method static envExists(\string $attr)
- * @method static envSet(\string $attr, \string $value)
+ * @method static env(\string $attr = null, \string $default = null)
+ * @method static envExists(\string $attr = null)
+ * @method static envSet(\string $attr, \string $value = null)
+ * @method static envHas(\string $attr, \string $value = null)
  */
 abstract class Env
 {
@@ -62,13 +70,13 @@ abstract class Env
      * Gestion des différents tableaux de variables d'environement
      *
      */
-    public static function __callStatic($method, $args = false)
+    public static function __callStatic($method, $args = null)
     {
-        if (preg_match("#^([a-z]+?)(Set|Exists)?$#i", $method, $match)) {
+        if (preg_match("#^([a-z]+?)(Set|Exists|Has)?$#i", $method, $match)) {
             $var = '_' . strtoupper($match[1]);
-            $action = isset($match[2]) ? $match[2] : false;
-            $attr = self::g(0, false, $args);
-            $value = self::g(1, false, $args);
+            $action = isset($match[2]) ? $match[2] : null;
+            $attr = self::g(0, null, $args);
+            $value = self::g(1, null, $args);
             global $$var, $_SERVER;
             if (isset($$var)) {
                 switch ($action) {
@@ -76,10 +84,13 @@ abstract class Env
                         return self::g($attr, $value, $$var);
                         break;
                     case 'Exists':
-                        return self::e($attr, $value, $$var);
+                        return self::e($attr, $$var);
                         break;
                     case 'Set':
                         self::s($attr, $value, $$var);
+                        break;
+                    case 'Has':
+                        self::h($attr, $value, $$var);
                         break;
                 }
             }
@@ -94,7 +105,7 @@ abstract class Env
      * @param bool|string $default Valeurs par défaut
      * @return mixed
      */
-    public static function request($attr = false, $default = false)
+    public static function request($attr = null, $default = null)
     {
         return self::g($attr, self::g($attr, $default, $_GET), $_POST);
     }
@@ -106,10 +117,10 @@ abstract class Env
      * @param $value
      * @return void
      */
-    public static function sessionSet($attr, $value = false)
+    public static function sessionSet($attr, $value = null)
     {
         Session::write(function() use($attr, $value) {
-            $_SESSION[$attr] = $value;
+            self::s($attr, $value, $_SESSION);
         });
     }
 
@@ -151,7 +162,7 @@ abstract class Env
      * @param bool|string $default Valeurs par défaut
      * @return mixed
      */
-    public static function opt($attr = false, $default = false)
+    public static function opt($attr = null, $default = null)
     {
         return self::g($attr, $default, self::$opt);
     }
@@ -160,12 +171,11 @@ abstract class Env
      * Vérification de l'existance d'une option phpcli
      *
      * @param string $attr Clé du tableau
-     * @param boolean $empty Autorise ou non que la valeur soit vide
      * @return boolean
      */
-    public static function optExists($attr, $empty = false)
+    public static function optExists($attr = null)
     {
-        return self::e($attr, $empty, self::$opt);
+        return self::e($attr, self::$opt);
     }
 
     /**
@@ -201,9 +211,9 @@ abstract class Env
      * @param string $var Tableau de données
      * @return mixed
      */
-    public static function g($attr, $default, &$var)
+    public static function g($attr = null, $default = null, &$var)
     {
-        if ($attr !== false) {
+        if ($attr !== null) {
             $value = Arr::getTree($var, $attr);
             if ($value !== false && $value !== '') {
                 return Str::stripslashes($value);
@@ -218,13 +228,13 @@ abstract class Env
      * Vérification de l'existance d'une valeur
      *
      * @param string $attr Clé du tableau
-     * @param boolean $empty Autorise ou non que la valeur soit vide
      * @param string $var Tableau de données
      * @return boolean
      */
-    public static function e($attr, $empty = false, &$var)
+    public static function e($attr = null, &$var)
     {
-        if (isset($var[$attr]) && ((!$empty && !empty($var[$attr])) || $empty)) {
+        if (($attr === null && isset($var) & count($var))
+            || ($attr !== null && isset($var[$attr]) && $var[$attr] !== null)) {
             return true;
         }
         return false;
@@ -236,11 +246,31 @@ abstract class Env
      * @param string $attr Clé du tableau
      * @param $value
      * @param string $var Tableau de données
-     * @internal param string $default Valeur
      * @return void
      */
-    public static function s($attr, $value, &$var)
+    public static function s($attr, $value = null, &$var)
     {
-        $var[$attr] = $value;
+        if ($value === null) {
+            unset($var[$attr]);
+        } else {
+            $var[$attr] = $value;
+        }
+    }
+
+    /**
+     * Correspondance d'une valeur
+     *
+     * @param string $attr Clé du tableau
+     * @param string $value Valeur à comparer
+     * @param string $var Tableau de données
+     * @return boolean
+     */
+    public static function h($attr, $value, &$var)
+    {
+        if (self::e($attr, $var)
+            && self::g($attr) === $value) {
+            return true;
+        }
+        return false;
     }
 }
