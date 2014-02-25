@@ -19,7 +19,7 @@ class Router
         'method' => array(
             'name' => 'method',
             'separator' => '::',
-            'default' => null
+            'default' => 'index'
         )
     );
 
@@ -113,11 +113,15 @@ class Router
         self::$module = null;
     }
 
-    public static function link($controller, array $params = null)
+    public static function link($controller = null, array $params = null)
     {
+        if ($controller === null) {
+            $controller = self::getToken();
+        }
+
         return SJO_BASEHREF
             . '/' . str_replace('\\', '/', $controller)
-            . ($params ? '/?' . http_build_query($params) : '');
+            . ($params !== null && count($params) ? '/?' . http_build_query($params) : '');
     }
 
     public static function getToken($method = null)

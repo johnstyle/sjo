@@ -12,10 +12,11 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Controller;
+namespace sJo\Loader;
 
-use sJo\Libraries as Lib;
-use sJo\Loader\Router;
+use sJo\Libraries\Crypto\Crypto;
+use sJo\Libraries\Env;
+use sJo\Controller\Component\Session;
 
 /**
  * Gestion des requêtes
@@ -28,21 +29,21 @@ use sJo\Loader\Router;
  */
 class Token
 {
-    public static function get($method = null)
+    public static function get($value = null)
     {
-        Component\Session::start();
+        Session::start();
 
-        return Lib\Crypto\Crypto::md5(
-            Lib\Env::server('REMOTE_ADDR')
-            . Lib\Env::server('HTTP_USER_AGENT')
-            . Lib\Env::server('HTTP_HOST')
-            . Component\Session::$id  . $method
+        return Crypto::md5(
+            Env::server('REMOTE_ADDR')
+            . Env::server('HTTP_USER_AGENT')
+            . Env::server('HTTP_HOST')
+            . Session::$id  . $value
         );
     }
 
     public static function has()
     {
-        if (Lib\Env::request('token') == self::get(Router::getToken())) {
+        if (Env::request('token') == self::get(Router::getToken())) {
             return true;
         }
         return false;

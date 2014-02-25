@@ -119,7 +119,7 @@ class Loader
                 case 'json' :
                     header('Content-type:application/json; charset=' . SJO_CHARSET);
                     if (method_exists(Router::$controllerClass, Router::$method)) {
-                        if ($this->instance->component->request->hasToken()) {
+                        if (Token::has()) {
                             echo json_encode($this->instance->{Router::$method}());
                         } else {
                             $this->ErrorDocument('http403', Lib\I18n::__('Warning ! Prohibited queries.'));
@@ -131,7 +131,7 @@ class Loader
                     header('Content-type:text/html; charset=' . SJO_CHARSET);
                     if (method_exists(Router::$controllerClass, Router::$method)) {
                         if(Lib\Env::post()) {
-                            if ($this->instance->component->request->hasToken()) {
+                            if (Token::has()) {
                                 $this->instance->{Router::$method}();
                             } else {
                                 $this->ErrorDocument('http403', Lib\I18n::__('Warning ! Prohibited queries.'));
