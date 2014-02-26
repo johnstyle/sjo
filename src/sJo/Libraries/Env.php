@@ -233,7 +233,7 @@ abstract class Env
      */
     public static function e($attr = null, &$var)
     {
-        if (($attr === null && isset($var) & count($var))
+        if (($attr === null && count($var))
             || ($attr !== null && isset($var[$attr]) && $var[$attr] !== null)) {
             return true;
         }
