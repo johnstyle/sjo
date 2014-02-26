@@ -27,34 +27,70 @@ class Table extends Dom
             $element['tbody'] = $instance->db()->results();
         }
 
-        if ($element['thead'] === null && is_array($element['tbody'])) {
+        if ($element['thead'] === null
+            && is_array($element['tbody'])) {
             $thead = array();
             foreach($element['tbody'] as $line) {
                 foreach($line as $name=>$value) {
+                    $name = ucfirst($name);
                     if (!in_array($name, $thead)) {
                         $thead[] = $name;
                     }
                 }
             }
             $element['thead'] = $thead;
+            unset($thead);
+        }
+
+        if (is_array($element['thead'])) {
+            foreach($element['thead'] as &$thead) {
+                if (!is_array($thead)) {
+                    $thead = array(
+                        'value' => $thead
+                    );
+                }
+
+                $thead = Lib\Arr::extend(array(
+                    'align' => null
+                ), $thead);
+            }
         }
 
         if ($element['actions']) {
-            if ($element['thead'] && is_array($element['thead'])) {
-                array_push($element['thead'], Lib\I18n::__('Actions'));
+            if (is_array($element['thead'])) {
+                $element['thead'][] = array(
+                    'value' => Lib\I18n::__('Actions'),
+                    'align' => 'right'
+                );
             }
-            if ($element['tbody'] && is_array($element['tbody'])) {
+            if (is_array($element['tbody'])) {
                 foreach($element['tbody'] as &$line) {
                     $line->actions = '';
                     foreach($element['actions'] as $action=>$options) {
                         if(!is_array($options)) {
                             $action = $options;
                             $options = array(
-                                'href' => Router::link(null, array('method' => 'edit', $instance->getPrimaryKey() => $line->{$instance->getPrimaryKey()}))
+                                'href' => Router::link(null, array('method' => $action, $instance->getPrimaryKey() => $line->{$instance->getPrimaryKey()}))
                             );
                         }
+
+                        switch($action) {
+                            case 'delete':
+                                $icon = 'trash';
+                            break;
+                            case 'update':
+                                $icon = 'edit';
+                                break;
+                            case 'create':
+                                $icon = 'plus';
+                                break;
+                            default:
+                                $icon = $action;
+                                break;
+                        }
+
                         $line->actions .= Link::create(array_merge(array(
-                            'icon' => $action
+                            'icon' => $icon
                         ), $options))->html();
                     }
                 }

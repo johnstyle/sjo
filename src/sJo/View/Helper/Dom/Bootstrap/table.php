@@ -8,7 +8,11 @@
         <thead>
         <tr>
         <?php foreach($this->thead as $thead): ?>
-            <th><?php echo $thead; ?></th>
+            <th
+                <?php if($thead['align']): ?>
+                    class="text-<?php echo $thead['align']; ?>"
+                <?php endif; ?>
+                ><?php echo $thead['value']; ?></th>
         <?php endforeach; ?>
         </tr>
         </thead>
@@ -26,9 +30,13 @@
         <tbody>
         <?php foreach($this->tbody as $items): ?>
         <tr>
-            <?php foreach($items as $item): ?>
-                <td><?php echo $item; ?></td>
-            <?php endforeach; ?>
+            <?php $i = 0; foreach($items as $item): ?>
+                <td
+                    <?php if($this->thead[$i]['align']): ?>
+                        class="text-<?php echo $this->thead[$i]['align']; ?>"
+                    <?php endif; ?>
+                    ><?php echo $item; ?></td>
+            <?php $i++; endforeach; ?>
         </tr>
         <?php endforeach; ?>
         </tbody>
