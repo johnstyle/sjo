@@ -2,6 +2,7 @@
 
 namespace sJo\Controller;
 
+use sJo\Loader\Alert;
 use sJo\Loader\Router;
 use sJo\Model\MysqlObject;
 use sJo\Libraries as Lib;
@@ -11,13 +12,28 @@ trait Action
 {
     private $error;
 
-    protected function create (MysqlObject $instance)
+    protected function edit (MysqlObject $instance)
+    {
+        if (Lib\Env::requestExists($instance->getPrimaryKey())) {
+            $instance->setPrimaryValue(Lib\Env::request($instance->getPrimaryKey()));
+        }
+
+        $this->update($instance);
+    }
+
+    protected function update (MysqlObject $instance)
     {
         if (Lib\Env::postExists()) {
+
+            $stay = false;
+            if(Lib\Env::postExists('stay')) {
+                $stay = true;
+            }
 
             Lib\Env::postSet('controller');
             Lib\Env::postSet('method');
             Lib\Env::postSet('token');
+            Lib\Env::postSet('stay');
 
             foreach (Lib\Env::post() as $name => $value) {
                 $instance->{$name} = $value;
@@ -28,30 +44,31 @@ trait Action
                     if(isset($attr['default'])) {
                         $instance->{$name} = $attr['default'];
                     } else {
-                        $this->error = $this->component->alert->set(Lib\I18n::__('Le champ %s est requis.', $name));
+                        $this->error = Alert::set(Lib\I18n::__('The field %s is required.', $name));
                     }
                 }
             }
 
             if (!$this->error) {
-                $instance->save();
-                Http::redirect(Router::link(null, array($instance->getPrimaryKey() => $instance->getPrimaryValue())));
+                if($instance->save()){
+                    Alert::set(Lib\I18n::__('The item has been saved.'), 'success');
+                }
+                if ($stay) {
+                    Http::redirect(Router::link(null, array($instance->getPrimaryKey() => $instance->getPrimaryValue())));
+                } else{
+                    Http::redirect(Router::link(Router::$controller));
+                }
             }
-        }
-    }
-
-    protected function update (MysqlObject $instance)
-    {
-        if ($instance->{$instance->getPrimaryKey()}
-            || Lib\Env::postExists($instance->getPrimaryKey())) {
-            $this->create($instance);
         }
     }
 
     protected function delete (MysqlObject $instance)
     {
-        if (Lib\Env::postExists($instance->getPrimaryKey())) {
-            $instance->delete(Lib\Env::post($instance->getPrimaryKey()));
+        if (Lib\Env::requestExists($instance->getPrimaryKey())) {
+            if($instance->delete()) {
+                Alert::set(Lib\I18n::__('The item has been deleted.'), 'success');
+            }
         }
+        Http::redirect(Router::link(Router::$controller));
     }
 }
