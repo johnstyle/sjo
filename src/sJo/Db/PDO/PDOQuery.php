@@ -123,7 +123,7 @@ trait PDOQuery
     {
         $query = 'DELETE FROM `' . $this->table . '`' . self::where($where);
 
-        $this->req($query);
+        $this->req($query, $where);
 
         return $this;
     }
