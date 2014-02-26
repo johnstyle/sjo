@@ -115,13 +115,20 @@ class Router
 
     public static function link($controller = null, array $params = null)
     {
+        $params = Lib\Arr::extend(array(
+            'method' => null
+        ), $params);
+
         if ($controller === null) {
-            $controller = self::getToken();
+            $controller = self::getToken($params['method']);
+            unset($params['method']);
         }
+
+        $params = http_build_query($params, '/?');
 
         return SJO_BASEHREF
             . '/' . str_replace('\\', '/', $controller)
-            . ($params !== null && count($params) ? '/?' . http_build_query($params) : '');
+            . ($params ? '/?' . $params : '');
     }
 
     public static function getToken($method = null)
