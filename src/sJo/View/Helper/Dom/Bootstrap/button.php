@@ -1,6 +1,6 @@
 <button
     type="<?php echo $this->type; ?>"
-    class="btn btn-primary <?php echo $this->class; ?>"
+    class="btn btn-<?php echo $this->color; ?> <?php echo $this->class; ?>"
     <?php if($this->name): ?>
         name="<?php echo $this->name; ?>"
     <?php endif; ?>
