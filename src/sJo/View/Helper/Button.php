@@ -15,6 +15,7 @@ class Button extends Dom
 
         return Lib\Arr::extend(array(
             'type' => 'submit',
+            'color' => 'primary',
             'class' => null,
             'name' => null,
             'value' => null
