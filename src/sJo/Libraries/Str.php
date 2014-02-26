@@ -128,5 +128,10 @@ abstract class Str
     public static function isUrl($str)
     {
         return preg_match("#^https?://(www\.)?[a-z0-9\.\-]+\.[a-z]{2,4}(/.+|$)#i", $str);
-    }  
+    }
+
+    public static function camelize($str)
+    {
+        return strtr(ucwords(strtr($str, array('_' => ' ', '.' => '_ ', '\\' => '_ '))), array(' ' => ''));
+    }
 }
