@@ -35,7 +35,11 @@ class Loader
     use Event;
 
     public static $root;
+
     private $view;
+    private $alert;
+    private $router;
+    private $module;
 
     /**
      * Constructeur
@@ -60,7 +64,10 @@ class Loader
         $sJo_I18n->load('default', self::$root . '/Locale');
 
         /** Router */
-        new Router($this);
+        $this->router = new Router($this);
+
+        /** Alert */
+        $this->alert = new Alert();
 
         /** Bootstrap */
         Lib\File::__include(SJO_ROOT_APP . '/' . Router::$interface . '/bootstrap.php');
@@ -69,7 +76,7 @@ class Loader
         Helpers\Autoload(SJO_ROOT_APP);
 
         /** Load modules */
-        new Module();
+        $this->module = new Module();
     }
 
     public static function quickStart()

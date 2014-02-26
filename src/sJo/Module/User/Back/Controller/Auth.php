@@ -4,6 +4,7 @@ namespace sJo\Module\User\Back\Controller;
 
 use sJo\Controller\Controller;
 use sJo\Libraries as Lib;
+use sJo\Loader\Alert;
 use sJo\Module\User\Model\User;
 
 class Auth extends Controller
@@ -18,13 +19,13 @@ class Auth extends Controller
                     ));
                     $this->component->session->signin($token);
                 } else {
-                    $this->component->alert->set(Lib\I18n::__('Les informations de connexion sont incorrects'));
+                    Alert::set(Lib\I18n::__('Les informations de connexion sont incorrects'));
                 }
             } else {
-                $this->component->alert->set(Lib\I18n::__('Veuillez renseigner votre mot de passe'));
+                Alert::set(Lib\I18n::__('Veuillez renseigner votre mot de passe'));
             }
         } else {
-            $this->component->alert->set(Lib\I18n::__('Veuillez renseigner votre identifiant'));
+            Alert::set(Lib\I18n::__('Veuillez renseigner votre identifiant'));
         }
     }
 

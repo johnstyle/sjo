@@ -12,8 +12,9 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Controller\Component;
+namespace sJo\Loader;
 
+use sJo\Controller\Component\Session;
 use sJo\Model\Singleton;
 use sJo\Libraries as Lib;
 
@@ -48,7 +49,7 @@ class Alert
         }
     }
 
-    public function get()
+    public static function get()
     {
         $alert = self::$alerts;
         Lib\Env::sessionSet('alerts');
@@ -56,14 +57,14 @@ class Alert
         return $alert;
     }
 
-    public function set($message, $type = 'danger')
+    public static function set($message, $type = 'danger')
     {
         self::$alerts[$type][] = $message;
 
         return true;
     }
 
-    public function exists()
+    public static function exists()
     {
         if (self::$alerts) {
             return true;
