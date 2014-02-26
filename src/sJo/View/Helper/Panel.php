@@ -13,7 +13,7 @@ class Panel extends Dom
 
         return Lib\Arr::extend(array(
             'col' => null,
-            'type' => 'default',
+            'color' => 'default',
             'container' => array(
                 'tagname' => 'form',
                 'attr' => array(
