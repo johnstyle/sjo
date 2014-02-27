@@ -11,7 +11,7 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Libraries\Http;
+namespace sJo\Http;
 
 use sJo\Libraries\Arr;
 use sJo\Libraries\Csv;

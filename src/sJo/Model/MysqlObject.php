@@ -4,6 +4,7 @@ namespace sJo\Model;
 
 use sJo\Db\PDO\Drivers\Mysql as Db;
 use \sJo\Libraries as Lib;
+use sJo\Object\Singleton;
 
 abstract class MysqlObject
 {

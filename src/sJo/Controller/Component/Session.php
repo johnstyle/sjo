@@ -16,7 +16,7 @@ namespace sJo\Controller\Component;
 
 use sJo\Loader\Token;
 use sJo\Libraries as Lib;
-use sJo\Libraries\Http\Http;
+use sJo\Http\Http;
 use sJo\Loader\Router;
 
 /**

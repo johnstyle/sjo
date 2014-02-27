@@ -14,7 +14,7 @@
 
 namespace sJo\Loader;
 
-use sJo\Libraries\Crypto\Crypto;
+use sJo\Encryption\Encrypter;
 use sJo\Libraries\Env;
 use sJo\Controller\Component\Session;
 
@@ -33,7 +33,7 @@ class Token
     {
         Session::start();
 
-        return Crypto::md5(
+        return Encrypter::md5(
             Env::server('REMOTE_ADDR')
             . Env::server('HTTP_USER_AGENT')
             . Env::server('HTTP_HOST')

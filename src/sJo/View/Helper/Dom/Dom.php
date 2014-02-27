@@ -5,7 +5,7 @@ namespace sJo\View\Helper\Dom;
 use sJo\Exception\Exception;
 use sJo\Libraries\Arr;
 use sJo\Libraries\I18n;
-use sJo\Libraries\Object\Closure;
+use sJo\Object\Closure;
 
 abstract class Dom
 {

@@ -15,7 +15,7 @@
 namespace sJo\View;
 
 use sJo\Controller\Controller;
-use sJo\Libraries\Object\Closure;
+use sJo\Object\Closure;
 use sJo\Loader\Router;
 
 /**

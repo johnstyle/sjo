@@ -16,8 +16,8 @@ namespace sJo\Db\PDO;
 
 use sJo\Exception\Exception;
 use sJo\Module\Dependencies;
-use sJo\Model;
 use sJo\Libraries as Lib;
+use sJo\Object\Singleton;
 
 /**
  * Base de données Drivers
@@ -32,8 +32,8 @@ use sJo\Libraries as Lib;
 abstract class PDOCore extends \PDO
 {
     use PDOQuery;
-    use Model\Singleton {
-        Model\Singleton::getInstance as SingletonGetInstance;
+    use Singleton {
+        Singleton::getInstance as SingletonGetInstance;
     }
 
     /**

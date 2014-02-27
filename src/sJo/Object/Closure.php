@@ -10,7 +10,7 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Libraries\Object;
+namespace sJo\Object;
 
 use sJo\Exception\Exception;
 use sJo\Libraries\I18n;

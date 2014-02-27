@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Model;
+namespace sJo\Object;
 
 trait Singleton
 {

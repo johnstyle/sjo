@@ -10,9 +10,9 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Libraries\Crypto;
+namespace sJo\Encryption;
 
-class Crypto
+class Encrypter
 {
     public static function salt()
     {

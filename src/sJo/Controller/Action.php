@@ -6,7 +6,7 @@ use sJo\Loader\Alert;
 use sJo\Loader\Router;
 use sJo\Model\MysqlObject;
 use sJo\Libraries as Lib;
-use sJo\Libraries\Http\Http;
+use sJo\Http\Http;
 
 trait Action
 {

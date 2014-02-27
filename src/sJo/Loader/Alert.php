@@ -15,7 +15,7 @@
 namespace sJo\Loader;
 
 use sJo\Controller\Component\Session;
-use sJo\Model\Singleton;
+use sJo\Object\Singleton;
 use sJo\Libraries as Lib;
 
 /**

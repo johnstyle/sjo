@@ -10,13 +10,8 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Libraries\Http;
+namespace sJo\Encryption;
 
-class Http
+class Mycrypt
 {
-    public static function redirect($url = false)
-    {
-        header('Location:' . ($url ? $url : './'));
-        exit;
-    }
 }
