@@ -19,6 +19,7 @@ use sJo\Model\Event;
 use sJo\Libraries as Lib;
 use sJo\Helpers;
 use sJo\Module\Module;
+use sJo\Request\Request;
 use sJo\View\View;
 
 /**
@@ -122,7 +123,7 @@ class Loader
     public function display()
     {
         if (Router::$method) {
-            switch (Lib\Env::get('content_type')) {
+            switch (Request::env('GET')->content_type->val()) {
                 case 'json' :
                     header('Content-type:application/json; charset=' . SJO_CHARSET);
                     if (method_exists(Router::$controllerClass, Router::$method)) {
@@ -137,7 +138,7 @@ class Loader
                 default :
                     header('Content-type:text/html; charset=' . SJO_CHARSET);
                     if (method_exists(Router::$controllerClass, Router::$method)) {
-                        if(Lib\Env::post()) {
+                        if(Request::env('POST')->exists()) {
                             if (Token::has()) {
                                 $this->instance->{Router::$method}();
                             } else {

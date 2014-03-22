@@ -6,16 +6,17 @@ use sJo\Controller\Controller;
 use sJo\Libraries as Lib;
 use sJo\Loader\Alert;
 use sJo\Module\User\Model\User;
+use sJo\Request\Request;
 
 class Auth extends Controller
 {
     public function signin()
     {
-        if(Lib\Env::post('email')) {
-            if(Lib\Env::post('password')) {
-                if($token = User::getInstance()->exists(Lib\Env::post('email'), Lib\Env::post('password'))) {
+        if(Request::env('POST')->email->exists()) {
+            if(Request::env('POST')->password->exists()) {
+                if($token = User::getInstance()->exists(Request::env('POST')->email->val(), Request::env('POST')->password->val())) {
                     $this->component->logger->info('Signin {user}', array(
-                        'user' => Lib\Env::post('email')
+                        'user' => Request::env('POST')->email->val()
                     ));
                     $this->component->session->signin($token);
                 } else {
@@ -32,7 +33,7 @@ class Auth extends Controller
     public function signout ()
     {
         $this->component->logger->info('Signout {user}', array(
-            'user' => Lib\Env::session('token')
+            'user' => Request::env('SESSION')->token->val()
         ));
         $this->component->session->signout();
     }

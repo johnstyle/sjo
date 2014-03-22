@@ -12,6 +12,8 @@
 
 namespace sJo\Libraries;
 
+use sJo\Request\Request;
+
 class DataTables
 {
     private $data;
@@ -55,7 +57,7 @@ class DataTables
 
     public function callback()
     {
-        $this->data['sEcho'] = Env::request('sEcho');
+        $this->data['sEcho'] = Request::env('REQUEST')->sEcho->val();
 
         return $this->data;
     }
@@ -63,8 +65,8 @@ class DataTables
     public function display()
     {
         header('Content-type:application/json; charset=utf-8');
-        if(Env::get('callback')) {
-            echo Env::get('callback') . '(' . json_encode($this->callback()) . ');';
+        if(Request::env('REQUEST')->callback->exsist()) {
+            echo Request::env('REQUEST')->callback->val() . '(' . json_encode($this->callback()) . ');';
         } else {
             echo json_encode($this->callback());
         }

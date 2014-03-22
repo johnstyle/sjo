@@ -5,6 +5,7 @@ namespace sJo\Model;
 use sJo\Db\PDO\Drivers\Mysql as Db;
 use \sJo\Libraries as Lib;
 use sJo\Object\Singleton;
+use sJo\Request\Request;
 
 abstract class MysqlObject
 {
@@ -18,7 +19,7 @@ abstract class MysqlObject
     public function __construct($id = null)
     {
         if($id === null) {
-            $id = Lib\Env::request($this->getPrimaryKey());
+            $id = Request::env('REQUEST')->{$this->getPrimaryKey()}->val();
         }
 
         $this->setPrimaryValue($id);

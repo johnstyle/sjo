@@ -14,7 +14,7 @@ abstract class Request
     {
         switch($method) {
             case 'env':
-                return new Env($args[0]);
+                return new Env($items = null, $args[0]);
                 break;
         }
     }

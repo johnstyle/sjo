@@ -1,7 +1,7 @@
 <?php
 
 use sJo\Libraries as Lib;
-use sJo\Loader\Router;use sJo\View\Helper;
+use sJo\Loader\Router;use sJo\Request\Request;use sJo\View\Helper;
 
 ?><!DOCTYPE html>
 <html lang="<?php echo Lib\I18n::country(); ?>">
@@ -37,7 +37,7 @@ Helper\Form::create(array(
         Helper\Alert::create(),
         Helper\Input::create(array(
             'name' => 'email',
-            'value' => Lib\Env::post('email'),
+            'value' => Request::env('POST')->email->val(),
             'placeholder' => Lib\I18n::__('Adresse email'),
             'autofocus' => true
         )),

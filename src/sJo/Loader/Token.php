@@ -15,8 +15,8 @@
 namespace sJo\Loader;
 
 use sJo\Encryption\Encrypter;
-use sJo\Libraries\Env;
-use sJo\Controller\Component\Session;
+use sJo\Request\Request;
+use sJo\Request\Session;
 
 /**
  * Gestion des requêtes
@@ -31,19 +31,18 @@ class Token
 {
     public static function get($value = null)
     {
-        Session::start();
-
         return Encrypter::md5(
-            Env::server('REMOTE_ADDR')
-            . Env::server('HTTP_USER_AGENT')
-            . Env::server('HTTP_HOST')
-            . Session::$id  . $value
+              Request::env('SERVER')->REMOTE_ADDR->val()
+            . Request::env('SERVER')->HTTP_USER_AGENT->val()
+            . Request::env('SERVER')->HTTP_HOST->val()
+            . Session::id()
+            . $value
         );
     }
 
     public static function has()
     {
-        if (Env::request('token') == self::get(Router::getToken())) {
+        if (Request::env('REQUEST')->token->eq(self::get(Router::getToken()))) {
             return true;
         }
         return false;

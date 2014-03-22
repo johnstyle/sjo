@@ -18,6 +18,7 @@ use sJo\Loader\Token;
 use sJo\Libraries as Lib;
 use sJo\Http\Http;
 use sJo\Loader\Router;
+use sJo\Request\Request;
 
 /**
  * Gestion des sesions de connexion
@@ -30,61 +31,14 @@ use sJo\Loader\Router;
  */
 class Session
 {
-    public static $id;
-
-    /**
-     * @param bool $close
-     * @return bool
-     */
-    public static function start($close = true)
-    {
-        if(!headers_sent()) {
-
-            if (session_status() === PHP_SESSION_NONE) {
-
-                session_start();
-
-                if (session_status() === PHP_SESSION_ACTIVE) {
-
-                    self::$id = session_id();
-
-                    if($close) {
-
-                        session_write_close();
-                    }
-
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param callable $callback
-     * @param array $args
-     */
-    public static function write(callable $callback, array $args = array())
-    {
-        if(is_callable($callback)){
-
-            if (self::start(false)) {
-
-                call_user_func_array($callback, $args);
-                session_write_close();
-            }
-        }
-    }
-
     public function check($auth)
     {
-        self::start();
+        \sJo\Request\Session::start(false);
 
         if (Router::$controller !== $auth) {
             if (!$this->isActive()) {
                 http_response_code(401);
-                $this->redirect(Router::link($auth, array('redirect' => Lib\Env::server('REQUEST_URI'))));
+                $this->redirect(Router::link($auth, array('redirect' => Request::env('SERVER')->REQUEST_URI->val())));
             }
         } elseif ($this->isActive() && !Router::$method) {
             $this->redirect();
@@ -93,30 +47,28 @@ class Session
 
     public function signin($id, $url = SJO_BASEHREF)
     {
-        Lib\Env::sessionSet('id', $id);
-        Lib\Env::sessionSet('token', Token::get($id));
+        Request::env('SESSION')->id = $id;
+        Request::env('SESSION')->token = Token::get($id);
         $this->redirect($url);
     }
 
     public function signout($url = SJO_BASEHREF)
     {
-        if (Lib\Env::cookieExists()) {
-            foreach (Lib\Env::cookie() as $name => $value) {
-                Lib\Env::cookieSet($name);
+        if (Request::env('COOKIES')->exists()) {
+            foreach (Request::env('COOKIES')->getArray() as $name => $value) {
+                unset(Request::env('COOKIES')->{$name});
             }
         }
 
-        if (self::start(false)) {
-            session_destroy();
-        }
+        \sJo\Request\Session::destroy();
 
         $this->redirect($url);
     }
 
     public function redirect($url = SJO_BASEHREF)
     {
-        if (preg_match("#^(\./|/)#", Lib\Env::get('redirect'))) {
-            Http::redirect(Lib\Env::get('redirect'));
+        if (preg_match("#^(\./|/)#", Request::env('GET')->redirect->val())) {
+            Http::redirect(Request::env('GET')->redirect->val());
         } else {
             Http::redirect($url);
         }
@@ -124,8 +76,8 @@ class Session
 
     public function isActive()
     {
-        if (Lib\Env::session('id')
-            && Lib\Env::session('token') === Token::get(Lib\Env::session('id'))) {
+        if (Request::env('SESSION')->id->exists()
+            && Request::env('SESSION')->token->eq(Token::get(Request::env('SESSION')->id->val()))) {
             return true;
         }
         return false;

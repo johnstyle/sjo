@@ -4,6 +4,7 @@ namespace sJo\Loader;
 
 use sJo\Libraries as Lib;
 use sJo\Module\Module;
+use sJo\Request\Request;
 
 class Router
 {
@@ -61,12 +62,12 @@ class Router
 
     private static function loadInterface()
     {
-        self::$interface = Lib\Env::get(self::$__map['interface']['name'], self::$__map['interface']['default']);
+        self::$interface = Request::env('GET')->{self::$__map['interface']['name']}->val(self::$__map['interface']['default'], true);
     }
 
     private static function loadController()
     {
-        self::$controller = Lib\Env::request(self::$__map['controller']['name'], self::$__map['controller']['default']);
+        self::$controller = Request::env('REQUEST')->{self::$__map['controller']['name']}->val(self::$__map['controller']['default'], true);
         self::$controller = trim(self::$controller, '/');
         self::$controller = str_replace('/', '\\', self::$controller);
         self::$controllerClass = '\\' . self::$interface . '\\Controller\\' . self::$controller;
@@ -80,7 +81,7 @@ class Router
 
     private static function loadMethod()
     {
-        self::$method = Lib\Env::request(self::$__map['method']['name'], self::$__map['method']['default']);
+        self::$method = Request::env('REQUEST')->{self::$__map['method']['name']}->val(self::$__map['method']['default'], true);
     }
 
     private static function loadModule()
@@ -89,8 +90,8 @@ class Router
             && preg_match("#^(.+?)\\\\([^\\\\]+)$#", self::$controller, $match)) {
             if (Module::loaded($match[1])) {
                 self::$module = $match[1];
-                self::$controllerClass = '\\sJo\\Module\\' . self::$module . (self::$interface ? '\\' . self::$interface : '') . '\\Controller\\' . $match[2];
-                self::$viewFile = realpath(__DIR__) . '/' . SJO_ROOT . '/Module/' . self::$module . (self::$interface ? '/' . self::$interface : '') . '/View/' . str_replace('\\', '/', $match[2]) . '.php';
+                self::$controllerClass = Module::getClass(self::$module, self::$interface . '\\Controller\\' . $match[2]);
+                self::$viewFile = Module::getFile(self::$module, self::$interface . '/View/' . str_replace('\\', '/', $match[2]) . '.php');
             }
         }
     }

@@ -2,26 +2,61 @@
 
 namespace sJo\Request;
 
+use sJo\Request\Session;
 use sJo\Object\Tree;
 
 /**
  * Class Env
  * @package sJo\Request
  */
-class Env
+class Env extends Tree
 {
-    use Tree;
-
-    public function __construct($var = null)
+    public function __construct(array &$items = null, $key = null)
     {
-        if ($var) {
+         switch ($key) {
 
-            $var = '_' . strtoupper($var);
+            case 'SESSION':
+                Session::start();
+                $items =& Session::$reference;
+                break;
 
-            global $$var;
+            case 'REQUEST':
+                $items = array();
+                if(isset($_GET)) {
+                    $items = array_merge($items, $_GET);
+                }
+                if(isset($_POST)) {
+                    $items = array_merge($items, $_POST);
+                }
+                if(!count($items)) {
+                    $items = null;
+                }
+                break;
+        }
 
-            $this->var = $var;
-            $this->data =& $$var;
+        if ($key) {
+
+            $_VAR = '_' . strtoupper($key);
+
+            if ($items === null) {
+
+                global $$_VAR;
+                $items =& $$_VAR;
+            }
+        }
+
+        parent::__construct($items, $key);
+    }
+
+    public function destroy()
+    {
+        parent::destroy();
+
+        switch ($this->key) {
+
+            case 'SESSION':
+                Session::destroy();
+                break;
         }
     }
 }

@@ -14,9 +14,10 @@
 
 namespace sJo\Loader;
 
-use sJo\Controller\Component\Session;
 use sJo\Object\Singleton;
 use sJo\Libraries as Lib;
+use sJo\Request\Request;
+use sJo\Request\Session;
 
 /**
  * Alertes
@@ -35,24 +36,24 @@ class Alert
     {
         Session::start();
 
-        if (Lib\Env::sessionExists('alerts')) {
-            self::$alerts = json_decode(Lib\Env::session('alerts'), true);
+        if (Request::env('SESSION')->alerts->exists()) {
+            self::$alerts = json_decode(Request::env('SESSION')->alerts->val(), true);
         }
     }
 
     public function __destruct()
     {
         if(self::$alerts) {
-            Lib\Env::sessionSet('alerts', json_encode(self::$alerts));
+            Request::env('SESSION')->alerts = json_encode(self::$alerts);
         } else {
-            Lib\Env::sessionSet('alerts');
+            unset(Request::env('SESSION')->alerts);
         }
     }
 
     public static function get()
     {
         $alert = self::$alerts;
-        Lib\Env::sessionSet('alerts');
+        unset(Request::env('SESSION')->alerts);
         self::$alerts = null;
         return $alert;
     }

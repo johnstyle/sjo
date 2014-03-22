@@ -3,13 +3,14 @@
 namespace sJo\Module\User\Model;
 
 use \sJo\Libraries as Lib;
+use sJo\Request\Request;
 
 class User extends UserMap
 {
     public function __construct($id = null)
     {
         if($id === null) {
-            $id = Lib\Env::session('id');
+            $id = Request::env('SESSION')->id->val();
         }
 
         parent::__construct($id);

@@ -4,6 +4,7 @@ namespace sJo\Controller\Component;
 
 use Psr\Log\AbstractLogger;
 use sJo\Libraries as Lib;
+use sJo\Request\Request;
 
 /**
  * This Logger can be used to avoid conditional log calls
@@ -27,7 +28,7 @@ class Logger extends AbstractLogger
     {
         Lib\File::append(SJO_ROOT_LOG . '/app.' . $level . '.log',
             date('Y-m-d H:i:s') . "\t" .
-            Lib\Env::server('REQUEST_URI') . "\t" .
+            Request::env('SERVER')->REQUEST_URI->val() . "\t" .
             self::interpolate($message, $context) . "\n");
     }
 

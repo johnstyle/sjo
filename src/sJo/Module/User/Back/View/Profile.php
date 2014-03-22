@@ -10,7 +10,7 @@ $this->header();
 Helper\Panel::create(array(
     'col' => 6,
     'title' => 'Edition',
-    'type' => 'primary',
+    'color' => 'primary',
     'elements' => Helper\Fieldset::create(array(
         Helper\Token::create(Router::getToken('update')),
         Helper\Input::create(array(
