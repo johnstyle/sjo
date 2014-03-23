@@ -26,6 +26,8 @@ namespace sJo\Controller;
 class Controller
 {
     use Action;
+    use Validate;
+    use Format;
     use Event;
 
     /** @var string $className Controller class name */
