@@ -1,9 +1,10 @@
 <?php
 
-namespace sJo\Controller\Component;
+namespace sJo\Loader;
 
 use Psr\Log\AbstractLogger;
 use sJo\Libraries as Lib;
+use sJo\Object\Singleton;
 use sJo\Request\Request;
 
 /**
@@ -16,6 +17,8 @@ use sJo\Request\Request;
  */
 class Logger extends AbstractLogger
 {
+    use Singleton;
+
     /**
      * Logs with an arbitrary level.
      *
