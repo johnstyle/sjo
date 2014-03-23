@@ -30,15 +30,37 @@ class Menu extends Dom
                 $options['controller'] = Router::link($options['controller']);
             }
 
-            self::$registry[$name]['elements'][] = Lib\Arr::extend(array(
+            $default = array(
+                'id' => '_' . uniqid(),
                 'icon' => null,
                 'class' => null,
                 'title' => null,
                 'tooltip' => null,
                 'controller' => null,
                 'link' => null,
-                'isActive' => false
-            ), $options);
+                'isActive' => false,
+                'children' => array(),
+                'data' => array()
+            );
+
+            $options = Lib\Arr::extend($default, $options);
+
+            if (count($options['children'])) {
+
+                $options['controller'] = '#' . $options['id'];
+                $options['data'] = array_merge(array(
+                    'toggle' => 'collapse',
+                    'parent' => '.nav',
+                ), $options['data']);
+
+                foreach ($options['children'] as &$child) {
+                    $childDefault = $default;
+                    $childDefault['id'] = '_' . uniqid();
+                    $child = Lib\Arr::extend($childDefault, $child);
+                }
+            }
+
+            self::$registry[$name]['elements'][] = $options;
         }
     }
 
