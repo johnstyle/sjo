@@ -65,7 +65,7 @@ final class View extends Closure
 
     public function method()
     {
-        $this->inc(Router::$controller . '/' . Router::$method);
+        $this->inc(dirname(Router::$viewFile) . '/' . basename(Router::$viewFile, '.php') . '/' . Router::$method . '.php');
     }
 
     /**
