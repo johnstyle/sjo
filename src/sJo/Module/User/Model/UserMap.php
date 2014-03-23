@@ -31,14 +31,16 @@ abstract class UserMap extends MysqlObject
             ),
             'name' => array(
                 'type' => 'varchar',
-                'length' => 20
+                'length' => 20,
+                'required' => true
             ),
             'email' => array(
-                'type' => 'varchar',
-                'length' => 100
+                'type' => 'email',
+                'length' => 100,
+                'required' => true
             ),
             'password' => array(
-                'type' => 'char',
+                'type' => 'md5',
                 'length' => 32
             )
         )

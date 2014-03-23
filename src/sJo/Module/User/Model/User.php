@@ -7,13 +7,9 @@ use sJo\Request\Request;
 
 class User extends UserMap
 {
-    public function __construct($id = null)
+    public static function logged()
     {
-        if($id === null) {
-            $id = Request::env('SESSION')->id->val();
-        }
-
-        parent::__construct($id);
+        return new self (Request::env('SESSION')->id->val());
     }
 
     public function exists($email, $password)

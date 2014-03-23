@@ -18,6 +18,6 @@ class Profile extends Controller
 
     public function update ()
     {
-        parent::update(new User());
+        parent::update(User::logged());
     }
 }

@@ -44,15 +44,14 @@ class Module
                 if ($option['use'] === true) {
 
                     /** Loader */
-                    if($loaderClass = self::getClass($module, 'Loader')) {
+                    $loaderClass = self::getClass($module, 'Loader');
+                    if(class_exists($loaderClass)) {
                         $this->instance = new $loaderClass (new Component());
                         $this->event('init');
                     }
 
                     /** Bootstrap */
-                    if ($bootstrapFile = self::getFile($module, Router::$interface . '/bootstrap.php')) {
-                        Lib\File::__include($bootstrapFile);
-                    }
+                    Lib\File::__include(self::getFile($module, Router::$interface . '/bootstrap.php'));
                 }
             }
         }
@@ -76,11 +75,7 @@ class Module
             $class = $defaultClass;
         }
 
-        if (class_exists($class)) {
-            return $class;
-        }
-
-        return false;
+        return $class;
     }
 
     public static function getFile($module, $fileName)
@@ -92,11 +87,7 @@ class Module
             $file = self::getRoot('/' . $file);
         }
 
-        if (file_exists($file)) {
-            return $file;
-        }
-
-        return false;
+        return $file;
     }
 
     public static function load($module)

@@ -18,14 +18,14 @@ Helper\Panel::create(array(
             'name' => 'email',
             'label' => Lib\I18n::__('Email address'),
             'placeholder' => Lib\I18n::__('Enter email'),
-            'value' => User::getInstance()->email
+            'value' => User::logged()->email
         )),
         Helper\Input::create(array(
             'type' => 'text',
             'name' => 'name',
             'label' => Lib\I18n::__('Name'),
             'placeholder' => Lib\I18n::__('Enter name'),
-            'value' => User::getInstance()->name
+            'value' => User::logged()->name
         ))
     )),
     'footer' => Helper\Button::create(array(
