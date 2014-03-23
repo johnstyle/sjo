@@ -65,32 +65,32 @@ abstract class Validate
 
     public static function isMd5($var)
     {
-        return preg_match("#^[a-f0-9]{32}$#", $var);
+        return preg_match('#^[a-f0-9]{32}$#', $var);
     }
 
     public static function isInt($var)
     {
-        return preg_match("#^[0-9]+$#", $var);
+        return preg_match('#^[0-9]+$#', $var);
     }
 
     public static function isEmail($var)
     {
-        return preg_match("#^[a-z0-9\-\.\+]+@[a-z0-9\-]+\.[a-z]{2,4}$#i", $var);
+        return preg_match('#^[a-z0-9\-\.\+]+@[a-z0-9\-]+\.[a-z]{2,4}$#i', $var);
     }
 
     public static function isUrl($var)
     {
-        return preg_match("#^https?://(www\.)?[a-z0-9\.\-]+\.[a-z]{2,4}(/.+|$)#i", $var);
+        return preg_match('#^https?://(www\.)?[a-z0-9\.\-]+\.[a-z]{2,4}(/.+|$)#i', $var);
     }
 
     public static function isDate($var)
     {
-        return preg_match("#^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$#", $var);
+        return preg_match('#^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$#', $var);
     }
 
     public static function isDateTime($var)
     {
-        return preg_match("#^[0-9]{4}\-[0-9]{2}\-[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2}$#", $var);
+        return preg_match('#^[0-9]{4}\-[0-9]{2}\-[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2}$#', $var);
     }
 
     public static function isEnum($var, array $elements = null)

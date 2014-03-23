@@ -2,6 +2,8 @@
 
 namespace sJo\Data;
 
+use sJo\Encryption\Encrypter;
+
 abstract class Type
 {
     public static function set ($type, $var, $length = null)
@@ -52,8 +54,8 @@ abstract class Type
 
     public static function setDate($var)
     {
-        $var = trim(preg_replace("#[^0-9\-\s/,\.]#", "", $var), ' -/,.');
-        if (preg_match("#^([0-9]{2})[^0-9]([0-9]{2})[^0-9]([0-9]{4})$#", $var, $match)) {
+        $var = trim(preg_replace('#[^0-9\-\s/,\.]#', '', $var), ' -/,.');
+        if (preg_match('#^([0-9]{2})[^0-9]([0-9]{2})[^0-9]([0-9]{4})$#', $var, $match)) {
             return $match[3] . '-' .  $match[2] . '-' .  $match[1];
         }
 
@@ -62,8 +64,8 @@ abstract class Type
 
     public static function setDateTime($var)
     {
-        $var = trim(preg_replace("#[^0-9\-\s/,\.:]#", "", $var), ' -/,.:');
-        if (preg_match("#^([0-9]{2})[^0-9]([0-9]{2})[^0-9]([0-9]{4})[^0-9]([0-9]{2})[^0-9]?([0-9]{2})[^0-9]?([0-9]{2})$#", $var, $match)) {
+        $var = trim(preg_replace('#[^0-9\-\s/,\.:]#', "", $var), ' -/,.:');
+        if (preg_match('#^([0-9]{2})[^0-9]([0-9]{2})[^0-9]([0-9]{4})[^0-9]([0-9]{2})[^0-9]?([0-9]{2})[^0-9]?([0-9]{2})$#', $var, $match)) {
             return $match[3] . '-' .  $match[2] . '-' .  $match[1] . ' ' . $match[4] . ':' . $match[5] . ':' . $match[6];
         }
 
@@ -72,7 +74,7 @@ abstract class Type
 
     public static function setMd5($var)
     {
-        return $var != '' ? md5($var) : null;
+        return $var != '' ? Encrypter::md5($var) : null;
     }
 
     public static function setInt($var)
