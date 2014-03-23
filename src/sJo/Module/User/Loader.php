@@ -4,6 +4,7 @@ namespace sJo\Module\User;
 
 use sJo\Controller\Component\Component;
 use sJo\Module\Dependencies;
+use sJo\Module\User\Back\Controller\Auth;
 
 class Loader
 {
@@ -13,7 +14,7 @@ class Loader
             'sJo\Db\PDO\Drivers\Mysql'
         ));
 
-        $component->session->check('User\Auth');
+        Auth::secure();
     }
 
     public function __init()

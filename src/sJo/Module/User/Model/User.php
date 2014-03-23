@@ -2,6 +2,7 @@
 
 namespace sJo\Module\User\Model;
 
+use sJo\Encryption\Encrypter;
 use \sJo\Libraries as Lib;
 use sJo\Request\Request;
 
@@ -16,7 +17,7 @@ class User extends UserMap
     {
         return self::db()->value($this->getPrimaryKey(), array(
             'email' => $email,
-            'password' => md5($password)
+            'password' => Encrypter::md5($password)
         ));
     }
 }
