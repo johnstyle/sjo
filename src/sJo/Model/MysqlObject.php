@@ -10,8 +10,10 @@ use sJo\Request\Request;
 abstract class MysqlObject
 {
     use Singleton;
-    use Map;
     use Entity;
+    use Map {
+        Map::__construct as private __MapConstruct;
+    }
     use Action {
         Action::__construct as private __ActionConstruct;
     }
@@ -23,6 +25,7 @@ abstract class MysqlObject
         }
 
         $this->setPrimaryValue($id);
+        $this->__MapConstruct();
         $this->__ActionConstruct();
     }
 
