@@ -37,7 +37,7 @@ class Tree
 
     public function __isset($name)
     {
-        return (isset($this->item[$name]) || is_null($this->item[$name]))
+        return array_key_exists($name, $this->item)
          && (!is_array($this->item[$name]) || count($this->item[$name]));
     }
 
