@@ -2,6 +2,8 @@
 
 namespace sJo\Model;
 
+use sJo\Libraries\Arr;
+
 trait Map
 {
     /** @var string $primaryKey Primary key name */
@@ -10,6 +12,18 @@ trait Map
     private $tableName;
     /** @var array $__map DB map */
     protected $__map;
+
+    public function __construct ()
+    {
+        foreach ($this->__map['columns'] as &$column) {
+            $column = Arr::extend(array(
+                'type' => null,
+                'length' => null,
+                'required' => null,
+                'values' => null,
+            ), $column);
+        }
+    }
 
     public function setPrimaryValue ($value)
     {
