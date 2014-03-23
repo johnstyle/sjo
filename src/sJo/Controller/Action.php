@@ -11,8 +11,6 @@ use sJo\Request\Request;
 
 trait Action
 {
-    private $error;
-
     protected function edit (MysqlObject $instance)
     {
         if (Request::env('REQUEST')->{$instance->getPrimaryKey()}->exists()) {
@@ -44,17 +42,7 @@ trait Action
                 $instance->{$name} = $value;
             }
 
-            foreach ($instance->getTableFields() as $name => $attr) {
-                if(isset($attr['required']) && $attr['required'] && !$instance->{$name}) {
-                    if(isset($attr['default'])) {
-                        $instance->{$name} = $attr['default'];
-                    } else {
-                        $this->error = Alert::set(Lib\I18n::__('The field %s is required.', $name));
-                    }
-                }
-            }
-
-            if (!$this->error) {
+            if ($this->validate($instance)) {
 
                 if($instance->save()){
                     Alert::set(Lib\I18n::__('The item has been saved.'), 'success');
@@ -80,11 +68,12 @@ trait Action
 
     protected function delete (MysqlObject $instance)
     {
-        if (Lib\Env::requestExists($instance->getPrimaryKey())) {
+        if (Request::env('REQUEST')->{$instance->getPrimaryKey()}->val()) {
             if($instance->delete()) {
                 Alert::set(Lib\I18n::__('The item has been deleted.'), 'success');
             }
         }
+
         Http::redirect(Router::link(Router::$controller));
     }
 }
