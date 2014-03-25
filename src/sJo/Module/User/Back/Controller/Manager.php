@@ -24,7 +24,7 @@ class Manager extends Controller
     {
         Helper\Menu::addRegistry('main', array(
             'title' => I18n::__('Cancel'),
-            'controller' => 'User/Manager',
+            'link' => Router::linkBack('User/Manager'),
             'icon' => 'remove',
             'class' => 'bg-danger'
         ));
@@ -36,7 +36,7 @@ class Manager extends Controller
     {
         if (Request::env('REQUEST')->{User::getInstance()->getPrimaryKey()}->val() == 1) {
             Alert::set(I18n::__('Vous ne pouvez pas supprimer cet utilisateur.'));
-            Http::redirect(Router::link(Router::$controller));
+            Http::redirect(Router::linkBack(Router::$controller));
         }
 
         parent::delete(new User());
@@ -46,7 +46,7 @@ class Manager extends Controller
     {
         Helper\Menu::addRegistry('main', array(
             'title' => I18n::__('Create user'),
-            'controller' => 'User/Manager::edit',
+            'link' => Router::linkBack('User/Manager::edit'),
             'icon' => 'plus',
             'class' => 'bg-success'
         ));

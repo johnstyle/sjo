@@ -62,7 +62,7 @@ class Auth extends Controller
         if (Router::$controller !== 'User\\Auth') {
             if (!self::isLoggedUser()) {
                 http_response_code(401);
-                Http::redirect(Router::link('User/Auth', array('redirect' => Request::env('SERVER')->REQUEST_URI->val())));
+                Http::redirect(Router::linkBack('User/Auth', array('redirect' => Request::env('SERVER')->REQUEST_URI->val())));
             }
         } elseif (self::isLoggedUser() && !Router::$method) {
             Http::redirect(SJO_BASEHREF);

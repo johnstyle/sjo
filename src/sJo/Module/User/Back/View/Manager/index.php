@@ -7,7 +7,7 @@ use sJo\Libraries as Lib;
 Helper\Panel::create(array(
     'col' => 6,
     'title' => Lib\I18n::__('Liste des pages'),
-    'color' => 'primary',
+    'class' => 'panel-primary',
     'elements' => Helper\Table::create(array(
         'tbody' => User::getInstance(),
         'actions' => array('edit', 'delete')

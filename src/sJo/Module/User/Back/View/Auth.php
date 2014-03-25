@@ -47,7 +47,7 @@ Helper\Form::create(array(
             'placeholder' => Lib\I18n::__('Mot de passe')
         )),
         Helper\Button::create(array(
-            'class' => 'btn-lg btn-block',
+            'class' => 'btn-lg btn-block btn-primary',
             'value' => Lib\I18n::__('Connexion')
         ))
     ))

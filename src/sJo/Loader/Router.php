@@ -2,10 +2,18 @@
 
 namespace sJo\Loader;
 
+use sJo\Exception\Exception;
 use sJo\Libraries as Lib;
 use sJo\Module\Module;
 use sJo\Request\Request;
 
+/**
+ * Class Router
+ * @package sJo\Loader
+ *
+ * @method static linkBack()
+ * @method static linkFront()
+ */
 class Router
 {
     public static $__map = array(
@@ -48,6 +56,20 @@ class Router
 
         /** Module */
         self::loadModule();
+    }
+
+    public static function __callStatic($method, array $args = null)
+    {
+        if (preg_match("#^(link)([A-Z][a-z]+)$#", $method, $match)) {
+            switch ($match[1]) {
+                case 'link':
+                    return call_user_func_array('self::link', array_merge(array($match[2]), $args));
+                    break;
+            }
+        }
+
+        Exception::error(Lib\I18n::__('Unknow method %s', __CLASS__ . '::' . $method));
+        return false;
     }
 
     public static function defaultInterface($interface)
@@ -114,7 +136,7 @@ class Router
         self::$module = null;
     }
 
-    public static function link($controller = null, array $params = null)
+    public static function link($interface = null, $controller = null, array $params = null)
     {
         $params = Lib\Arr::extend(array(
             'method' => null
@@ -128,7 +150,8 @@ class Router
         $params = http_build_query($params, '/?');
 
         return SJO_BASEHREF
-            . '/' . str_replace('\\', '/', $controller)
+            . ($interface && self::$__map['interface']['default'] != $interface ? '/' . $interface : '')
+            . ($controller ? '/' . str_replace('\\', '/', $controller) : '')
             . ($params ? '/?' . $params : '');
     }
 

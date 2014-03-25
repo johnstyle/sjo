@@ -1,11 +1,12 @@
 <?php
 
+use sJo\Loader\Router;
 use sJo\View\Helper;
 use sJo\Libraries\I18n;
 
 Helper\Menu::addRegistry('top', array(
     'title' => I18n::__('My profil'),
-    'controller' => 'User\Profile'
+    'link' => Router::linkBack('User/Profile')
 ));
 
 Helper\Menu::addRegistry('sidebar', array(
@@ -13,7 +14,7 @@ Helper\Menu::addRegistry('sidebar', array(
     'children' => array(
         array(
             'title' => I18n::__('Manage Users'),
-            'controller' => 'User/Manager',
+            'link' => Router::linkBack('User/Manager')
         )
     )
 ));

@@ -10,7 +10,7 @@ $this->header();
 Helper\Panel::create(array(
     'col' => 6,
     'title' => 'Edition',
-    'color' => 'primary',
+    'class' => 'panel-primary',
     'elements' => Helper\Fieldset::create(array(
         Helper\Token::create(Router::getToken('update')),
         Helper\Input::create(array(
@@ -29,7 +29,7 @@ Helper\Panel::create(array(
         ))
     )),
     'footer' => Helper\Button::create(array(
-        'class' => 'pull-right',
+        'class' => 'pull-right btn-primary',
         'value' => Lib\I18n::__('Save')
     ))
 ))->display();
