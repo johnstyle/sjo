@@ -9,12 +9,8 @@ class Form extends Dom
 {
     public function setElement($element)
     {
-        $element = parent::setElement($element);
-
-        return Lib\Arr::extend(array(
-            'action' => null,
-            'method' => 'post',
-            'class' => null
-        ), $element);
+        return parent::setElement(Lib\Arr::extend(array(
+            'method' => 'post'
+        ), $element), 'elements');
     }
 }

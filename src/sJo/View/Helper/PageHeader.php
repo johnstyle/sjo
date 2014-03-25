@@ -9,13 +9,10 @@ class PageHeader extends Dom
 {
     public function setElement($element)
     {
-        $element = parent::setElement($element);
-
-        return Lib\Arr::extend(array(
+        return parent::setElement(Lib\Arr::extend(array(
             'tagname' => 'h1',
-            'class' => 'page-header',
-            'elements' => array()
-        ), $element);
+            'class' => 'page-header'
+        ), $element), 'elements');
     }
 
     public function html(array $options = null)

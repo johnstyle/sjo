@@ -9,21 +9,16 @@ class Panel extends Dom
 {
     public function setElement($element)
     {
-        $element = parent::setElement($element);
-
-        return Lib\Arr::extend(array(
+        return parent::setElement(Lib\Arr::extend(array(
             'col' => null,
-            'color' => 'default',
             'container' => array(
                 'tagname' => 'form',
                 'attr' => array(
                     'method' => 'post'
                 )
             ),
-            'title' => null,
-            'elements' => null,
             'footer' => null
-        ), $element);
+        ), $element), 'elements');
     }
 
     public function display(array $options = null)

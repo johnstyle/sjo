@@ -9,12 +9,8 @@ class Container extends Dom
 {
     public function setElement($element)
     {
-        $element = parent::setElement($element);
-
-        return Lib\Arr::extend(array(
-            'tagname' => 'div',
-            'class' => null,
-            'elements' => null
-        ), $element);
+        return parent::setElement(Lib\Arr::extend(array(
+            'tagname' => 'div'
+        ), $element), 'elements');
     }
 }

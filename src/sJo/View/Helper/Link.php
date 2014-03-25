@@ -10,16 +10,8 @@ class Link extends Dom
 {
     public function setElement($element)
     {
-        if (!is_array($element)) {
-            $element = array('value' => $element);
-        }
-
-        return Lib\Arr::extend(array(
-            'href' => '#',
-            'target' => null,
-            'class' => null,
-            'id' => null,
-            'value' => null
-        ), $element);
+        return parent::setElement(Lib\Arr::extend(array(
+            'href' => '#'
+        ), $element));
     }
 }

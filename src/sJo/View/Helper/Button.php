@@ -9,16 +9,12 @@ class Button extends Dom
 {
     public function setElement($element)
     {
-        if (!is_array($element)) {
-            $element = array('value' => $element);
-        }
+        $element = parent::setElement(Lib\Arr::extend(array(
+            'type' => 'submit'
+        ), $element), null, 'value');
 
-        return Lib\Arr::extend(array(
-            'type' => 'submit',
-            'color' => 'primary',
-            'class' => null,
-            'name' => null,
-            'value' => null
-        ), $element);
+        $element['class'] .= ' btn btn-default';
+
+        return $element;
     }
 }

@@ -7,13 +7,5 @@ use sJo\Libraries as Lib;
 
 class ButtonGroup extends Dom
 {
-    public function setElement($element)
-    {
-        $element = parent::setElement($element);
 
-        return Lib\Arr::extend(array(
-            'class' => null,
-            'elements' => null
-        ), $element);
-    }
 }

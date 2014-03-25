@@ -6,4 +6,5 @@ use sJo\View\Helper\Dom\Dom;
 
 class Alert extends Dom
 {
+
 }

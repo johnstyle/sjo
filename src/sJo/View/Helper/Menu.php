@@ -13,22 +13,14 @@ class Menu extends Dom
 
     public static function setRegistry($element)
     {
-        return Lib\Arr::extend(array(
-            'type' => 'navbar',
-            'items' => null,
-            'pull' => null,
-            'container' => null,
-            'elements' => array()
-        ), $element);
+        return parent::setElement(Lib\Arr::extend(array(
+            'type' => 'navbar'
+        ), $element));
     }
 
     public static function addRegistry($name, $options)
     {
         if (self::isRegistered($name)) {
-
-            if (isset($options['controller'])) {
-                $options['controller'] = Router::link($options['controller']);
-            }
 
             $default = array(
                 'id' => '_' . uniqid(),
@@ -36,8 +28,8 @@ class Menu extends Dom
                 'class' => null,
                 'title' => null,
                 'tooltip' => null,
-                'controller' => null,
-                'link' => null,
+                'link' => 'javascript:;',
+                'target' => null,
                 'isActive' => false,
                 'children' => array(),
                 'data' => array()

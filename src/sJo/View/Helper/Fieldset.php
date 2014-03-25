@@ -9,11 +9,6 @@ class Fieldset extends Dom
 {
     public function setElement($element)
     {
-        $element = parent::setElement($element);
-
-        return Lib\Arr::extend(array(
-            'legend' => null,
-            'elements' => null
-        ), $element);
+        return parent::setElement($element, 'elements');
     }
 }

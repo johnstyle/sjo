@@ -9,15 +9,8 @@ class Input extends Dom
 {
     public function setElement($element)
     {
-        return Lib\Arr::extend(array(
-            'type' => 'text',
-            'name' => null,
-            'class' => null,
-            'placeholder' => null,
-            'id' => null,
-            'label' => null,
-            'value' => null,
-            'autofocus' => null
-        ), $element);
+        return parent::setElement(Lib\Arr::extend(array(
+            'type' => 'text'
+        ), $element));
     }
 }
