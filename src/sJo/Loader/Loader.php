@@ -70,11 +70,11 @@ class Loader
         /** Alert */
         $this->alert = new Alert();
 
-        /** Bootstrap */
-        Lib\File::__include(SJO_ROOT_APP . '/' . Router::$interface . '/bootstrap.php');
-
         /** App autoload */
         Helpers\Autoload(SJO_ROOT_APP);
+
+        /** Bootstrap */
+        Lib\File::__include(SJO_ROOT_APP . '/' . Router::$interface . '/bootstrap.php');
 
         /** Load modules */
         $this->module = new Module();
@@ -123,7 +123,9 @@ class Loader
     public function display()
     {
         if (Router::$method) {
+
             switch (Request::env('GET')->content_type->val()) {
+
                 case 'json' :
                     header('Content-type:application/json; charset=' . SJO_CHARSET);
                     if (method_exists(Router::$controllerClass, Router::$method)) {
@@ -135,6 +137,7 @@ class Loader
                     }
                     exit;
                     break;
+
                 default :
                     header('Content-type:text/html; charset=' . SJO_CHARSET);
                     if (method_exists(Router::$controllerClass, Router::$method)) {
