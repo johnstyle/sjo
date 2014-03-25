@@ -1,10 +1,10 @@
 <?php
 
-namespace sJo\Module\User\Back\Controller;
+namespace sJo\Module\Admin\Back\Controller;
 
 use sJo\Controller\Controller;
 use sJo\Libraries\I18n;
-use sJo\Module\User\Model\User;
+use sJo\Module\Admin\Model\Admin;
 use sJo\View\Helper;
 
 class Profile extends Controller
@@ -18,6 +18,6 @@ class Profile extends Controller
 
     public function update ()
     {
-        parent::update(User::logged());
+        parent::update(Admin::logged());
     }
 }

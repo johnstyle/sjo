@@ -1,14 +1,14 @@
 <?php
 
-use sJo\Module\User\Model\User;
+use sJo\Module\Admin\Model\Admin;
 use sJo\Loader\Router;
 use sJo\View\Helper;
 use sJo\Libraries as Lib;
 
 Helper\Panel::create(array(
     'col' => 6,
-    'title' => User::getInstance()->getPrimaryValue() ? Lib\I18n::__('Edit user') : Lib\I18n::__('Create user'),
-    'class' => User::getInstance()->getPrimaryValue() ? 'panel-primary' : 'panel-success',
+    'title' => Admin::getInstance()->getPrimaryValue() ? Lib\I18n::__('Edit admin') : Lib\I18n::__('Create admin'),
+    'class' => Admin::getInstance()->getPrimaryValue() ? 'panel-primary' : 'panel-success',
     'elements' => Helper\Fieldset::create(array(
         Helper\Token::create(Router::getToken()),
         Helper\Input::create(array(
@@ -16,14 +16,14 @@ Helper\Panel::create(array(
             'name' => 'email',
             'label' => Lib\I18n::__('Email address'),
             'placeholder' => Lib\I18n::__('Enter email'),
-            'value' => User::getInstance()->request('email')
+            'value' => Admin::getInstance()->request('email')
         )),
         Helper\Input::create(array(
             'type' => 'text',
             'name' => 'name',
             'label' => Lib\I18n::__('Name'),
             'placeholder' => Lib\I18n::__('Enter name'),
-            'value' => User::getInstance()->request('name')
+            'value' => Admin::getInstance()->request('name')
         ))
     )),
     'footer' => Helper\ButtonGroup::create(array(

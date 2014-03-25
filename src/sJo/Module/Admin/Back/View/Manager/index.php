@@ -1,6 +1,6 @@
 <?php
 
-use sJo\Module\User\Model\User;
+use sJo\Module\Admin\Model\Admin;
 use sJo\View\Helper;
 use sJo\Libraries as Lib;
 
@@ -9,7 +9,7 @@ Helper\Panel::create(array(
     'title' => Lib\I18n::__('Liste des pages'),
     'class' => 'panel-primary',
     'elements' => Helper\Table::create(array(
-        'tbody' => User::getInstance(),
+        'tbody' => Admin::getInstance(),
         'actions' => array('edit', 'delete')
     ))
 ))->display();

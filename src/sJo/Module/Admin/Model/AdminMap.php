@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Module\User\Model;
+namespace sJo\Module\Admin\Model;
 
 use sJo\Model\MysqlObject;
 
@@ -10,7 +10,7 @@ use sJo\Model\MysqlObject;
  * @property $email string
  * @property $password string
  */
-abstract class UserMap extends MysqlObject
+abstract class AdminMap extends MysqlObject
 {
     /** @var int $id ID */
     protected $id;
@@ -22,7 +22,7 @@ abstract class UserMap extends MysqlObject
     protected $password;
     /** @var array $__map DB map */
     protected $__map = array(
-        'table' => 'users',
+        'table' => 'admins',
         'columns' => array(
             'id' => array(
                 'primary' => true,

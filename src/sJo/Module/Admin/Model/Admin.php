@@ -1,12 +1,12 @@
 <?php
 
-namespace sJo\Module\User\Model;
+namespace sJo\Module\Admin\Model;
 
 use sJo\Encryption\Encrypter;
 use \sJo\Libraries as Lib;
 use sJo\Request\Request;
 
-class User extends UserMap
+class Admin extends AdminMap
 {
     public static function logged()
     {

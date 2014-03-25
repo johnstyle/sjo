@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Module\User\Back\Controller;
+namespace sJo\Module\Admin\Back\Controller;
 
 use sJo\Controller\Controller;
 use sJo\Http\Http;
@@ -9,7 +9,7 @@ use sJo\Loader\Alert;
 use sJo\Loader\Router;
 use sJo\Request\Request;
 use sJo\View\Helper;
-use sJo\Module\User\Model\User;
+use sJo\Module\Admin\Model\Admin;
 
 class Manager extends Controller
 {
@@ -17,36 +17,36 @@ class Manager extends Controller
     {
         parent::__construct();
 
-        $this->name = I18n::__('List of users');
+        $this->name = I18n::__('List of admins');
     }
 
     public function edit ()
     {
         Helper\Menu::addRegistry('main', array(
             'title' => I18n::__('Cancel'),
-            'link' => Router::linkBack('User/Manager'),
+            'link' => Router::linkBack('Admin/Manager'),
             'icon' => 'remove',
             'class' => 'bg-danger'
         ));
 
-        parent::edit(new User());
+        parent::edit(new Admin());
     }
 
     public function delete ()
     {
-        if (Request::env('REQUEST')->{User::getInstance()->getPrimaryKey()}->val() == 1) {
-            Alert::set(I18n::__('Vous ne pouvez pas supprimer cet utilisateur.'));
+        if (Request::env('REQUEST')->{Admin::getInstance()->getPrimaryKey()}->val() == 1) {
+            Alert::set(I18n::__('Vous ne pouvez pas supprimer cet administrateur.'));
             Http::redirect(Router::linkBack(Router::$controller));
         }
 
-        parent::delete(new User());
+        parent::delete(new Admin());
     }
 
     public function index ()
     {
         Helper\Menu::addRegistry('main', array(
-            'title' => I18n::__('Create user'),
-            'link' => Router::linkBack('User/Manager::edit'),
+            'title' => I18n::__('Create admin'),
+            'link' => Router::linkBack('Admin/Manager::edit'),
             'icon' => 'plus',
             'class' => 'bg-success'
         ));

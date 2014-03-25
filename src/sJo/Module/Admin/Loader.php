@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Module\User;
+namespace sJo\Module\Admin;
 
 use sJo\Controller\Component\Component;
 use sJo\Module\Dependencies;
@@ -16,6 +16,6 @@ class Loader
 
     public function __init()
     {
-        return new Model\User();
+        return new Model\Admin();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Module\User\Back\Controller;
+namespace sJo\Module\Admin\Back\Controller;
 
 use sJo\Controller\Controller;
 use sJo\Http\Http;
@@ -9,7 +9,7 @@ use sJo\Loader\Alert;
 use sJo\Loader\Logger;
 use sJo\Loader\Router;
 use sJo\Loader\Token;
-use sJo\Module\User\Model\User;
+use sJo\Module\Admin\Model\Admin;
 use sJo\Request\Request;
 
 class Auth extends Controller
@@ -20,10 +20,10 @@ class Auth extends Controller
 
             if(Request::env('POST')->password->exists()) {
 
-                if($id = User::getInstance()->exists(Request::env('POST')->email->val(), Request::env('POST')->password->val())) {
+                if($id = Admin::getInstance()->exists(Request::env('POST')->email->val(), Request::env('POST')->password->val())) {
 
-                    Logger::getInstance()->info('Signin {user}', array(
-                        'user' => Request::env('POST')->email->val()
+                    Logger::getInstance()->info('Signin {admin}', array(
+                        'admin' => Request::env('POST')->email->val()
                     ));
 
                     Request::env('SESSION')->id = $id;
@@ -47,8 +47,8 @@ class Auth extends Controller
 
     public function signout ()
     {
-        Logger::getInstance()->info('Signout {user}', array(
-            'user' => Request::env('SESSION')->token->val()
+        Logger::getInstance()->info('Signout {admin}', array(
+            'admin' => Request::env('SESSION')->token->val()
         ));
 
         Request::env('COOKIES')->destroy();
@@ -59,17 +59,17 @@ class Auth extends Controller
 
     public static function secure ()
     {
-        if (Router::$controller !== 'User\\Auth') {
-            if (!self::isLoggedUser()) {
+        if (Router::$controller !== 'Admin\\Auth') {
+            if (!self::isLoggedAdmin()) {
                 http_response_code(401);
-                Http::redirect(Router::linkBack('User/Auth', array('redirect' => Request::env('SERVER')->REQUEST_URI->val())));
+                Http::redirect(Router::linkBack('Admin/Auth', array('redirect' => Request::env('SERVER')->REQUEST_URI->val())));
             }
-        } elseif (self::isLoggedUser() && !Router::$method) {
+        } elseif (self::isLoggedAdmin() && !Router::$method) {
             Http::redirect(SJO_BASEHREF);
         }
     }
 
-    public static function isLoggedUser()
+    public static function isLoggedAdmin()
     {
         if (Request::env('SESSION')->id->exists()
             && Request::env('SESSION')->token->eq(Token::get(Request::env('SESSION')->id->val()))) {

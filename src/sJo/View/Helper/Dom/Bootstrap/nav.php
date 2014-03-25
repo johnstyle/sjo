@@ -7,9 +7,6 @@ use sJo\Loader\Router;
     <ul class="nav <?php echo $this->container == 'aside' ? 'nav-sidebar' : 'navbar-nav'; ?><?php if(isset($this->pull)): ?> navbar-<?php echo $this->pull; ?><?php endif; ?>">
         <?php foreach($this->elements as $element): ?>
             <li class="
-                <?php if($element['controller'] == Router::$controller): ?>
-                    active
-                <?php endif; ?>
                 <?php if($element['class']): ?>
                    <?php echo $element['class']; ?>
                 <?php endif; ?>
@@ -38,9 +35,6 @@ use sJo\Loader\Router;
                     <ul class="nav">
                         <?php foreach($element['children'] as $child): ?>
                             <li class="
-                                <?php if($child['controller'] == Router::$controller): ?>
-                                    active
-                                <?php endif; ?>
                                 <?php if($child['class']): ?>
                                    <?php echo $child['class']; ?>
                                 <?php endif; ?>

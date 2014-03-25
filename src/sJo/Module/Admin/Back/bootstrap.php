@@ -3,21 +3,21 @@
 use sJo\Loader\Router;
 use sJo\View\Helper;
 use sJo\Libraries\I18n;
-use sJo\Module\User\Back\Controller\Auth;
+use sJo\Module\Admin\Back\Controller\Auth;
 
 Auth::secure();
 
 Helper\Menu::addRegistry('top', array(
     'title' => I18n::__('My profil'),
-    'link' => Router::linkBack('User/Profile')
+    'link' => Router::linkBack('Admin/Profile')
 ));
 
 Helper\Menu::addRegistry('sidebar', array(
-    'title' => I18n::__('Users'),
+    'title' => I18n::__('Admins'),
     'children' => array(
         array(
-            'title' => I18n::__('Manage Users'),
-            'link' => Router::linkBack('User/Manager')
+            'title' => I18n::__('Manage admins'),
+            'link' => Router::linkBack('Admin/Manager')
         )
     )
 ));
