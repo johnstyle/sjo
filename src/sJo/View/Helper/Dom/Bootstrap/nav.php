@@ -17,11 +17,9 @@ use sJo\Loader\Router;
                 <a
                     <?php if($element['link']): ?>
                         href="<?php echo $element['link']; ?>"
-                        target="_blank"
-                    <?php elseif($element['controller']): ?>
-                        href="<?php echo $element['controller']; ?>"
-                    <?php else: ?>
-                        href="javascript:;"
+                    <?php endif; ?>
+                    <?php if($element['target']): ?>
+                        target="<?php echo $element['target']; ?>"
                     <?php endif; ?>
                     <?php if($element['tooltip']): ?>
                         data-toggle="tooltip"
@@ -40,19 +38,16 @@ use sJo\Loader\Router;
                     <ul class="nav">
                         <?php foreach($element['children'] as $child): ?>
                             <li class="
-                                    <?php if($child['controller'] == Router::$controller): ?>
-                                        active
-                                    <?php endif; ?>
-                                    <?php if($child['class']): ?>
-                                       <?php echo $child['class']; ?>
-                                    <?php endif; ?>
-                                    ">
+                                <?php if($child['controller'] == Router::$controller): ?>
+                                    active
+                                <?php endif; ?>
+                                <?php if($child['class']): ?>
+                                   <?php echo $child['class']; ?>
+                                <?php endif; ?>
+                                ">
                                 <a
                                     <?php if($child['link']): ?>
                                         href="<?php echo $child['link']; ?>"
-                                        target="_blank"
-                                    <?php else: ?>
-                                        href="<?php echo $child['controller']; ?>"
                                     <?php endif; ?>
                                     <?php if($child['tooltip']): ?>
                                         data-toggle="tooltip"

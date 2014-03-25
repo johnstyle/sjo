@@ -11,8 +11,35 @@ abstract class Dom
 {
     const DEFAULT_ELEMENT = '__default__';
 
-    private static $frameworkName = 'Bootstrap';
     protected $elements;
+    protected static $defaultAttributes = array(
+        'tagname' => null,
+        'id' => null,
+        'class' => null,
+        'title' => null,
+        'alt' => null,
+        'label' => null,
+        'legend' => null,
+        'tooltip' => null,
+        'placeholder' => null,
+        'data' => null,
+        'type' => null,
+        'name' => null,
+        'value' => null,
+        'autofocus' => null,
+        'action' => null,
+        'method' => null,
+        'href' => null,
+        'src' => null,
+        'target' => null,
+        'icon' => null,
+        'items' => null,
+        'pull' => null,
+        'container' => null,
+        'elements' => null
+    );
+
+    private static $frameworkName = 'Bootstrap';
 
     public function __construct($elements = null)
     {
@@ -38,14 +65,28 @@ abstract class Dom
         }
     }
 
-    protected function setElement($element)
+    protected function setElement($element, $wrapper = null, $array = null)
     {
-        if (!isset($element['elements'])) {
-            $element = array('elements' => $element);
+        if ($array && !is_array($element)) {
+            $element = array($array => $element);
         }
 
-        if (!is_array($element['elements'])) {
-            $element['elements'] = array($element['elements']);
+        $element = Arr::extend(self::$defaultAttributes, $element);
+
+        if ($wrapper) {
+
+            if (!isset($element[$wrapper])) {
+
+                if (isset($element['__default__'])) {
+                    $element[$wrapper] = $element['__default__'];
+                } else {
+                    $element = array($wrapper => $element);
+                }
+            }
+
+            if (!is_array($element[$wrapper])) {
+                $element[$wrapper] = array($element[$wrapper]);
+            }
         }
 
         return $element;
@@ -112,6 +153,18 @@ abstract class Dom
                 }
             }
         }
+
+        $closure->attributes = function () use ($args) {
+            $output = '';
+            foreach ($args as $arg) {
+                foreach ($arg as $name => $value) {
+                    if($value) {
+                        $output .= ' ' . $name . '="' . $value . '"';
+                    }
+                }
+            }
+            echo $output;
+        };
 
         $filename = realpath(dirname(__FILE__)) . '/' . self::$frameworkName . '/' . $file . '.php';
         if (file_exists($filename)) {

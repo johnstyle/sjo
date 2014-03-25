@@ -8,7 +8,7 @@
             <?php endforeach; ?>
             >
     <?php endif; ?>
-        <div class="panel panel-<?php echo $this->color; ?>">
+        <div class="panel panel-default <?php echo $this->class; ?>">
             <?php if($this->title): ?>
                 <div class="panel-heading">
                     <h3 class="panel-title"><?php echo $this->title; ?></h3>
