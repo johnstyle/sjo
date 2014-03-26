@@ -15,7 +15,10 @@ class Auth extends Controller
 {
     use \sJo\Controller\Auth;
 
-    protected static $authModel = 'Admin';
+    public static function model ()
+    {
+        return Admin::getInstance();
+    }
 
     public function signin()
     {
@@ -23,14 +26,14 @@ class Auth extends Controller
 
             if(Request::env('POST')->password->exists()) {
 
-                if($id = Admin::getInstance()->exists(Request::env('POST')->email->val(), Request::env('POST')->password->val())) {
+                if($id = self::model()->exists(Request::env('POST')->email->val(), Request::env('POST')->password->val())) {
 
                     Logger::getInstance()->info('Signin {admin}', array(
                         'admin' => Request::env('POST')->email->val()
                     ));
 
-                    self::session()->id = $id;
-                    self::session()->token = Token::get($id);
+                    self::model()->session()->id = $id;
+                    self::model()->session()->token = Token::get($id);
 
                     $url = SJO_BASEHREF;
                     if (preg_match('#^(\./|/)#', Request::env('GET')->redirect->val())) {

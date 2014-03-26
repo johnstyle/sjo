@@ -18,7 +18,6 @@ use sJo\Loader\Router;
 use sJo\Loader\Logger;
 use sJo\Request\Request;
 use sJo\Http\Http;
-use sJo\Loader\Token;
 
 /**
  * Gestion des Controlleurs
@@ -34,52 +33,34 @@ trait Auth
     public function signout ()
     {
         Logger::getInstance()->info('Signout {token}', array(
-            'token' => self::session()->token->val()
+            'token' => self::model()->session()->token->val()
         ));
 
-        self::cookie()->destroy();
-        self::session()->destroy();
+        self::model()->cookie()->destroy();
+        self::model()->session()->destroy();
 
         Http::redirect(Router::link());
     }
 
     public static function secure ()
     {
-        if (Router::$controller !== self::$authModel . '\\Auth') {
+        $rc = new \ReflectionClass(self::model());
+        $modelName = $rc->getShortName();
 
-            if (!self::isLogged()) {
+        if (Router::$controller !== $modelName . '\\Auth') {
+
+            if (!self::model()->isLogged()) {
 
                 http_response_code(401);
 
-                Http::redirect(Router::link(Router::$interface, self::$authModel . '\\Auth', array(
+                Http::redirect(Router::link(Router::$interface, $modelName . '\\Auth', array(
                     'redirect' => Request::env('SERVER')->REQUEST_URI->val())
                 ));
             }
 
-        } elseif (self::isLogged() && !Router::$method) {
+        } elseif (self::model()->isLogged() && !Router::$method) {
 
             Http::redirect(Router::link());
         }
-    }
-
-    public static function isLogged ()
-    {
-        if (self::session()->id->exists()
-            && self::session()->token->eq(Token::get(self::session()->id->val()))) {
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public static function session ()
-    {
-        return Request::env('SESSION')->{self::$authModel};
-    }
-
-    public static function cookie ()
-    {
-        return Request::env('COOKIES')->{self::$authModel};
     }
 }

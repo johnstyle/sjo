@@ -22,7 +22,7 @@ abstract class AdminMap extends MysqlObject
     protected $password;
     /** @var array $__map DB map */
     protected $__map = array(
-        'table' => 'admins',
+        'table' => 'admin',
         'columns' => array(
             'id' => array(
                 'primary' => true,

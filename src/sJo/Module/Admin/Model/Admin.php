@@ -4,13 +4,15 @@ namespace sJo\Module\Admin\Model;
 
 use sJo\Encryption\Encrypter;
 use \sJo\Libraries as Lib;
-use sJo\Request\Request;
+use sJo\Model\Auth;
 
 class Admin extends AdminMap
 {
+    use Auth;
+
     public static function logged()
     {
-        return new self (Request::env('SESSION')->id->val());
+        return new self (self::session()->id->val());
     }
 
     public function exists($email, $password)

@@ -6,7 +6,7 @@ use sJo\Libraries as Lib;
 
 Helper\Panel::create(array(
     'col' => 6,
-    'title' => Lib\I18n::__('Liste des pages'),
+    'title' => Lib\I18n::__('List of admins'),
     'class' => 'panel-primary',
     'elements' => Helper\Table::create(array(
         'tbody' => Admin::getInstance(),
