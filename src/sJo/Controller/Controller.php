@@ -30,10 +30,14 @@ class Controller
     use Format;
     use Event;
 
-    /** @var string $className Controller class name */
-    public $className;
+    /** @var string $controllerClass Controller class name */
+    public $controllerClass;
+    /** @var string $controller */
+    public $controllerName;
     /** @var string $name */
     public $name;
+    /** @var string $title */
+    public $title;
     /** @var Component\Component $component */
     public $component;
 
@@ -45,6 +49,9 @@ class Controller
     public function __construct()
     {
         $this->component = new Component\Component($this);
-        $this->className = get_called_class();
+        $this->controllerClass = get_called_class();
+        $reflectionClass = new \ReflectionClass($this->controllerClass);
+        $this->controllerName = $reflectionClass->getShortName();
+        $this->name = strtolower($this->controllerName);
     }
 }
