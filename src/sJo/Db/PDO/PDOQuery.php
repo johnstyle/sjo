@@ -20,6 +20,30 @@ trait PDOQuery
     }
 
     /**
+     * Liste de résultats
+     *
+     * @param string $key
+     * @param string $value
+     * @return array
+     */
+    final public function getList($key, $value)
+    {
+        $list = array();
+
+        if ($results = $this->results()) {
+
+            foreach ($results as $result) {
+                if (isset($result->{$key})
+                    && isset($result->{$value})) {
+                    $list[$result->{$key}] = $result->{$value};
+                }
+            }
+        }
+
+        return $list;
+    }
+
+    /**
      * Resultat de la première colonne
      *
      * @param string $key
