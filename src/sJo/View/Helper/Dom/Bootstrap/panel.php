@@ -9,9 +9,9 @@
             >
     <?php endif; ?>
         <div class="panel panel-default <?php echo $this->class; ?>">
-            <?php if($this->title): ?>
+            <?php if($this->header): ?>
                 <div class="panel-heading">
-                    <h3 class="panel-title"><?php echo $this->title; ?></h3>
+                    <?php echo $this->header; ?>
                 </div>
             <?php endif; ?>
             <?php if($this->elements): ?>
