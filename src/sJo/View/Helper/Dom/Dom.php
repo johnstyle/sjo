@@ -26,6 +26,7 @@ abstract class Dom
         'type' => null,
         'name' => null,
         'value' => null,
+        'options' => null,
         'autofocus' => null,
         'action' => null,
         'method' => null,
