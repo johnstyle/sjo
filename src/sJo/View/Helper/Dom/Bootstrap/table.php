@@ -12,7 +12,7 @@
                 <?php if($thead['align']): ?>
                     class="text-<?php echo $thead['align']; ?>"
                 <?php endif; ?>
-                ><?php echo $thead['value']; ?></th>
+                ><?php echo $thead['label']; ?></th>
         <?php endforeach; ?>
         </tr>
         </thead>

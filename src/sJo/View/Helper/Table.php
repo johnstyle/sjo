@@ -18,6 +18,7 @@ class Table extends Dom
             'bulk' => null
         ), $element));
 
+        $head = array();
         $instance = null;
 
         if (is_object($element['tbody'])) {
@@ -35,8 +36,6 @@ class Table extends Dom
 
                 foreach($line as $name=>$value) {
 
-                    $name = ucfirst($name);
-
                     if (!in_array($name, $thead)) {
                         $thead[] = $name;
                     }
@@ -53,13 +52,16 @@ class Table extends Dom
 
                 if (!is_array($thead)) {
                     $thead = array(
-                        'value' => $thead
+                        'name' => $thead
                     );
                 }
 
                 $thead = Lib\Arr::extend(array(
-                    'align' => null
+                    'align' => null,
+                    'label' => ucfirst($thead['name'])
                 ), $thead);
+
+                $head[] = $thead['name'];
             }
         }
 
@@ -68,7 +70,8 @@ class Table extends Dom
             if (is_array($element['thead'])) {
 
                 $element['thead'][] = array(
-                    'value' => Lib\I18n::__('Actions'),
+                    'name' => 'actions',
+                    'label' => Lib\I18n::__('Actions'),
                     'align' => 'right'
                 );
             }
@@ -130,6 +133,14 @@ class Table extends Dom
                         $line->actions .= Link::create(array_merge(array(
                             'icon' => $options['icon']
                         ), $options))->html();
+                    }
+
+                    foreach($line as $name=>$value) {
+                        if ($name != 'actions'
+                            && count($head)
+                            && !in_array($name, $head)) {
+                            unset($line->{$name});
+                        }
                     }
                 }
             }
