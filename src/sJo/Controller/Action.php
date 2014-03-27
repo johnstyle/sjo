@@ -11,7 +11,7 @@ use sJo\Request\Request;
 
 trait Action
 {
-    protected function edit (MysqlObject $instance)
+    public function edit (MysqlObject $instance)
     {
         if (Request::env('REQUEST')->{$instance->getPrimaryKey()}->exists()) {
             $instance->setPrimaryValue(Request::env('REQUEST')->{$instance->getPrimaryKey()}->val());
@@ -20,7 +20,7 @@ trait Action
         $this->update($instance);
     }
 
-    protected function update (MysqlObject $instance)
+    public function update (MysqlObject $instance)
     {
         if (Request::env('POST')->exists()) {
 
@@ -66,7 +66,7 @@ trait Action
         }
     }
 
-    protected function delete (MysqlObject $instance)
+    public function delete (MysqlObject $instance)
     {
         if (Request::env('REQUEST')->{$instance->getPrimaryKey()}->val()) {
             if($instance->delete()) {
