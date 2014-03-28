@@ -51,15 +51,15 @@ trait Action
                 switch ($next) {
 
                     default:
-                        Http::redirect(Router::linkBack(Router::$controller));
+                        Http::redirect(Router::link(null, Router::$controller));
                         break;
 
                     case 'stay':
-                        Http::redirect(Router::linkBack(null, array($instance->getPrimaryKey() => $instance->getPrimaryValue())));
+                        Http::redirect(Router::link(null, null, array($instance->getPrimaryKey() => $instance->getPrimaryValue())));
                         break;
 
                     case 'create':
-                        Http::redirect(Router::linkBack(null));
+                        Http::redirect(Router::link());
                         break;
                 }
             }
@@ -74,6 +74,6 @@ trait Action
             }
         }
 
-        Http::redirect(Router::linkBack(Router::$controller));
+        Http::redirect(Router::link(null, Router::$controller));
     }
 }
