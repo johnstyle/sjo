@@ -2,6 +2,7 @@
 
 namespace sJo\View\Helper;
 
+use sJo\Data\Validate;
 use sJo\Loader\Router;
 use sJo\View\Helper\Dom\Dom;
 use sJo\Libraries as Lib;
@@ -48,12 +49,21 @@ class Table extends Dom
 
         if (is_array($element['thead'])) {
 
-            foreach($element['thead'] as &$thead) {
+            $arrayThead = array();
+
+            foreach($element['thead'] as $key=>&$thead) {
 
                 if (!is_array($thead)) {
-                    $thead = array(
-                        'name' => $thead
-                    );
+                    if (!Validate::isInt($key)) {
+                        $thead = array(
+                            'name' => $key,
+                            'label' => $thead
+                        );
+                    } else{
+                        $thead = array(
+                            'name' => $thead
+                        );
+                    }
                 }
 
                 $thead = Lib\Arr::extend(array(
@@ -62,7 +72,10 @@ class Table extends Dom
                 ), $thead);
 
                 $head[] = $thead['name'];
+                $arrayThead[] = $thead;
             }
+
+            $element['thead'] = $arrayThead;
         }
 
         if ($element['actions']) {
