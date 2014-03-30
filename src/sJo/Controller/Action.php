@@ -11,65 +11,90 @@ use sJo\Request\Request;
 
 trait Action
 {
-    public function edit (MysqlObject $instance)
+    protected function getId (MysqlObject $instance)
     {
-        if (Request::env('REQUEST')->{$instance->getPrimaryKey()}->exists()) {
-            $instance->setPrimaryValue(Request::env('REQUEST')->{$instance->getPrimaryKey()}->val());
+        if (!$this->isCreate($instance)) {
+
+            return Request::env('REQUEST')->{$instance->getPrimaryKey()}->val();
         }
 
-        $this->update($instance);
+        return null;
     }
 
-    public function update (MysqlObject $instance)
+    protected function isCreate (MysqlObject $instance)
     {
-        if (Request::env('POST')->exists()) {
+        return !Request::env('REQUEST')->{$instance->getPrimaryKey()}->exists();
+    }
 
-            $next = 'back';
-            if(Request::env('POST')->saveAndStay->exists()) {
-                $next = 'stay';
-            } elseif (Request::env('POST')->saveAndCreate->exists()) {
-                $next = 'create';
-            }
+    protected function edit (MysqlObject $instance, callable $callback = null)
+    {
+        $instance->setPrimaryValue($this->getId($instance));
 
-            unset(Request::env('POST')->controller);
-            unset(Request::env('POST')->method);
-            unset(Request::env('POST')->token);
-            unset(Request::env('POST')->saveAndStay);
-            unset(Request::env('POST')->saveAndCreate);
-            unset(Request::env('POST')->saveAndBack);
+        $this->update($instance, $callback);
+    }
 
-            foreach (Request::env('POST')->getArray() as $name => $value) {
-                $instance->{$name} = $value;
-            }
+    protected function update (MysqlObject $instance, callable $callback = null)
+    {
+        if (!Request::env('POST')->exists()) {
+            return;
+        }
 
-            if ($this->validate($instance)) {
+        $next = 'back';
+        if(Request::env('POST')->saveAndStay->exists()) {
+            $next = 'stay';
+        } elseif (Request::env('POST')->saveAndCreate->exists()) {
+            $next = 'create';
+        }
 
-                if($instance->save()){
-                    Alert::set(Lib\I18n::__('The item has been saved.'), 'success');
+        unset(Request::env('POST')->controller);
+        unset(Request::env('POST')->method);
+        unset(Request::env('POST')->token);
+        unset(Request::env('POST')->saveAndStay);
+        unset(Request::env('POST')->saveAndCreate);
+        unset(Request::env('POST')->saveAndBack);
+
+        foreach (Request::env('POST')->getArray() as $name => $value) {
+            $instance->{$name} = $value;
+        }
+
+        if ($this->validate($instance)) {
+
+            if($instance->save()){
+
+                if ($callback) {
+                    call_user_func($callback, $instance);
                 }
 
-                switch ($next) {
+                Alert::set(Lib\I18n::__('The item has been saved.'), 'success');
+            }
 
-                    default:
-                        Http::redirect(Router::link(null, Router::$controller));
-                        break;
+            switch ($next) {
 
-                    case 'stay':
-                        Http::redirect(Router::link(null, null, array($instance->getPrimaryKey() => $instance->getPrimaryValue())));
-                        break;
+                default:
+                    Http::redirect(Router::link(null, Router::$controller));
+                    break;
 
-                    case 'create':
-                        Http::redirect(Router::link());
-                        break;
-                }
+                case 'stay':
+                    Http::redirect(Router::link(null, null, array($instance->getPrimaryKey() => $instance->getPrimaryValue())));
+                    break;
+
+                case 'create':
+                    Http::redirect(Router::link());
+                    break;
             }
         }
     }
 
-    public function delete (MysqlObject $instance)
+    protected function delete (MysqlObject $instance, callable $callback = null)
     {
         if (Request::env('REQUEST')->{$instance->getPrimaryKey()}->val()) {
+
             if($instance->delete()) {
+
+                if ($callback) {
+                    call_user_func($callback, $instance);
+                }
+
                 Alert::set(Lib\I18n::__('The item has been deleted.'), 'success');
             }
         }
