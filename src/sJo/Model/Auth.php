@@ -31,12 +31,17 @@ trait Auth
     public static function isLogged ()
     {
         if (self::session()->id->exists()
-            && self::session()->token->eq(Token::get(self::session()->id->val()))) {
+            && self::session()->token->eq(Token::get(self::getId()))) {
 
             return true;
         }
 
         return false;
+    }
+
+    public static function getId ()
+    {
+        return self::session()->id->val();
     }
 
     public static function session ()
