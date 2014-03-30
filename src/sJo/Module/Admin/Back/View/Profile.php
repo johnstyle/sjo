@@ -32,6 +32,6 @@ Helper\Panel::create(array(
         'class' => 'pull-right btn-primary',
         'value' => Lib\I18n::__('Save')
     ))
-))->display();
+))->render();
 
 $this->footer();

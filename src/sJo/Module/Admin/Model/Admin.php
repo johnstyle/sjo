@@ -12,7 +12,7 @@ class Admin extends AdminMap
 
     public static function logged()
     {
-        return new self (self::session()->id->val());
+        return new self (self::getId());
     }
 
     public function exists($email, $password)

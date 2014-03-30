@@ -44,4 +44,4 @@ Helper\Panel::create(array(
             ))
         )
     ))
-))->display();
+))->render();

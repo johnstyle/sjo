@@ -12,4 +12,4 @@ Helper\Panel::create(array(
         'tbody' => Admin::getInstance(),
         'actions' => array('edit', 'delete')
     ))
-))->display();
+))->render();
