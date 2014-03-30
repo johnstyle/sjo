@@ -65,51 +65,61 @@ abstract class Validate
 
     public static function isMd5($var)
     {
-        return preg_match('#^[a-f0-9]{32}$#', $var);
+        return is_scalar($var) && preg_match('#^[a-f0-9]{32}$#', $var);
     }
 
     public static function isInt($var)
     {
-        return preg_match('#^[0-9]+$#', $var);
+        return is_scalar($var) && preg_match('#^[0-9]+$#', $var);
     }
 
     public static function isEmail($var)
     {
-        return preg_match('#^[a-z0-9\-\.\+]+@[a-z0-9\-]+\.[a-z]{2,4}$#i', $var);
+        return is_scalar($var) && preg_match('#^[a-z0-9\-\.\+]+@[a-z0-9\-]+\.[a-z]{2,4}$#i', $var);
     }
 
     public static function isUrl($var)
     {
-        return preg_match('#^https?://(www\.)?[a-z0-9\.\-]+\.[a-z]{2,4}(/.+|$)#i', $var);
+        return is_scalar($var) && preg_match('#^https?://(www\.)?[a-z0-9\.\-]+\.[a-z]{2,4}(/.+|$)#i', $var);
     }
 
     public static function isDate($var)
     {
-        return preg_match('#^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$#', $var);
+        return is_scalar($var) && preg_match('#^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$#', $var);
     }
 
     public static function isDateTime($var)
     {
-        return preg_match('#^[0-9]{4}\-[0-9]{2}\-[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2}$#', $var);
+        return is_scalar($var) && preg_match('#^[0-9]{4}\-[0-9]{2}\-[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2}$#', $var);
     }
 
     public static function isEnum($var, array $elements = null)
     {
-        return $elements && in_array($var, $elements);
+        return is_scalar($var) && $elements && in_array($var, $elements);
     }
 
     public static function isBool($var)
     {
-        return is_bool($var);
+        return is_scalar($var) && is_bool($var);
     }
 
     public static function isFloat($var)
     {
-        return is_float($var);
+        return is_scalar($var) && is_float($var);
     }
 
     public static function isString($var)
     {
-        return is_string($var);
+        return is_scalar($var) && is_string($var);
+    }
+
+    public static function isEmpty($var)
+    {
+        return (is_null($var) || $var === '');
+    }
+
+    public static function isCallable($var, $namespace = false)
+    {
+        return is_callable($var) && (!$namespace || (is_scalar($var) && strstr($var, '\\')));
     }
 }
