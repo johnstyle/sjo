@@ -6,18 +6,8 @@ use sJo\Loader\Router;
 <<?php echo $this->container; ?>>
     <ul class="nav <?php echo $this->container == 'aside' ? 'nav-sidebar' : 'navbar-nav'; ?><?php if(isset($this->pull)): ?> navbar-<?php echo $this->pull; ?><?php endif; ?>">
         <?php foreach($this->elements as $element): ?>
-            <li class="
-                <?php if($element['class']): ?>
-                   <?php echo $element['class']; ?>
-                <?php endif; ?>
-                ">
-                <a
-                    <?php if($element['link']): ?>
-                        href="<?php echo $element['link']; ?>"
-                    <?php endif; ?>
-                    <?php if($element['target']): ?>
-                        target="<?php echo $element['target']; ?>"
-                    <?php endif; ?>
+            <li>
+                <a<?php $this->attributes(); ?>
                     <?php if($element['tooltip']): ?>
                         data-toggle="tooltip"
                         <?php if($element['tooltip']): ?>
@@ -34,12 +24,8 @@ use sJo\Loader\Router;
                 <?php if($element['children']): ?>
                     <ul class="nav">
                         <?php foreach($element['children'] as $child): ?>
-                            <li class="
-                                <?php if($child['class']): ?>
-                                   <?php echo $child['class']; ?>
-                                <?php endif; ?>
-                                ">
-                                <a
+                            <li>
+                                <a<?php $this->attributes(); ?>
                                     <?php if($child['link']): ?>
                                         href="<?php echo $child['link']; ?>"
                                     <?php endif; ?>

@@ -6,16 +6,7 @@
             <?php endif; ?>
             ><?php echo $this->label; ?></label>
     <?php endif; ?>
-    <select
-        name="<?php echo $this->name; ?>"
-        <?php if($this->id): ?>
-            id="<?php echo $this->id; ?>"
-        <?php endif; ?>
-        class="form-control <?php echo $this->class; ?>"
-        <?php if($this->autofocus): ?>
-            autofocus
-        <?php endif; ?>
-        >
+    <select<?php echo $this->attributes(); ?>>
         <?php foreach ($this->options as $value=>$option): ?>
             <option
                 value="<?php echo $value; ?>"

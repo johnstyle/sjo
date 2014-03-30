@@ -11,9 +11,9 @@ class Token extends Dom
 {
     public function setElement($element)
     {
-        if (isset($element['__default__'])) {
+        if (isset($element[static::DEFAULT_WRAPPER])) {
             $element = array(
-                'token' => $element['__default__']
+                'token' => $element[static::DEFAULT_WRAPPER][0]
             );
         }
 
@@ -31,7 +31,7 @@ class Token extends Dom
             $element['token'] = Loader\Token::get($element['token']);
         }
 
-        return array('elements' => Lib\Arr::extend(array(
+        return array(static::DEFAULT_WRAPPER => Lib\Arr::extend(array(
             'token' => null,
             'controller' => $controller,
             'method' => $method

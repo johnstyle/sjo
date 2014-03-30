@@ -8,10 +8,10 @@ use sJo\Libraries as Lib;
 
 class Link extends Dom
 {
-    public function setElement($element)
-    {
-        return parent::setElement(Lib\Arr::extend(array(
+    protected static $attributes = array(
+        'tagname' => 'a',
+        'attributes' => array(
             'href' => '#'
-        ), $element));
-    }
+        )
+    );
 }

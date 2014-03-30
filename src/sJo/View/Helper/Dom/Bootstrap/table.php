@@ -1,9 +1,4 @@
-<table
-    class="table <?php echo $this->class; ?>"
-    <?php if($this->id): ?>
-        id="<?php echo $this->id; ?>"
-    <?php endif; ?>
-    >
+<table<?php echo $this->attributes(); ?>>
     <?php if($this->thead): ?>
         <thead>
         <tr>
@@ -30,13 +25,16 @@
         <tbody>
         <?php foreach($this->tbody as $items): ?>
         <tr>
-            <?php $i = 0; foreach($items as $item): ?>
+            <?php foreach($this->thead as $name=>$thead): ?>
                 <td
-                    <?php if($this->thead[$i]['align']): ?>
-                        class="text-<?php echo $this->thead[$i]['align']; ?>"
+                    <?php if($thead['align']): ?>
+                        class="text-<?php echo $thead['align']; ?>"
                     <?php endif; ?>
-                    ><?php echo $item; ?></td>
-            <?php $i++; endforeach; ?>
+                    ><?php echo is_array($items) ?
+                        (isset($items[$name]) ? $items[$name] : '-')  :
+                        (isset($items->{$name}) ? $items->{$name} : '-');
+                    ?></td>
+            <?php endforeach; ?>
         </tr>
         <?php endforeach; ?>
         </tbody>

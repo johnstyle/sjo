@@ -7,10 +7,17 @@ use sJo\Libraries as Lib;
 
 class Form extends Dom
 {
-    public function setElement($element)
-    {
-        return parent::setElement(Lib\Arr::extend(array(
+    protected static $attributes = array(
+        'tagname' => 'form',
+        'attributes' => array(
             'method' => 'post'
-        ), $element), 'elements');
+        )
+    );
+
+    public function html(array $options = null)
+    {
+        return parent::html(Lib\Arr::extend(array(
+            'method' => 'Container'
+        ), $options));
     }
 }

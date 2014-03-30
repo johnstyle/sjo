@@ -23,27 +23,29 @@ class Menu extends Dom
         if (self::isRegistered($name)) {
 
             $default = array(
-                'id' => '_' . uniqid(),
+                'attributes' => array(
+                    'id' => '_' . uniqid(),
+                    'class' => null,
+                    'title' => null,
+                    'target' => null,
+                    'data' => array()
+                ),
                 'icon' => null,
-                'class' => null,
-                'title' => null,
                 'tooltip' => null,
                 'link' => 'javascript:;',
-                'target' => null,
                 'isActive' => false,
                 'children' => array(),
-                'data' => array()
             );
 
             $options = Lib\Arr::extend($default, $options);
 
             if (count($options['children'])) {
 
-                $options['controller'] = '#' . $options['id'];
-                $options['data'] = array_merge(array(
+                $options['controller'] = '#' . $options['attributes']['id'];
+                $options['attributes']['data'] = array_merge(array(
                     'toggle' => 'collapse',
                     'parent' => '.nav',
-                ), $options['data']);
+                ), $options['attributes']['data']);
 
                 foreach ($options['children'] as &$child) {
                     $childDefault = $default;

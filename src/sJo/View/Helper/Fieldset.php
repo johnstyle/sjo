@@ -7,8 +7,7 @@ use sJo\Libraries as Lib;
 
 class Fieldset extends Dom
 {
-    public function setElement($element)
-    {
-        return parent::setElement($element, 'elements');
-    }
+    protected static $attributes = array(
+        'tagname' => 'fieldset'
+    );
 }

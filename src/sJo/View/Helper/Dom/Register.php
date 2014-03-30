@@ -71,7 +71,7 @@ trait Register
                 $options = array('method' => $name);
             }
 
-            self::create(self::$registry[$name])->display($options);
+            self::create(self::$registry[$name])->render($options);
         }
     }
 }

@@ -7,10 +7,19 @@ use sJo\Libraries as Lib;
 
 class Input extends Dom
 {
+    const DEFAULT_WRAPPER = 'attributes';
+
+    protected static $attributes = array(
+        'tagname' => 'input',
+        'attributes' => array(
+            'type' => 'text'
+        )
+    );
+
     public function setElement($element)
     {
-        return parent::setElement(Lib\Arr::extend(array(
-            'type' => 'text'
-        ), $element));
+        $element['attributes']['class'] .= ' form-control';
+
+        return $element;
     }
 }

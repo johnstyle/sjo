@@ -9,23 +9,37 @@ use sJo\Libraries as Lib;
 
 class Table extends Dom
 {
+    const DEFAULT_WRAPPER = 'tbody';
+
+    protected $wrappers = array(
+        self::DEFAULT_WRAPPER,
+        'thead',
+        'tfoot'
+    );
+
+    protected static $attributes = array(
+        'thead' => null,
+        'tfoot' => null,
+        'tbody' => null,
+        'actions' => null,
+        'bulk' => null
+    );
+
     public function setElement($element)
     {
-        $element = parent::setElement(Lib\Arr::extend(array(
-            'thead' => null,
-            'tfoot' => null,
-            'tbody' => null,
-            'actions' => null,
-            'bulk' => null
-        ), $element));
+        $element['attributes']['class'] .= ' table';
 
         $head = array();
         $instance = null;
 
-        if (is_object($element['tbody'])) {
+        if (is_array($element['tbody'])) {
+            foreach ($element['tbody'] as &$tbody) {
 
-            $instance = $element['tbody'];
-            $element['tbody'] = $instance->db()->results();
+                if (is_object($tbody)) {
+
+                    $tbody = $tbody->db()->results();
+                }
+            }
         }
 
         if ($element['thead'] === null
@@ -67,29 +81,31 @@ class Table extends Dom
                 }
 
                 $thead = Lib\Arr::extend(array(
+                    'name' => $key,
+                    'callback' => null,
                     'align' => null,
-                    'label' => ucfirst($thead['name'])
+                    'label' => ucfirst(isset($thead['name']) ? $thead['name'] : $key)
                 ), $thead);
 
                 $head[] = $thead['name'];
-                $arrayThead[] = $thead;
+                $arrayThead[$thead['name']] = $thead;
             }
 
             $element['thead'] = $arrayThead;
         }
 
-        if ($element['actions']) {
+        if (is_array($element['tbody'])) {
 
-            if (is_array($element['thead'])) {
+            if ($element['actions']) {
 
-                $element['thead'][] = array(
-                    'name' => 'actions',
-                    'label' => Lib\I18n::__('Actions'),
-                    'align' => 'right'
-                );
-            }
+                if (is_array($element['thead'])) {
 
-            if (is_array($element['tbody'])) {
+                    $element['thead']['actions'] = array(
+                        'name' => 'actions',
+                        'label' => Lib\I18n::__('Actions'),
+                        'align' => 'right'
+                    );
+                }
 
                 foreach($element['tbody'] as &$line) {
 
@@ -147,12 +163,22 @@ class Table extends Dom
                             'icon' => $options['icon']
                         ), $options))->html();
                     }
+                }
+            }
+
+            if (count($head)) {
+
+                foreach($element['tbody'] as &$line) {
 
                     foreach($line as $name=>$value) {
-                        if ($name != 'actions'
-                            && count($head)
-                            && !in_array($name, $head)) {
+
+                        if (!in_array($name, $head)) {
                             unset($line->{$name});
+                            continue;
+                        }
+
+                        if (isset($element['thead'][$name]['callback'])) {
+                            $line->{$name} = call_user_func($element['thead'][$name]['callback'], $line->{$name});
                         }
                     }
                 }

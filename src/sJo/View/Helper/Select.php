@@ -7,10 +7,5 @@ use sJo\Libraries as Lib;
 
 class Select extends Dom
 {
-    public function setElement($element)
-    {
-        return parent::setElement(Lib\Arr::extend(array(
-
-        ), $element));
-    }
+    const DEFAULT_WRAPPER = 'attributes';
 }
