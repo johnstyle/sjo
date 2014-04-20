@@ -19,7 +19,7 @@ abstract class Arr
      *
      * return array
      */
-    public static function extend(array $default = null, array $array = null)
+    public static function extend(array $default = null, array $array = null, $notnull = false)
     {
         if (is_null($default)) {
             $default = array();
@@ -33,7 +33,8 @@ abstract class Arr
                         $defaultValue = $default[$name];
                     }
                     $default[$name] = self::extend($defaultValue, $value);
-                } else {
+                } elseif(!$notnull
+                    || !is_null($value)) {
                     $default[$name] = $value;
                 }
             }

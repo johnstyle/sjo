@@ -8,16 +8,19 @@ use sJo\Module\Admin\Back\Controller\Auth;
 Auth::secure();
 
 Helper\Menu::addRegistry('top', array(
-    'title' => I18n::__('My profil'),
-    'link' => Router::linkBack('Admin/Profile')
+    Helper\Link::create(array(
+        'elements' => I18n::__('My profil'),
+        'attributes' => array(
+            'href' => Router::linkBack('Admin/Profile')
+        )
+    ))
 ));
 
 Helper\Menu::addRegistry('sidebar', array(
-    'title' => I18n::__('Admins'),
-    'children' => array(
-        array(
-            'title' => I18n::__('Manage admins'),
-            'link' => Router::linkBack('Admin/Manager')
+    Helper\Link::create(array(
+        'elements' => I18n::__('Manage admins'),
+        'attributes' => array(
+            'href' => Router::linkBack('Admin/Manager')
         )
-    )
+    ))
 ));

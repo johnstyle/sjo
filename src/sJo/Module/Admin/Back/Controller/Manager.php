@@ -23,10 +23,13 @@ class Manager extends Controller
     public function edit ()
     {
         Helper\Menu::addRegistry('main', array(
-            'title' => I18n::__('Cancel'),
-            'link' => Router::linkBack('Admin/Manager'),
-            'icon' => 'remove',
-            'class' => 'bg-danger'
+            Helper\Link::create(array(
+                'elements' => I18n::__('Cancel'),
+                'attributes' => array(
+                    'class' => 'bg-danger remove',
+                    'href' => Router::linkBack('Admin/Manager')
+                )
+            ))
         ));
 
         parent::edit(new Admin());
@@ -45,10 +48,13 @@ class Manager extends Controller
     public function index ()
     {
         Helper\Menu::addRegistry('main', array(
-            'title' => I18n::__('Create admin'),
-            'link' => Router::linkBack('Admin/Manager::edit'),
-            'icon' => 'plus',
-            'class' => 'bg-success'
+            Helper\Link::create(array(
+                'elements' => I18n::__('Create admin'),
+                'attributes' => array(
+                    'class' => 'bg-success plus',
+                    'href' => Router::linkBack('Admin/Manager::edit')
+                )
+            ))
         ));
     }
 }

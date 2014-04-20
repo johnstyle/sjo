@@ -12,6 +12,7 @@
 
 namespace sJo\Object;
 
+use sJo\Data\Validate;
 use sJo\Exception\Exception;
 use sJo\Libraries\I18n;
 
@@ -29,7 +30,7 @@ class Closure
 
     function __set($name, $data)
     {
-        if (is_callable($data)) {
+        if (Validate::isCallable($data)) {
             $this->methods[$name] = $data;
         } else {
             $this->properties[$name] = $data;

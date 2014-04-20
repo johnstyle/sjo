@@ -118,8 +118,9 @@ abstract class Validate
         return (is_null($var) || $var === '');
     }
 
-    public static function isCallable($var, $namespace = false)
+    public static function isCallable($var)
     {
-        return is_callable($var) && (!$namespace || (is_scalar($var) && strstr($var, '\\')));
+        return (is_object($var) && $var instanceof \Closure)
+            || (is_array($var) && count($var) === 2 && is_callable($var));
     }
 }
