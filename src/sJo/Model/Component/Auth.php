@@ -12,7 +12,7 @@
  * @link     https://github.com/johnstyle/sjo.git
  */
 
-namespace sJo\Model;
+namespace sJo\Model\Component;
 
 use sJo\Request\Request;
 use sJo\Loader\Token;

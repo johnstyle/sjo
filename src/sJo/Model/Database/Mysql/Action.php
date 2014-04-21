@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Model;
+namespace sJo\Model\Database\Mysql;
 
 trait Action
 {
@@ -8,7 +8,7 @@ trait Action
     {
         if($this->getPrimaryValue() !== null) {
 
-            $result = self::db()->result(array(
+            $result = static::db()->result(array(
                 $this->getPrimaryKey() => $this->getPrimaryValue()
             ));
 
@@ -20,10 +20,10 @@ trait Action
         }
     }
 
-    public function delete()
+    protected function delete()
     {
         if($this->getPrimaryValue()) {
-            return self::db()->delete(array(
+            return static::db()->delete(array(
                 $this->getPrimaryKey() => $this->getPrimaryValue()
             ));
         }
@@ -31,7 +31,7 @@ trait Action
         return false;
     }
 
-    public function save()
+    protected function save()
     {
         $where = null;
         if($this->getPrimaryValue()) {
@@ -40,7 +40,7 @@ trait Action
             );
         }
 
-        $db = self::db()->update((array) $this->getProperties(), $where);
+        $db = static::db()->update((array) $this->getProperties(), $where);
         if ($db->lastinsertid()) {
             $this->setPrimaryValue($db->lastinsertid());
         }

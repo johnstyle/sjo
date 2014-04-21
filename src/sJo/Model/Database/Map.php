@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Model;
+namespace sJo\Model\Database;
 
 use sJo\Libraries\Arr;
 
