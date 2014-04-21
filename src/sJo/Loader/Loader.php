@@ -15,7 +15,7 @@
 namespace sJo\Loader;
 
 use sJo\Exception\Exception;
-use sJo\Model\Event;
+use sJo\Model\Component\Event;
 use sJo\Libraries as Lib;
 use sJo\Helpers;
 use sJo\Module\Module;
