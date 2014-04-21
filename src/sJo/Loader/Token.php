@@ -40,11 +40,13 @@ class Token
         );
     }
 
-    public static function has()
+    public static function has($type = 'REQUEST')
     {
-        if (Request::env('REQUEST')->token->eq(self::get(Router::getToken()))) {
+        if (Request::env($type)->token->eq(self::get(Router::getToken()))) {
+
             return true;
         }
+
         return false;
     }
 }
