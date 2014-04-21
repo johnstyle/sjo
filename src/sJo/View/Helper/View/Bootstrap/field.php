@@ -1,5 +1,7 @@
 <?php if($this->attribute('type') != 'hidden'): ?>
-    <div class="form-group">
+    <div class="form-group
+        <?php if($this->group['class']): echo $this->group['class']; endif; ?>
+        <?php if($this->alert): echo 'has-' . $this->alert . ' has-feedback'; endif; ?>">
     <?php if($this->label): ?>
         <label
             <?php if($this->attribute('id')): ?>
@@ -14,6 +16,9 @@
         <?php endforeach; ?>
     <?php else: ?>
         <?php echo $this->elements; ?>
+    <?php endif; ?>
+    <?php if($this->icon): ?>
+        <span class="glyphicon glyphicon-<?php echo $this->icon; ?> <?php if($this->alert): ?>form-control-feedback<?php endif; ?>"></span>
     <?php endif; ?>
 <?php if($this->attribute('type') != 'hidden'): ?>
     </div>

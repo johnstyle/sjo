@@ -1,5 +1,5 @@
 <?php if($this->attribute('type') != 'hidden'): ?>
-    <div>
+    <div<?php if($this->alert): echo ' class="' . $this->alert . '"'; endif; ?>>
     <?php if($this->label): ?>
         <label
             <?php if($this->attribute('id')): ?>

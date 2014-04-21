@@ -14,7 +14,12 @@ class Field extends Dom
             'name'        => null,
             'value'       => null,
         ),
-        'label' => null
+        'label'     => null,
+        'group'     => array(
+            'class'       => null
+        ),
+        'alert'     => null,
+        'icon'      => null
     );
 
     public function setElement ($element)

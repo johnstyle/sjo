@@ -7,6 +7,8 @@ use sJo\View\Helper\Dom;
 
 class Panel extends Dom
 {
+    const DEFAULT_ELEMENT_ATTRIBUTE_CLASS = 'panel panel-default';
+
     protected $wrapper = 'main';
     protected $wrappers = array(
         'main',
@@ -17,7 +19,10 @@ class Panel extends Dom
     protected static $element = array(
         'tagname' => 'form',
         'attributes' => array(
-            'method' => 'post'
+            'enctype' => 'multipart/form-data',
+            'method' => 'post',
+            'action' => null,
+            'target' => null,
         ),
         'header' => null,
         'footer' => null
@@ -25,15 +30,11 @@ class Panel extends Dom
 
     public function setElement($element)
     {
-        $element['attributes']['class'] .= ' panel panel-default';
-
         if (!is_null($element['header'])
             && Validate::isString($element['header'])) {
 
             $element['header'] = Container::create(array(
-                'attributes' => array(
-                    'class' => 'panel-title'
-                ),
+                'class' => 'panel-title',
                 'elements' => $element['header']
             ));
        }
