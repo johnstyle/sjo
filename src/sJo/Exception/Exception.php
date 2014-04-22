@@ -44,7 +44,9 @@ class Exception extends \Exception
 
     public static function error($msg = null, $code = 0)
     {
-        $Exception = new self($msg, $code);
+        $Exception = new static ($msg, $code);
         $Exception->showError();
+
+        return $Exception;
     }
 }
