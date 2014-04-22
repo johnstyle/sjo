@@ -19,6 +19,7 @@ use sJo\Exception\Exception;
 use sJo\Loader\Router;
 use sJo\Model\Component\Event;
 use sJo\Libraries as Lib;
+use sJo\File\File;
 
 /**
  * Module
@@ -51,7 +52,7 @@ class Module
                     }
 
                     /** Bootstrap */
-                    Lib\File::__include(self::getFile($module, Router::$interface . '/bootstrap.php'));
+                    File::__include(self::getFile($module, Router::$interface . '/bootstrap.php'));
                 }
             }
         }

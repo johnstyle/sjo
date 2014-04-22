@@ -15,6 +15,7 @@
 namespace sJo\Libraries;
 
 use sJo\Exception\Exception;
+use sJo\File\Path;
 
 /**
  * Gestion du multilanguage

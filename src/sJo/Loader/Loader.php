@@ -21,6 +21,7 @@ use sJo\Helpers;
 use sJo\Module\Module;
 use sJo\Request\Request;
 use sJo\View\View;
+use sJo\File\File;
 
 /**
  * Loader
@@ -74,7 +75,7 @@ class Loader
         Helpers\Autoload(SJO_ROOT_APP);
 
         /** Bootstrap */
-        Lib\File::__include(SJO_ROOT_APP . '/' . Router::$interface . '/bootstrap.php');
+        File::__include(SJO_ROOT_APP . '/' . Router::$interface . '/bootstrap.php');
 
         /** Load modules */
         $this->module = new Module();

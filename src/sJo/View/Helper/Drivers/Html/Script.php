@@ -6,6 +6,7 @@ use sJo\Loader\Router;
 use sJo\Libraries as Lib;
 use sJo\View\Helper\Dom;
 use sJo\View\Helper\Register;
+use sJo\File\Path;
 
 class Script extends Dom
 {
@@ -22,7 +23,7 @@ class Script extends Dom
     {
         $cssPath = SJO_ROOT_PUBLIC_HTML . '/js/' . strtolower(Router::$interface);
         if (is_dir($cssPath)) {
-            if($files = Lib\Path::listFiles($cssPath)) {
+            if($files = Path::listFiles($cssPath)) {
                 foreach($files as $file) {
                     $registered['elements'][] = preg_replace("#^" . SJO_ROOT_PUBLIC_HTML . "/#", "", $file->path);
                 }

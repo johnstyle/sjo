@@ -12,6 +12,8 @@
 
 namespace sJo\Libraries;
 
+use sJo\File\Path;
+
 class Ini
 {
     /**

@@ -6,6 +6,7 @@ use Psr\Log\AbstractLogger;
 use sJo\Libraries as Lib;
 use sJo\Object\Singleton;
 use sJo\Request\Request;
+use sJo\File\File;
 
 /**
  * This Logger can be used to avoid conditional log calls
@@ -29,7 +30,7 @@ class Logger extends AbstractLogger
      */
     public function log($level, $message, array $context = array())
     {
-        Lib\File::append(SJO_ROOT_LOG . '/app.' . $level . '.log',
+        File::append(SJO_ROOT_LOG . '/app.' . $level . '.log',
             date('Y-m-d H:i:s') . "\t" .
             Request::env('SERVER')->REQUEST_URI->val() . "\t" .
             self::interpolate($message, $context) . "\n");
