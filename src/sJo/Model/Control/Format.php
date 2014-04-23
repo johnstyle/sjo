@@ -8,7 +8,7 @@ trait Format
 {
     private function format ()
     {
-        foreach ($this->getTableFields() as $name => $attr) {
+        foreach ($this->getTableColumns() as $name => $attr) {
 
             $this->{$name} = Type::set($attr['type'], $this->{$name}, $attr['length']);
         }

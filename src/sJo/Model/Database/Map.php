@@ -62,8 +62,13 @@ trait Map
         return $this->tableName;
     }
 
-    public function getTableFields ()
+    public function getTableColumns ()
     {
         return $this->__map['columns'];
+    }
+
+    public function getTableColumnsName ()
+    {
+        return array_keys($this->__map['columns']);
     }
 }
