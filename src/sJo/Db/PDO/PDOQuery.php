@@ -52,18 +52,37 @@ trait PDOQuery
      */
     final public function value($key, array $where = null)
     {
-        $query = 'SELECT `' . $key . '` FROM `' . $this->table . '`' .  self::where($where);
+        $queryWhere = self::setWhere($where);
+
+        $query = 'SELECT `' . $key . '` FROM `' . $this->table . '`' .  $queryWhere;
 
         return $this->fetchColumn($query, $where);
     }
 
-    final public static function where(array $where = null)
+    final public static function setWhere(array &$where = null)
     {
         if ($where) {
+
             $query = array();
-            foreach (array_keys($where) as $item) {
-                $query[] = "`" . $item . "` = :" . $item;
+
+            foreach ($where as $name=>$item) {
+
+                if (!is_array($item)) {
+                    $item = array(
+                        'value' => $item
+                    );
+                }
+
+                $item = Lib\Arr::extend(array(
+                    'value' => null,
+                    'operator' => '='
+                ), $item);
+
+                $query[] = "`" . $name . "` " . $item['operator'] . " :" . $name;
+
+                $where[$name] = $item['value'];
             }
+
             return ' WHERE ' . implode(' AND ', $query);
         }
 
@@ -78,7 +97,9 @@ trait PDOQuery
      */
     final public function results(array $where = null)
     {
-        $query = 'SELECT * FROM `' . $this->table . '`' . self::where($where);
+        $queryWhere = self::setWhere($where);
+
+        $query = 'SELECT * FROM `' . $this->table . '`' . $queryWhere;
 
         return $this->fetchAll($query, $where);
     }
@@ -91,7 +112,9 @@ trait PDOQuery
      */
     final public function result(array $where = null)
     {
-        $query = 'SELECT * FROM `' . $this->table . '`' . self::where($where);
+        $queryWhere = self::setWhere($where);
+
+        $query = 'SELECT * FROM `' . $this->table . '`' . $queryWhere;
 
         return $this->fetch($query, $where);
     }
@@ -108,12 +131,13 @@ trait PDOQuery
         if ($where) {
 
             $set = self::setValues($values);
+            $queryWhere = self::setWhere($where);
             $values = Lib\Arr::extend($values, $where);
 
             $query = '
                 UPDATE `' . $this->table . '`
                 SET ' . $set .
-                self::where($where);
+                $queryWhere;
         } else {
 
             $valuesKeys = array_keys($values);
@@ -145,7 +169,9 @@ trait PDOQuery
      */
     final public function delete(array $where = null)
     {
-        $query = 'DELETE FROM `' . $this->table . '`' . self::where($where);
+        $queryWhere = self::setWhere($where);
+
+        $query = 'DELETE FROM `' . $this->table . '`' . $queryWhere;
 
         $this->req($query, $where);
 
