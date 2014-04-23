@@ -66,6 +66,6 @@ trait Entity
             return Request::env('POST')->{$name}->val();
         }
 
-        return $this->{$name};
+        return isset($this->{$name}) ? $this->{$name} : null;
     }
 }
