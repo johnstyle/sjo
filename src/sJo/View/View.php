@@ -65,21 +65,33 @@ final class View extends Closure
 
     public function method()
     {
-        $this->inc(dirname(Router::$viewFile) . '/' . basename(Router::$viewFile, '.php') . '/' . Router::$method . '.php');
+        return $this->inc(dirname(Router::$viewFile) . '/' . basename(Router::$viewFile, '.php') . '/' . Router::$method . '.php');
     }
 
     /**
      * Affichage de la vue courante
      *
+     * @param $render
+     *
      * @return void
      */
-    public function display()
+    public function display($render)
     {
         if (file_exists(Router::$viewFile)) {
+
             $this->inc(Router::$viewFile);
+
         } else {
+
             $this->header();
-            $this->method();
+
+            if(!$this->method()
+                && !is_null($render)
+                && method_exists($render, 'render')) {
+
+                $render->render();
+            }
+
             $this->footer();
         }
     }
@@ -89,14 +101,15 @@ final class View extends Closure
      *
      * @param string $filename Nom du fichier
      * @param array $vars Variables spécifiques à la vue
-     * @return void
+     * @return bool
      */
     public function inc($filename, array $vars = null)
     {
         if (!strstr($filename, '.php')) {
+
             $filename = Router::$viewRoot . '/' . $filename . '.php';
         }
 
-        parent::inc($filename, $vars);
+        return parent::inc($filename, $vars);
     }
 }

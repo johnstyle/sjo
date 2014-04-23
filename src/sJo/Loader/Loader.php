@@ -123,6 +123,8 @@ class Loader
 
     public function display()
     {
+        $render = null;
+
         if (Router::$method) {
 
             switch (Request::env('GET')->content_type->val()) {
@@ -144,12 +146,12 @@ class Loader
                     if (method_exists(Router::$controllerClass, Router::$method)) {
                         if(Request::env('POST')->exists()) {
                             if (Token::has()) {
-                                $this->instance->{Router::$method}();
+                                $render = $this->instance->{Router::$method}();
                             } else {
                                 $this->ErrorDocument('http403', Lib\I18n::__('Warning ! Prohibited queries.'));
                             }
                         } else {
-                            $this->instance->{Router::$method}();
+                            $render = $this->instance->{Router::$method}();
                         }
                     }
                     break;
@@ -157,7 +159,7 @@ class Loader
         }
 
         $this->event('loadedView');
-        $this->view->display();
+        $this->view->display($render);
         $this->event('displayedView');
     }
 
