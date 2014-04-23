@@ -48,22 +48,38 @@ class Closure
         }
     }
 
+    /**
+     * @param       $filename
+     * @param array $properties
+     *
+     * @return bool
+     */
     public function inc($filename, array $properties = null)
     {
+        $success = false;
+
         if($properties) {
+
             foreach($properties as $name=>$value) {
+
                 $this->{$name} = $value;
             }
         }
 
         if (file_exists($filename)) {
+
+            $success = true;
             require $filename;
         }
 
         if($properties) {
+
             foreach($properties as $name=>$value) {
+
                 unset($this->{$name});
             }
         }
+
+        return $success;
     }
 }
