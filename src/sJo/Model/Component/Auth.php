@@ -30,8 +30,8 @@ trait Auth
 {
     public static function isLogged ()
     {
-        if (self::session()->id->exists()
-            && self::session()->token->eq(Token::get(self::getId()))) {
+        if (static::session()->{static::getInstance()->getPrimaryKey()}->exists()
+            && static::session()->token->eq(Token::get(static::getSessionId()))) {
 
             return true;
         }
@@ -39,9 +39,9 @@ trait Auth
         return false;
     }
 
-    public static function getId ()
+    public static function getSessionId ()
     {
-        return self::session()->id->val();
+        return static::session()->{static::getInstance()->getPrimaryKey()}->val();
     }
 
     public static function session ()
