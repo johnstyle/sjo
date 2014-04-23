@@ -35,17 +35,38 @@ use sJo\View\Helper\Drivers\Html;
  */
 trait Form
 {
+    /** @var   */
     protected $__form;
 
+    /**
+     * @return $this
+     */
+    public function quickForm ()
+    {
+        $this->createForm();
+        $this->updateForm();
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
     public function createForm ()
     {
         $this->__form = Arr::extend(array(
+            'grid' => null,
+            'useAlert' => true,
             'fields' => null,
-            'texts' => array(
-                'create' => I18n::__('Create'),
-                'edit' => I18n::__('Edit'),
-                'saved' => I18n::__('The item has been saved.'),
-                'deleted' => I18n::__('The item has been deleted.'),
+            'i18n' => array(
+                'header' => array(
+                    'create' => I18n::__('Create'),
+                    'edit' => I18n::__('Edit'),
+                ),
+                'actions' => array(
+                    'saved' => I18n::__('The item has been saved.'),
+                    'deleted' => I18n::__('The item has been deleted.'),
+                ),
             ),
             'buttons' =>  array(
                 Bootstrap\Button::create(array(
@@ -63,11 +84,19 @@ trait Form
         return $this;
     }
 
+    /**
+     *
+     */
     public function render ()
     {
         $fields = array(
             Html\Token::create(Router::getToken())
         );
+
+        if (true === $this->__form['useAlert']) {
+
+            $fields[] = Bootstrap\Alert::create();
+        }
 
         if ($this->__form['fields']) {
 
@@ -75,7 +104,7 @@ trait Form
 
                 $field = Arr::extend(array(
                     'name' => $name,
-                    'value' => $this->request('title'),
+                    'value' => $this->request($name),
                     'alert' => $this->inError($name) ? 'error' : null,
                     'icon' => $this->inError($name) ? 'remove' : null
                 ), $field);
@@ -85,8 +114,8 @@ trait Form
         }
 
         Bootstrap\Panel::create(array(
-            'grid' => 6,
-            'header' => $this->getPrimaryValue() ? $this->__form['texts']['edit'] : $this->__form['texts']['create'],
+            'grid' => $this->__form['grid'],
+            'header' => $this->getPrimaryValue() ? $this->__form['i18n']['header']['edit'] : $this->__form['i18n']['header']['create'],
             'class' => $this->getPrimaryValue() ? 'panel-primary' : 'panel-success',
             'main' => Bootstrap\Fieldset::create($fields),
             'footer' => Bootstrap\ButtonGroup::create(array(
@@ -96,30 +125,29 @@ trait Form
         ))->render();
     }
 
+    /**
+     *
+     */
     protected function editForm ()
     {
-        $this->setPrimaryValue($this->getId($this));
+        $this->setPrimaryValue(Request::env('REQUEST')->{$this->getPrimaryKey()}->val());
 
         $this->updateForm();
     }
 
+    /**
+     * @param bool $redirect
+     * @param bool $displayAlert
+     *
+     * @return bool
+     */
     public function updateForm ($redirect = true, $displayAlert = true)
     {
         $success = false;
 
         if ($this->isSubmitedForm()) {
 
-            unset(Request::env('POST')->controller);
-            unset(Request::env('POST')->method);
-            unset(Request::env('POST')->token);
-
-            foreach (Request::env('POST')->getArray() as $name => $value) {
-
-                if (!preg_match("#^__#", $name)) {
-
-                    $this->{$name} = $value;
-                }
-            }
+            $this->assignFormValues();
 
             if ($this->validate()) {
 
@@ -132,7 +160,7 @@ trait Form
                 if($success
                     && $displayAlert){
 
-                    Alert::set($this->__form['texts']['saved'], 'success');
+                    Alert::set($this->__form['i18n']['actions']['saved'], 'success');
                 }
 
                 if ($redirect) {
@@ -145,6 +173,12 @@ trait Form
         return $success;
     }
 
+    /**
+     * @param bool $redirect
+     * @param bool $displayAlert
+     *
+     * @return bool
+     */
     public function deleteForm ($redirect = true, $displayAlert = true)
     {
         $success = false;
@@ -158,7 +192,7 @@ trait Form
                 if($success
                     && $displayAlert){
 
-                    Alert::set($this->__form['texts']['deleted'], 'success');
+                    Alert::set($this->__form['i18n']['actions']['deleted'], 'success');
                 }
             }
 
@@ -171,6 +205,9 @@ trait Form
         return $success;
     }
 
+    /**
+     *
+     */
     public function redirectForm ()
     {
         $next = 'back';
@@ -196,32 +233,49 @@ trait Form
         }
     }
 
-    protected function getId ()
-    {
-        if (!$this->isCreate()) {
-
-            return Request::env('REQUEST')->{$this->getPrimaryKey()}->val();
-        }
-
-        return null;
-    }
-
-    protected function isCreate ()
-    {
-        return !Request::env('REQUEST')->{$this->getPrimaryKey()}->exists();
-    }
-
+    /**
+     * @param string $type
+     *
+     * @return bool
+     */
     public function isSubmitedForm ($type = 'POST')
     {
         return Request::env($type)->exists()
         && Token::has($type);
     }
 
+    /**
+     * @param $name
+     *
+     * @return bool
+     */
     public function saveFormField ($name)
     {
         return true;
     }
 
+    /**
+     * @return bool
+     */
+    public function assignFormValues ()
+    {
+        $mapFields = $this->getTableColumnsName();
+
+        foreach (Request::env('POST')->getArray() as $name => $value) {
+
+            if (in_array($name, $mapFields)) {
+
+                $this->{$name} = $value;
+            }
+        }
+    }
+
+    /**
+     * @param      $name
+     * @param null $key
+     *
+     * @return null
+     */
     public function getFormFieldDefinition ($name, $key = null)
     {
         if (isset($this->__form['fields'][$name])) {
