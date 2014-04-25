@@ -2,7 +2,7 @@
 
 namespace sJo\Helpers;
 
-use sJo\Libraries\File;
+use sJo\File\File;
 
 function Autoload($path)
 {

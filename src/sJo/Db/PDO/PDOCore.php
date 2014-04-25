@@ -14,9 +14,10 @@
 
 namespace sJo\Db\PDO;
 
-use sJo\Core;
-use sJo\Object;
+use sJo\Exception\Exception;
+use sJo\Module\Dependencies;
 use sJo\Libraries as Lib;
+use sJo\Object\Singleton;
 
 /**
  * Base de données Drivers
@@ -31,8 +32,8 @@ use sJo\Libraries as Lib;
 abstract class PDOCore extends \PDO
 {
     use PDOQuery;
-    use Object\Singleton {
-        Object\Singleton::getInstance as SingletonGetInstance;
+    use Singleton {
+        Singleton::getInstance as SingletonGetInstance;
     }
 
     /**
@@ -54,11 +55,11 @@ abstract class PDOCore extends \PDO
      * @param array $args
      * @return \PDOStatement
      */
-    public function req($query, array $args = array())
+    public function req($query, array $args = null)
     {
         $req = $this->prepare($query);
 
-        if(count($args)) {
+        if($args) {
             $tmp = $args;
             if(!is_array(array_shift($tmp))) {
                 $args = array($args);
@@ -91,7 +92,7 @@ abstract class PDOCore extends \PDO
             }
 
             $this->commit();
-        } catch (Core\Exception $Exception) {
+        } catch (Exception $Exception) {
 
             $this->rollback();
             $Exception::error(Lib\I18n::__('Drivers bulk rollback.'));
@@ -107,7 +108,7 @@ abstract class PDOCore extends \PDO
      * @param array $args
      * @return string
      */
-    public function fetchColumn($query, array $args = array())
+    public function fetchColumn($query, array $args = null)
     {
         return $this->req($query, $args)->fetchColumn(0);
     }
@@ -121,7 +122,7 @@ abstract class PDOCore extends \PDO
      * @param int $type
      * @return object
      */
-    public function fetch($query, array $args = array(), $type = self::FETCH_OBJ)
+    public function fetch($query, array $args = null, $type = self::FETCH_OBJ)
     {
         return $this->req($query, $args)->fetch($type);
     }
@@ -134,7 +135,7 @@ abstract class PDOCore extends \PDO
      * @param int $type
      * @return array
      */
-    public function fetchAll($query, array $args = array(), $type = self::FETCH_OBJ)
+    public function fetchAll($query, array $args = null, $type = self::FETCH_OBJ)
     {
         return $this->req($query, $args)->fetchAll($type);
     }
@@ -152,7 +153,7 @@ abstract class PDOCore extends \PDO
         if (isset(self::$auth[$id])) {
             return static::SingletonGetInstance(self::$auth[$id], $id);
         } else {
-            Core\Exception::error(Lib\I18n::__('Drivers Unknow Auth ID %s.', $id));
+            Exception::error(Lib\I18n::__('Drivers Unknow Auth ID %s.', $id));
         }
         return false;
     }
@@ -164,7 +165,7 @@ abstract class PDOCore extends \PDO
      */
     final public static function auth(array $data)
     {
-        Core\Dependencies::register(get_called_class());
+        Dependencies::register(get_called_class());
 
         self::$auth = $data;
 

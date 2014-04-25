@@ -2,6 +2,8 @@
 
 namespace sJo\Db\PDO;
 
+use sJo\Libraries as Lib;
+
 trait PDOQuery
 {
     private $table;
@@ -18,6 +20,30 @@ trait PDOQuery
     }
 
     /**
+     * Liste de résultats
+     *
+     * @param string $key
+     * @param string $value
+     * @return array
+     */
+    final public function getList($key, $value)
+    {
+        $list = array();
+
+        if ($results = $this->results()) {
+
+            foreach ($results as $result) {
+                if (isset($result->{$key})
+                    && isset($result->{$value})) {
+                    $list[$result->{$key}] = $result->{$value};
+                }
+            }
+        }
+
+        return $list;
+    }
+
+    /**
      * Resultat de la première colonne
      *
      * @param string $key
@@ -26,20 +52,41 @@ trait PDOQuery
      */
     final public function value($key, array $where = null)
     {
-        $query = '
-            SELECT `' . $key . '` FROM `' . $this->table . '`
-            WHERE ' . self::where($where);
+        $queryWhere = self::setWhere($where);
+
+        $query = 'SELECT `' . $key . '` FROM `' . $this->table . '`' .  $queryWhere;
 
         return $this->fetchColumn($query, $where);
     }
 
-    final public static function where(array $where = null)
+    final public static function setWhere(array &$where = null)
     {
-        $query = array();
-        foreach (array_keys($where) as $item) {
-            $query[] = "`" . $item . "` = :" . $item;
+        if ($where) {
+
+            $query = array();
+
+            foreach ($where as $name=>$item) {
+
+                if (!is_array($item)) {
+                    $item = array(
+                        'value' => $item
+                    );
+                }
+
+                $item = Lib\Arr::extend(array(
+                    'value' => null,
+                    'operator' => '='
+                ), $item);
+
+                $query[] = "`" . $name . "` " . $item['operator'] . " :" . $name;
+
+                $where[$name] = $item['value'];
+            }
+
+            return ' WHERE ' . implode(' AND ', $query);
         }
-        return implode(' AND ', $query);
+
+        return false;
     }
 
     /**
@@ -50,9 +97,9 @@ trait PDOQuery
      */
     final public function results(array $where = null)
     {
-        $query = '
-            SELECT * FROM `' . $this->table . '`
-            WHERE ' . self::where($where);
+        $queryWhere = self::setWhere($where);
+
+        $query = 'SELECT * FROM `' . $this->table . '`' . $queryWhere;
 
         return $this->fetchAll($query, $where);
     }
@@ -65,9 +112,9 @@ trait PDOQuery
      */
     final public function result(array $where = null)
     {
-        $query = '
-            SELECT * FROM `' . $this->table . '`
-            WHERE ' . self::where($where);
+        $queryWhere = self::setWhere($where);
+
+        $query = 'SELECT * FROM `' . $this->table . '`' . $queryWhere;
 
         return $this->fetch($query, $where);
     }
@@ -84,16 +131,20 @@ trait PDOQuery
         if ($where) {
 
             $set = self::setValues($values);
-            $values = array_merge($values, $where);
+            $queryWhere = self::setWhere($where);
+            $values = Lib\Arr::extend($values, $where);
 
             $query = '
                 UPDATE `' . $this->table . '`
-                SET ' . $set . '
-                WHERE ' . self::where($where);
+                SET ' . $set .
+                $queryWhere;
         } else {
+
+            $valuesKeys = array_keys($values);
+
             $query = '
-                INSERT INTO `' . $this->table . '` (`' . implode('`, `', array_keys($values)) . '`)
-                VALUES(:' . implode(', :', $values) . ')';
+                INSERT INTO `' . $this->table . '` (`' . implode('`, `', $valuesKeys) . '`)
+                VALUES(:' . implode(', :', $valuesKeys) . ')';
         }
 
         $this->req($query, $values);
@@ -118,11 +169,11 @@ trait PDOQuery
      */
     final public function delete(array $where = null)
     {
-        $query = '
-            DELETE FROM `' . $this->table . '`
-            WHERE ' . self::where($where);
+        $queryWhere = self::setWhere($where);
 
-        $this->req($query);
+        $query = 'DELETE FROM `' . $this->table . '`' . $queryWhere;
+
+        $this->req($query, $where);
 
         return $this;
     }

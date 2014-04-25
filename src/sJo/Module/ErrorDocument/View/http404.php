@@ -12,7 +12,9 @@ use sJo\View\Helper\Style;
     <base href="<?php echo SJO_BASEHREF; ?>" />
     <title>404 | <?php Lib\I18n::_e('Page Not Found!'); ?></title>
     <meta name="description" content="404 | Page Not Found!">
-    <?php Style::applyRegistry(); ?>
+    <?php if(Style::hasRegistry()): ?>
+        <?php Style::applyRegistry(); ?>
+    <?php endif; ?>
     <style type="text/css">
         *{margin:0;padding:0}
         body{font-family:"Times New Roman",Bodoni,Garamond,"Minion Web","ITC Stone Serif","MS Georgia","Bitstream Cyberbit",serif;overflow:auto;height:100%;text-align:center;line-height:1;color:#555;background:#eee;text-shadow:0 0 5px rgba(0,0,0,0.2);font-size:16px;margin-top:50px}
