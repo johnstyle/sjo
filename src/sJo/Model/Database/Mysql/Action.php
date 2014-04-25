@@ -6,14 +6,16 @@ trait Action
 {
     public function __construct()
     {
-        if($this->getPrimaryValue() !== null) {
+        if(null !== $this->getPrimaryValue()) {
 
             $result = static::db()->result(array(
                 $this->getPrimaryKey() => $this->getPrimaryValue()
             ));
 
             if($result) {
+
                 foreach($result as $key => $value) {
+
                     $this->{$key} = $value;
                 }
             }
@@ -23,6 +25,7 @@ trait Action
     protected function delete()
     {
         if($this->getPrimaryValue()) {
+
             return static::db()->delete(array(
                 $this->getPrimaryKey() => $this->getPrimaryValue()
             ));
@@ -34,14 +37,18 @@ trait Action
     protected function save()
     {
         $where = null;
+
         if($this->getPrimaryValue()) {
+
             $where = array(
                 $this->getPrimaryKey() => $this->getPrimaryValue()
             );
         }
 
         $db = static::db()->update((array) $this->getProperties(), $where);
+
         if ($db->lastinsertid()) {
+
             $this->setPrimaryValue($db->lastinsertid());
         }
 
