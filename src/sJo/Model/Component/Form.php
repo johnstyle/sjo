@@ -282,14 +282,9 @@ trait Form
      */
     public function assignFormValues ()
     {
-        $mapFields = $this->getTableColumnsName();
-
         foreach (Request::env('POST')->getArray() as $name => $value) {
 
-            if (in_array($name, $mapFields)) {
-
-                $this->{$name} = $value;
-            }
+            $this->setTableColumnsValue($name, $value);
         }
     }
 

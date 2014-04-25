@@ -2,6 +2,7 @@
 
 namespace sJo\Model\Database;
 
+use sJo\Data\Type;
 use sJo\Libraries\Arr;
 use sJo\Request\Request;
 
@@ -86,5 +87,32 @@ trait Map
     public function getTableColumnsName ()
     {
         return array_keys($this->__map['columns']);
+    }
+
+    public function setTableColumnsValue ($name, $value = null)
+    {
+        if (in_array($name, $this->getTableColumnsName())) {
+
+            $attr = $this->__map['columns'][$name];
+
+            if (is_null($value)
+                || '' === $value) {
+
+                $default = $attr['default'];
+
+                if (preg_match("#^:([[:alnum:]]+)$#", $default, $match)) {
+
+                    $default = $this->{$match[1]};
+                }
+
+                $value = $default;
+
+            } else {
+
+                $value = Type::set($attr['type'], $this->{$name}, $attr['length']);
+            }
+
+            $this->{$name} = $value;
+        }
     }
 }
