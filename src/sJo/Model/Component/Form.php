@@ -14,6 +14,7 @@
 
 namespace sJo\Model\Component;
 
+use sJo\Data\Validate;
 use sJo\Http\Http;
 use sJo\Libraries\Arr;
 use sJo\Libraries\I18n;
@@ -47,6 +48,30 @@ trait Form
         $this->updateForm();
 
         return $this;
+    }
+
+    /**
+     * @param array $fields
+     * @param array $form
+     *
+     * @return $this
+     */
+    public function setFormDefinition (array $fields, array $form = array())
+    {
+        foreach ($this->__form['fields'] as $name=>$attr) {
+            if (!in_array($name, $fields)) {
+                unset($this->__form['fields'][$name]);
+            }
+        }
+
+        $this->__form = Arr::extend($this->__form, $form);
+
+        return $this;
+    }
+
+    public function getFormDefinition ()
+    {
+        return $this->__form;
     }
 
     /**
@@ -157,8 +182,7 @@ trait Form
                     $success &= $this->saveForm();
                 }
 
-                if($success
-                    && $displayAlert){
+                if($success && $displayAlert){
 
                     Alert::set($this->__form['i18n']['actions']['saved'], 'success');
                 }
@@ -189,8 +213,7 @@ trait Form
 
                 $success = $this->delete();
 
-                if($success
-                    && $displayAlert){
+                if($success && $displayAlert){
 
                     Alert::set($this->__form['i18n']['actions']['deleted'], 'success');
                 }
@@ -241,7 +264,7 @@ trait Form
     public function isSubmitedForm ($type = 'POST')
     {
         return Request::env($type)->exists()
-        && Token::has($type);
+            && Token::has($type);
     }
 
     /**
@@ -271,6 +294,14 @@ trait Form
     }
 
     /**
+     * @return array
+     */
+    public function getFormFields ()
+    {
+        return $this->__form['fields'];
+    }
+
+    /**
      * @param      $name
      * @param null $key
      *
@@ -292,5 +323,38 @@ trait Form
         }
 
         return null;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function validateForm ()
+    {
+        foreach ($this->getFormFields() as $name => $attr) {
+
+            // Get field label
+            $label = $this->getFieldLabel($name);
+
+            if (isset($attr['validate'])) {
+
+                if (Validate::isCallable($attr['validate'])) {
+
+                    call_user_func($attr['validate'], $attr, $name, $label);
+
+                } elseif (preg_match("#^:([[:alnum:]]+)$#", $attr['validate'], $match)) {
+
+                    if (Request::env('POST')->{$name}->val() !== Request::env('POST')->{$match[1]}->val()) {
+
+                        $this->setError($name, I18n::__(
+                            'The field %s must be identical to %s.',
+                            '<strong>' . $label . '</strong>',
+                            '<strong>' . $this->getFieldLabel($match[1]) . '</strong>'
+                        ));
+                    }
+                }
+            }
+        }
+
+        return !$this->hasErrors();
     }
 }
