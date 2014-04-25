@@ -4,6 +4,7 @@ namespace sJo\Module\ErrorDocument\Controller;
 
 use sJo\Controller\Controller;
 use sJo\Libraries as Libs;
+use sJo\Loader\Logger;
 
 class http403 extends Controller
 {
@@ -17,7 +18,7 @@ class http403 extends Controller
             $this->message = Libs\I18n::__('From htaccess');
         }
 
-        $this->Logger->error('Error 403: {message}', array(
+        Logger::getInstance()->error('Error 403: {message}', array(
             'message' => $this->message
         ));
     }

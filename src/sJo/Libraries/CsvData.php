@@ -12,6 +12,8 @@
 
 namespace sJo\Libraries;
 
+use sJo\Libraries as Lib;
+
 class CsvData extends Csv
 {
     private $update;
@@ -87,7 +89,7 @@ class CsvData extends Csv
                     }
                 }
                 if($match) {
-                    $line = (object) array_merge((array) $line, $data);
+                    $line = Lib\Obj::extend($line, $data);
                     $this->update = true;
                 }
             }

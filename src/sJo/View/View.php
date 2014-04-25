@@ -14,7 +14,9 @@
 
 namespace sJo\View;
 
-use sJo\Core\Router;
+use sJo\Controller\Controller;
+use sJo\Object\Closure;
+use sJo\Loader\Router;
 
 /**
  * Gestion des Vues
@@ -25,40 +27,20 @@ use sJo\Core\Router;
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/sjo.git
  */
-final class View
+final class View extends Closure
 {
-    /**
-     * Model references
-     *
-     * @var \sJo\Controller\Controller
-     */
-    public static $Controller;
-
-    /**
-     * Core references
-     *
-     * @var object
-     */
-    public static $Core;
-
-    /**
-     * Logger references
-     *
-     * @var \sJo\Core\Logger
-     */
-    public static $Logger;
+    /** @var Controller Controller references */
+    public $controller;
 
     /**
      * Constructor
      *
-     * @param $instance
+     * @param Controller $controller Controller references
      * @return \sJo\View\View
      */
-    public function __construct(&$instance)
+    public function __construct(Controller &$controller)
     {
-        self::$Controller =& $instance;
-        self::$Core =& $instance->Core;
-        self::$Logger =& $instance->Logger;
+        $this->controller = $controller;
     }
 
     /**
@@ -66,9 +48,9 @@ final class View
      *
      * @return void
      */
-    public static function header()
+    public function header()
     {
-        self::inc('header');
+        $this->inc('header');
     }
 
     /**
@@ -76,73 +58,58 @@ final class View
      *
      * @return void
      */
-    public static function footer()
+    public function footer()
     {
-        self::inc('footer');
+        $this->inc('footer');
     }
 
-
-    public static function display()
+    public function method()
     {
-        require Router::$viewFile;
+        return $this->inc(dirname(Router::$viewFile) . '/' . basename(Router::$viewFile, '.php') . '/' . Router::$method . '.php');
     }
 
     /**
-     * Inclusion d'un fichier du template
+     * Affichage de la vue courante
      *
-     * @param $filename
-     * @param array $vars
+     * @param $render
+     *
      * @return void
      */
-    public static function inc($filename, array $vars = null)
+    public function display($render)
     {
-        $file = Router::$viewRoot . '/' . $filename . '.php';
+        if (file_exists(Router::$viewFile)) {
 
-        if (file_exists($file)) {
-            if($vars) {
-                foreach($vars as $var=>$value) {
-                    global $$var;
-                    $$var = $value;
-                }
+            $this->inc(Router::$viewFile);
+
+        } else {
+
+            $this->header();
+
+            if(!$this->method()
+                && !is_null($render)
+                && method_exists($render, 'render')) {
+
+                $render->render();
             }
 
-            require $file;
-
-            if($vars) {
-                foreach($vars as $var=>$value) {
-                    unset($$var);
-                }
-            }            
+            $this->footer();
         }
     }
 
-    public static function htmlClasses()
+    /**
+     * Inclusion d'une vue
+     *
+     * @param string $filename Nom du fichier
+     * @param array $vars Variables spécifiques à la vue
+     * @return bool
+     */
+    public function inc($filename, array $vars = null)
     {
-        $classes =  'c-' . str_replace('/', '-', strtolower(Router::$controller));
-        if(Router::$module) {
-            $classes .=  ' m-' . strtolower(Router::$module);
-        }
-        echo $classes;
-    }
+        if (!strstr($filename, '.php')) {
 
-    public static function htmlStylesheet($root = './')
-    {
-        $filename = str_replace('\\', '/', strtolower(Router::$controller)) . '.css';
-        if(file_exists(SJO_ROOT_PUBLIC_HTML . '/css/' . $filename)) {
-            echo '<link href="' . $root . 'css/' . $filename . '" rel="stylesheet" media="screen" />';
+            $filename = Router::$viewRoot . '/' . $filename . '.php';
         }
-    }
 
-    public static function htmlScript($root = './')
-    {
-        $filename = str_replace('\\', '/', strtolower(Router::$controller)) . '.js';
-        if(file_exists(SJO_ROOT_PUBLIC_HTML . '/js/' . $filename)) {
-            echo '<script type="text/javascript" src="' . $root . 'js/' . $filename . '"></script>';
-        }
+        return parent::inc($filename, $vars);
     }
-
-    public static function basehref()
-    {
-        return SJO_BASEHREF;
-    }    
 }
