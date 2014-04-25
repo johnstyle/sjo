@@ -3,6 +3,7 @@
 namespace sJo\Model\Database;
 
 use sJo\Libraries\Arr;
+use sJo\Request\Request;
 
 trait Map
 {
@@ -16,11 +17,15 @@ trait Map
     public function __construct ()
     {
         foreach ($this->__map['columns'] as &$column) {
+
             $column = Arr::extend(array(
+                'primary' => null,
                 'type' => null,
                 'length' => null,
                 'required' => null,
                 'values' => null,
+                'default' => null,
+                'unique' => null
             ), $column);
         }
     }
@@ -35,12 +40,21 @@ trait Map
         return $this->{$this->getPrimaryKey()};
     }
 
+    public static function getPrimaryRequest ($type = 'GET')
+    {
+        return Request::env($type)->{static::getInstance()->getPrimaryKey()}->val();
+    }
+
     public function getPrimaryKey ()
     {
         if (!$this->primaryKey) {
+
             if(isset($this->__map['columns'])) {
+
                 foreach($this->__map['columns'] as $key=>$map) {
-                    if(isset($map['primary']) && $map['primary'] === true) {
+
+                    if(true === $map['primary']) {
+
                         $this->primaryKey = $key;
                         break;
                     }
@@ -54,7 +68,9 @@ trait Map
     public function getTableName ()
     {
         if (!$this->tableName) {
+
             if(isset($this->__map['table'])) {
+
                 $this->tableName = $this->__map['table'];
             }
         }
