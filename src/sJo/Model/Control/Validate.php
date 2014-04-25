@@ -11,30 +11,20 @@ trait Validate
      *
      * @return bool
      */
-    public function validate ()
+    protected function validate ()
     {
         foreach ($this->getTableColumns() as $name => $attr) {
 
             // Get field label
-            $label = null;
-
-            if (method_exists($this, 'getFormFieldDefinition')) {
-
-                $label = $this->getFormFieldDefinition($name, 'label');
-            }
-
-            if (is_null($label)) {
-
-                $label = $name;
-            }
+            $label = $this->getFieldLabel($name);
 
             if (is_null($this->{$name})
-                && '' === $this->{$name}) {
+                || '' === $this->{$name}) {
 
                 // Check required
-                if(isset($attr['required'])) {
+                if(true === $attr['required']) {
 
-                    if(isset($attr['default'])) {
+                    if(null !== $attr['default']) {
 
                         $this->{$name} = $attr['default'];
 
@@ -43,8 +33,10 @@ trait Validate
                         $this->setError($name, I18n::__('The field %s is required.', '<strong>' . $label . '</strong>'));
                     }
                 }
+            }
 
-            } else {
+            if (!is_null($this->{$name})
+                && '' !== $this->{$name}) {
 
                 // Check length
                 if (!\sJo\Data\Validate::is($attr['type'], $this->{$name}, $attr['length'], $attr['values'])) {
@@ -58,8 +50,7 @@ trait Validate
                 }
 
                 // Check unique
-                if(isset($attr['unique'])
-                    && true === $attr['unique']) {
+                if(true === $attr['unique']) {
 
                     $exists = $this->db()->value($this->getPrimaryKey(), array(
                         $this->getPrimaryKey() => array(
