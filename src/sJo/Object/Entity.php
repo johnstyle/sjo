@@ -11,22 +11,22 @@ trait Entity
 {
     public function __get($name)
     {
-        if($this->__isset($name)) {
-            return $this->{$name};
-        } else {
+        if(!$this->__isset($name)) {
+
             Exception::error(I18n::__('Property %s->%s does not exist.', get_called_class(), $name));
         }
 
-        return false;
+        return $this->{$name};
     }
 
     public function __set($name, $value)
     {
-        if($this->__isset($name)) {
-            $this->{$name} = $value;
-        } else {
+        if(!$this->__isset($name)) {
+
             Exception::error(I18n::__('Property %s->%s does not exist.', get_called_class(), $name));
         }
+
+        $this->{$name} = $value;
 
         return $this;
     }
@@ -41,28 +41,34 @@ trait Entity
 
     public function __unset($name)
     {
-        if($this->__isset($name)) {
-            unset($this->{$name});
-        } else {
+        if(!$this->__isset($name)) {
+
             Exception::error(I18n::__('Property %s->%s does not exist.', get_called_class(), $name));
         }
+
+        unset($this->{$name});
     }
 
     public function getProperties()
     {
         $properties = new \stdClass();
         $class = new \ReflectionClass($this);
+
         foreach($class->getProperties() as $property) {
+
             if(!preg_match("#^__#", $property->name)) {
+
                 $properties->{$property->name} = $this->{$property->name};
             }
         }
+
         return $properties ? $properties : null;
     }
 
     public function request($name)
     {
         if (Request::env('POST')->{$name}->exists()) {
+
             return Request::env('POST')->{$name}->val();
         }
 
