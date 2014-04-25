@@ -6,16 +6,16 @@ use sJo\Loader\Alert;
 
 trait Error
 {
-    private $__errors = array();
+    protected $__errors = array();
 
-    private function setError ($name, $message)
+    protected function setError ($name, $message)
     {
         array_push($this->__errors, $name);
 
         Alert::set($message);
     }
 
-    private function hasErrors ()
+    protected function hasErrors ()
     {
         return (bool) (count($this->__errors)
             && !empty($this->__errors));
