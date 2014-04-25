@@ -27,6 +27,7 @@ class Tree
     public function __get($name)
     {
         if (!isset($this->item[$name])) {
+
             $this->item[$name] = null;
         }
 
@@ -49,6 +50,7 @@ class Tree
     public function __unset($name)
     {
         if ($this->__isset($name)) {
+
             unset($this->item[$name]);
         }
     }
@@ -66,26 +68,30 @@ class Tree
     public function exists ()
     {
         if(isset($this->item)) {
+
             if (is_array($this->item)) {
+
                 return count($this->item) ? true : false;
             }
+
             return true;
         }
 
         return false;
     }
 
-    public function val ($default = false, $empty = false)
+    public function val ($default = null, $empty = false)
     {
-        if ($this->item !== null
-            && (!$empty || ($empty && !empty($this->item)))) {
+        if (null !== $this->item
+            && (false === $empty || (true === $empty && !empty($this->item)))) {
+
             return $this->item;
         }
 
         return $default;
     }
 
-    public function value ($default = false, $empty = false)
+    public function value ($default = null, $empty = false)
     {
         return $this->val($default, $empty);
     }
@@ -98,6 +104,7 @@ class Tree
     public function destroy ()
     {
         $this->item = null;
+
         unset($this->item);
     }
 }
