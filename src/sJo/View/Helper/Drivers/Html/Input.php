@@ -18,4 +18,16 @@ class Input extends Dom
             'value'       => null,
         )
     );
+
+    protected function setElement($element)
+    {
+        switch ($element['attributes']['type']) {
+
+            case 'password':
+                $element['attributes']['value'] = null;
+                break;
+        }
+
+        return parent::setElement($element);
+    }
 }
