@@ -11,7 +11,6 @@ abstract class Model implements DatabaseInterface
 {
     use Singleton;
     use Entity;
-    use Control\Format;
     use Control\Error;
     use Control\Validate {
         Control\Validate::validate as private validateControl;
