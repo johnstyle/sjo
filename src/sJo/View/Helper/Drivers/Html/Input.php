@@ -6,10 +6,9 @@ use sJo\View\Helper\Dom;
 
 class Input extends Dom
 {
-    const TYPE = 'element';
-
     protected static $element = array(
         'tagname' => 'input',
+        'options' => null,
         'attributes' => array(
             'type'        => 'text',
             'placeholder' => null,
