@@ -150,4 +150,12 @@ abstract class Arr
             array_multisort($tmp, $order, $array);
         }
     }
+
+    /**
+     * Tri un tableau
+     */
+    public static function md5 ($array)
+    {
+        return md5(serialize($array));
+    }
 }
