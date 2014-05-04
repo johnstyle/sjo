@@ -155,9 +155,12 @@ class Router
             . ($params ? '/?' . $params : '');
     }
 
-    public static function getToken($method = null)
+    public static function getToken($method = null, $form = null)
     {
         $method = $method ? $method : self::$method;
-        return self::$controller . ($method ? self::$__map['method']['separator'] . $method : '');
+
+        return self::$controller
+            . ($method ? self::$__map['method']['separator'] . $method : '')
+            . ($form ? '(' . $form . ')' : '');
     }
 }

@@ -38,13 +38,17 @@ trait Form
 {
     /** @var   */
     protected $__form;
+    protected $__formHash;
 
     /**
+     * @param array $fields
+     * @param array $form
+     *
      * @return $this
      */
-    public function quickForm ()
+    public function quickForm (array $fields = null, array $form = array())
     {
-        $this->createForm();
+        $this->createForm($fields, $form);
         $this->updateForm();
 
         return $this;
@@ -56,15 +60,39 @@ trait Form
      *
      * @return $this
      */
-    public function setFormDefinition (array $fields, array $form = array())
+    public function setFormDefinition (array $fields = null, array $form = array())
     {
-        foreach ($this->__form['fields'] as $name=>$attr) {
-            if (!in_array($name, $fields)) {
-                unset($this->__form['fields'][$name]);
+        if ($fields) {
+
+            $includeFields = array();
+            $excludeFields = array();
+
+            foreach ($fields as $field) {
+
+                if (preg_match("#^!(.+)$#", $field, $match)) {
+
+                    array_push($excludeFields, $match[1]);
+
+                } else {
+
+                    array_push($includeFields, $field);
+                }
+            }
+
+            foreach ($this->__form['fields'] as $name=>$attr) {
+
+                if (in_array($name, $excludeFields)
+                    || (count($includeFields) && !in_array($name, $includeFields))) {
+
+                    unset($this->__form['fields'][$name]);
+                }
             }
         }
 
-        $this->__form = Arr::extend($this->__form, $form);
+        if (count($form)) {
+
+            $this->__form = Arr::extend($this->__form, $form);
+        }
 
         return $this;
     }
@@ -75,10 +103,24 @@ trait Form
     }
 
     /**
+     * @param array $fields
+     * @param array $form
+     *
      * @return $this
      */
-    public function createForm ()
+    public function createForm (array $fields = null, array $form = array())
     {
+        $this->setFormDefinition($fields, $form);
+
+        if (isset($this->__form['i18n']['header'])
+            && !is_array($this->__form['i18n']['header'])) {
+
+            $this->__form['i18n']['header'] = array(
+                'create' => $this->__form['i18n']['header'],
+                'edit' => $this->__form['i18n']['header']
+            );
+        }
+
         $this->__form = Arr::extend(array(
             'grid' => null,
             'useAlert' => true,
@@ -106,6 +148,8 @@ trait Form
             )
         ), $this->__form);
 
+        $this->__formHash = Arr::md5($this->__form);
+
         return $this;
     }
 
@@ -115,12 +159,14 @@ trait Form
     public function render ()
     {
         $fields = array(
-            Html\Token::create(Router::getToken())
+            Html\Token::create(Router::getToken(null, $this->__formHash))
         );
 
         if (true === $this->__form['useAlert']) {
 
-            $fields[] = Bootstrap\Alert::create();
+            $fields[] = Bootstrap\Alert::create(array(
+                'formHash' => $this->__formHash
+            ));
         }
 
         if ($this->__form['fields']) {
@@ -184,7 +230,9 @@ trait Form
 
                 if($success && $displayAlert){
 
-                    Alert::set($this->__form['i18n']['actions']['saved'], 'success');
+                    echo $this->__formHash;exit;
+
+                    Alert::set($this->__form['i18n']['actions']['saved'], 'success', $this->__formHash);
                 }
 
                 if ($redirect) {
@@ -215,7 +263,7 @@ trait Form
 
                 if($success && $displayAlert){
 
-                    Alert::set($this->__form['i18n']['actions']['deleted'], 'success');
+                    Alert::set($this->__form['i18n']['actions']['deleted'], 'success', $this->__formHash);
                 }
             }
 
@@ -280,9 +328,9 @@ trait Form
     /**
      * @return bool
      */
-    public function assignFormValues ()
+    public function assignFormValues ($type = 'POST')
     {
-        foreach (Request::env('POST')->getArray() as $name => $value) {
+        foreach (Request::env($type)->getArray() as $name => $value) {
 
             $this->setTableColumnsValue($name, $value);
         }

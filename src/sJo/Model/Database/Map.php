@@ -109,7 +109,7 @@ trait Map
 
             } else {
 
-                $value = Type::set($attr['type'], $this->{$name}, $attr['length']);
+                $value = Type::set($attr['type'], $value, $attr['length']);
             }
 
             $this->{$name} = $value;

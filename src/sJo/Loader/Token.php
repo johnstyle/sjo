@@ -42,7 +42,7 @@ class Token
 
     public static function has($type = 'REQUEST')
     {
-        if (Request::env($type)->token->eq(self::get(Router::getToken()))) {
+        if (Request::env($type)->token->eq(self::get(Router::getToken(null, Request::env($type)->form->val())))) {
 
             return true;
         }

@@ -69,7 +69,7 @@ abstract class Dom
         $this->setElements();
     }
 
-    protected function setElements()
+    private function setElements()
     {
         if (!$this->elements
             && $this->wrapper

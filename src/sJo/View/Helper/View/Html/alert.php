@@ -2,8 +2,8 @@
 
 use sJo\Loader\Alert;
 
-if(Alert::exists()): ?>
-    <?php foreach (Alert::get() as $type => $alerts): ?>
+if(Alert::exists($this->formHash)): ?>
+    <?php foreach (Alert::get($this->formHash) as $type => $alerts): ?>
         <div class="alert alert-<?php echo $type; ?> clearfix" data-dismiss="alert">
             <?php
                 switch($type) {

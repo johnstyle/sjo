@@ -37,39 +37,52 @@ class Alert
         Session::start();
 
         if (Request::env('SESSION')->alerts->exists()) {
-            self::$alerts = json_decode(Request::env('SESSION')->alerts->val(), true);
+
+            self::$alerts = Request::env('SESSION')->alerts->val();
         }
+        echo 'SESSION:';print_r(Request::env('SESSION')->alerts->val());
     }
 
     public function __destruct()
     {
         if(self::$alerts) {
-            Request::env('SESSION')->alerts = json_encode(self::$alerts);
+
+            Request::env('SESSION')->alerts = self::$alerts;
+
         } else {
+
             unset(Request::env('SESSION')->alerts);
         }
     }
 
-    public static function get()
+    public static function get($id = null)
     {
-        $alert = self::$alerts;
-        unset(Request::env('SESSION')->alerts);
-        self::$alerts = null;
+        $alert = null;
+
+        if (self::exists($id)) {
+
+            $alert = self::$alerts[$id];
+            unset(Request::env('SESSION')->alerts->{$id});
+            unset(self::$alerts[$id]);
+        }
+
         return $alert;
     }
 
-    public static function set($message, $type = 'danger')
+    public static function set($message, $type = 'danger', $id = null)
     {
-        self::$alerts[$type][] = $message;
+        self::$alerts[$id][$type][] = $message;
 
         return true;
     }
 
-    public static function exists()
+    public static function exists($id = null)
     {
-        if (self::$alerts) {
+        if (isset(self::$alerts[$id])) {
+
             return true;
         }
+
         return false;
     }
 }

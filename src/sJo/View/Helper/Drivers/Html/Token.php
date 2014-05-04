@@ -20,12 +20,14 @@ class Token extends Dom
         $token = isset($element[$this->wrapper][0]) ? $element[$this->wrapper][0] : null;
         $controller = null;
         $method = null;
+        $form = null;
 
         if($token) {
 
-            if(preg_match("#^([a-z]+(\\\\([a-z]+))?)(" . Router::$__map['method']['separator'] . "([a-z]+))?$#i", $token, $match)) {
+            if(preg_match("#^([a-z]+(?:\\\\([a-z]+))?)(?:" . Router::$__map['method']['separator'] . "([a-z]+))?(?:\(([a-f0-9]{32})\))?$#i", $token, $match)) {
                 $controller = $match[1];
-                $method = $match[5];
+                $method = $match[3];
+                $form = $match[4];
             }
 
             $token = Loader\Token::get($token);
@@ -50,6 +52,12 @@ class Token extends Dom
                     'value' => $method
                 )
             ))),
+            self::createStatic('Input', Lib\Arr::extend(self::$element, array(
+                'attributes' => array(
+                    'name' => 'form',
+                    'value' => $form
+                )
+            )))
         );
 
         return $element;

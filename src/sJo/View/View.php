@@ -87,9 +87,20 @@ final class View extends Closure
 
             if(!$this->method()
                 && !is_null($render)
-                && method_exists($render, 'render')) {
+                && (method_exists($render, 'render') || is_array($render))) {
 
-                $render->render();
+                if (is_array($render)) {
+
+                    foreach ($render as $rd) {
+
+                        $rd->render();
+                    }
+
+                } else {
+
+                    $render->render();
+                }
+
             }
 
             $this->footer();

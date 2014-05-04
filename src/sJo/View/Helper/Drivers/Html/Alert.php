@@ -6,4 +6,18 @@ use sJo\View\Helper\Dom;
 
 class Alert extends Dom
 {
+    protected static $element = array(
+        'formHash' => null
+    );
+
+    protected function setElement ($element)
+    {
+        // @todo Améliorer cette partie
+        if (isset($element['elements']['formHash'])) {
+
+            $element['formHash'] = $element['elements']['formHash'];
+        }
+
+        return $element;
+    }
 }
