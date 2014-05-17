@@ -8,6 +8,7 @@ class Image
 
     private $file;
     private $resource;
+    private $resample = array();
 
     public function __construct ($file)
     {
@@ -30,6 +31,11 @@ class Image
             throw new ImageException('Can not load ' . $file);
         }
 
+        if (mime_content_type($this->file) !== 'image/jpeg') {
+
+            throw new ImageException('Is not a valid format ' . $file);
+        }
+
         $this->resource = imagecreatefromjpeg($this->file);
 
         $this->width = imagesx($this->resource);
@@ -40,7 +46,7 @@ class Image
 
         if (!is_resource($this->resource)) {
 
-            throw new ImageException('Is not a valid resource');
+            throw new ImageException('Is not a valid resource ' . $file);
         }
     }
 
@@ -51,17 +57,19 @@ class Image
 
     public function resample ()
     {
-        $src = $this->resource;
+        if ($this->width > self::RESAMPLE_WIDTH) {
 
-        if ($this->width < self::RESAMPLE_WIDTH) {
+            $src = $this->resource;
 
-            return;
+            $resize = ImageMath::resize($this->width, $this->height, self::RESAMPLE_WIDTH);
+
+            $this->resource = imagecreatetruecolor($resize['width'], $resize['height']);
+            imagecopyresampled($this->resource, $src, 0, 0, 0, 0, $resize['width'], $resize['height'], $this->width, $this->height);
         }
 
-        $resize = ImageMath::resize($this->width, $this->height, self::RESAMPLE_WIDTH);
-
-        $this->resource = imagecreatetruecolor($resize['width'], $resize['height']);
-        imagecopyresampled($this->resource, $src, 0, 0, 0, 0, $resize['width'], $resize['height'], $this->width, $this->height);
+        $this->resample['width'] = imagesx($this->resource);
+        $this->resample['height'] = imagesy($this->resource);
+        $this->resample['pixels'] = $this->resample['width'] * $this->resample['height'];
     }
 
     protected function getResource ()
@@ -69,9 +77,19 @@ class Image
         return $this->resource;
     }
 
+    protected function getResample ($name)
+    {
+        return isset($this->resample[$name]) ? $this->resample[$name] : null;
+    }
+
     protected function saveTo ($filename, $quality = 60)
     {
         imagejpeg($this->resource, $filename, $quality);
+    }
+
+    public function delete ()
+    {
+        unlink($this->file);
     }
 
     protected function pixelsIterator (callable $callback)
@@ -88,10 +106,10 @@ class Image
 
                 $y++;
 
-            } while($y < imagesy($this->resource));
+            } while($y < $this->getResample('height'));
 
             $x++;
 
-        } while($x < imagesx($this->resource));
+        } while($x < $this->getResample('width'));
     }
 }

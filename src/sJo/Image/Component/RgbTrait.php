@@ -3,14 +3,17 @@
 namespace sJo\Image\Component;
 
 use sJo\Image\ImageMath;
+use sJo\Libraries\Arr;
 
 trait RgbTrait
 {
+    protected $brightness;
+    protected $kmeans;
     protected $rgb = array(
         'pixels' => null,
         'colors' => null,
         'main' => null,
-        'primary' => null,
+        'primary' => null
     );
 
     protected function findRgbPixels ()
@@ -42,6 +45,40 @@ trait RgbTrait
         arsort($this->rgb['colors']);
     }
 
+
+    protected function findRgbKmeans ()
+    {
+        $filename = $this->getFile().'.small.jpg';
+        $this->saveTo($filename);
+
+        exec('python /var/www/local/imagesFinder/cron/kmeans.py ' . $filename, $response);
+
+        unlink($filename);
+
+        $colors = json_decode($response[0], true);
+
+        $kmeans = $colors[0];
+        $primary = $colors[1];
+
+        Arr::sort($kmeans, 3);
+
+        $data = array();
+        foreach($kmeans as $color) {
+
+            $data[] = (object) array(
+                'red' => $color[0],
+                'green' => $color[1],
+                'blue' => $color[2],
+                'percent' => round(($color[3] * 100) / $this->getResample('pixels'), 2),
+                'bins' => $color[4],
+                'dist' => $color[5]
+            );
+        }
+
+        $this->kmeans = $data;
+        $this->brightness = ImageMath::percent(ImageMath::brightness($primary[0], $primary[1], $primary[2]));
+    }
+
     protected function findRgbEnvironment ()
     {
         $r = 0;
@@ -71,9 +108,12 @@ trait RgbTrait
                 'red' => $r,
                 'green' => $g,
                 'blue' => $b
-            ),
-            'brightness' => ImageMath::percent(ImageMath::brightness($r, $g, $b))
+            )
         );
+
+        $this->brightness = ImageMath::percent(ImageMath::brightness($r, $g, $b));
+
+        echo '('.$i.')';
     }
 
     protected function findRgbMain ($percentlimit = 1)
@@ -92,11 +132,9 @@ trait RgbTrait
 
             arsort($this->rgb['main']);
 
-            $pixels = imagesx($this->getResource()) * imagesy($this->getResource());
-
             foreach ($this->rgb['main'] as $rgbStr=>&$percent) {
 
-                $percent = round(($percent * 100) / $pixels, 2);
+                $percent = round(($percent * 100) / $this->getResample('pixels'), 2);
 
                 if (!is_null($percentlimit)
                     && $percent < $percentlimit) {
@@ -234,17 +272,14 @@ trait RgbTrait
 
     protected function getRgbColor ($x, $y, $radius = 0)
     {
-        $width = imagesx($this->getResource());
-        $height = imagesy($this->getResource());
-
         $xStart = $x - $radius;
         if ($xStart < 0) {
             $xStart = 0;
         }
 
         $xEnd = $x + $radius;
-        if ($xEnd <= $width) {
-            $xEnd = $width - 1;
+        if ($xEnd <= $this->getResample('width')) {
+            $xEnd = $this->getResample('width') - 1;
         }
 
         $yStart = $y - $radius;
@@ -253,8 +288,8 @@ trait RgbTrait
         }
 
         $yEnd = $y + $radius;
-        if ($yEnd >= $height) {
-            $yEnd = $height - 1;
+        if ($yEnd >= $this->getResample('height')) {
+            $yEnd = $this->getResample('height') - 1;
         }
 
         $r = 0;

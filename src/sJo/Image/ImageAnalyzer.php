@@ -2,10 +2,13 @@
 
 namespace sJo\Image;
 
+use sJo\Object\Entity;
+
 class ImageAnalyzer extends Image
 {
     use Component\ExifTrait;
     use Component\RgbTrait;
+    use Entity;
 
     protected $hash;
     protected $width;
@@ -19,20 +22,13 @@ class ImageAnalyzer extends Image
     protected $software;
     protected $author;
     protected $datetime;
+    protected $source;
 
-    public function __get($name)
+    public function __construct ($file)
     {
-        return $this->{$name};
-    }
+        parent::__construct($file);
 
-    public function __set($name, $value)
-    {
-        if (!is_array($value)) {
-
-            $value = utf8_encode($value);
-        }
-
-        $this->{$name} = $value;
+        $this->hash = hash_file('sha256', $this->getFile());
     }
 
     public function setResolution($x = null, $y = null)
@@ -46,20 +42,17 @@ class ImageAnalyzer extends Image
 
     public function run ()
     {
-        $this->setHash();
+        echo '|setExif';
         $this->setExif();
         $this->setRgb();
     }
 
-    protected function setHash ()
-    {
-        $this->hash = hash_file('sha256', $this->getFile());
-    }
-
     protected function setRgb ()
     {
-        $this->findRgbMain();
-        $this->findRgbEnvironment();
+        //echo '|findRgbMain';
+        //$this->findRgbMain();
+        echo '|findRgbKmeans';
+        $this->findRgbKmeans();
     }
 
     protected function setExif ()
