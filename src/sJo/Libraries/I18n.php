@@ -42,7 +42,10 @@ class I18n
     
     public function __construct()
     {
-        defined('SJO_LOCALE') OR define('SJO_LOCALE', SJO_DEFAULT_LOCALE);
+        if(!defined('SJO_LOCALE')) {
+
+            define('SJO_LOCALE', SJO_DEFAULT_LOCALE);
+        }
 
         $language = SJO_LOCALE . '.' . SJO_CHARSET;
 
