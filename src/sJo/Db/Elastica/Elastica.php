@@ -14,6 +14,7 @@
 
 namespace sJo\Db\Elastica;
 
+use Elastica\Client;
 use sJo\Libraries as Lib;
 use sJo\Object\Singleton;
 
@@ -27,7 +28,17 @@ use sJo\Object\Singleton;
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     https://github.com/johnstyle/sjo.git
  */
-abstract class Elastica extends \Elastica
+class Elastica
 {
+    private $resource;
 
+    public function __construct (array $config = array(), $callback = null)
+    {
+        $this->resource = new Client($config, $callback);
+    }
+
+    public function getIndex ($name)
+    {
+        return $this->resource->getIndex($name);
+    }
 }
