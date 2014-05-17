@@ -31,7 +31,7 @@ class Script extends Dom
         }
 
         foreach ($registered['elements'] as &$el) {
-            $el = self::createStatic('Element', Lib\Arr::extend(self::$element, array(
+            $el = self::createStatic('Container', Lib\Arr::extend(self::$element, array(
                 'tagname' => 'script',
                 'attributes' => array(
                     'src' => $el
