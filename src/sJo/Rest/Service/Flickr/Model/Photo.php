@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Rest\Service\Flickr;
+namespace sJo\Rest\Service\Flickr\Model;
 
 use sJo\Object\Assign;
 use sJo\Object\Entity;
