@@ -49,14 +49,15 @@ trait Entity
         unset($this->{$name});
     }
 
-    public function getProperties()
+    public function getProperties(array $excludes = array())
     {
         $properties = new \stdClass();
         $class = new \ReflectionClass($this);
 
         foreach($class->getProperties() as $property) {
 
-            if(!preg_match("#^__#", $property->name)) {
+            if(!preg_match("#^__#", $property->name)
+                && !in_array($property->name, $excludes)) {
 
                 $properties->{$property->name} = $this->{$property->name};
             }

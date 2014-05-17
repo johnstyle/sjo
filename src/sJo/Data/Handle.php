@@ -13,4 +13,13 @@ abstract class Handle
     {
         return substr($var, 0, strpos($var, $pattern));
     }
+
+    public static function insertChar($str, $separator = '/', $length = 1, $position = 0)
+    {
+        return preg_replace(
+            '#([^' . $separator . ']{' . $length . '})#',
+            (0 === $position ? $separator : '') . '$1' . (1 === $position ? $separator : ''),
+            $str
+        );
+    }
 }
