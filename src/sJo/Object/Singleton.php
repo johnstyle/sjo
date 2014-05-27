@@ -9,6 +9,7 @@ trait Singleton
     public static function getInstance($args = null, $hash = null)
     {
         if (!$hash) {
+
             $hash = get_called_class();
         }
 

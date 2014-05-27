@@ -14,6 +14,7 @@
 
 namespace sJo\Loader;
 
+use sJo\Controller\Controller;
 use sJo\Exception\Exception;
 use sJo\Model\Component\Event;
 use sJo\Libraries as Lib;
@@ -42,6 +43,7 @@ class Loader
     private $alert;
     private $router;
     private $module;
+    private $instance;
 
     /**
      * Constructeur
@@ -100,7 +102,7 @@ class Loader
 
                 $this->event('initController');
 
-                if (get_parent_class($this->instance) == 'sJo\\Controller\\Controller') {
+                if ($this->instance instanceof Controller) {
 
                     $this->event('preloadView');
 

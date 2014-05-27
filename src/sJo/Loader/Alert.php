@@ -40,7 +40,6 @@ class Alert
 
             self::$alerts = Request::env('SESSION')->alerts->val();
         }
-        echo 'SESSION:';print_r(Request::env('SESSION')->alerts->val());
     }
 
     public function __destruct()
