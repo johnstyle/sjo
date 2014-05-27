@@ -12,7 +12,6 @@ class Alert extends Dom
 
     protected function setElement ($element)
     {
-        // @todo Améliorer cette partie
         if (isset($element['elements']['formHash'])) {
 
             $element['formHash'] = $element['elements']['formHash'];

@@ -2,7 +2,6 @@
 
 namespace sJo\Module\Admin;
 
-use sJo\Controller\Component\Component;
 use sJo\Module\Dependencies;
 
 class Loader
