@@ -98,7 +98,7 @@ class I18n
             switch ($match[1]) {
                 case '__':
                 case '_e':
-                    $text = self::_replace(gettext($args[0]), $args, 1);
+                    $text = self::replace(gettext($args[0]), $args, 1);
                     if($match[1] == '_e') {
                         echo $text;
 
@@ -107,7 +107,7 @@ class I18n
                     }
                     break;
                 case '_n':
-                    return self::_replace(ngettext($args[0], $args[1], $args[2]), $args, 3);
+                    return self::replace(ngettext($args[0], $args[1], $args[2]), $args, 3);
                     break;
             }
         }
@@ -161,7 +161,7 @@ class I18n
         return $languages;
     }
 
-    private static function _replace($message, $args, $start = 0)
+    private static function replace($message, $args, $start = 0)
     {
         $message = nl2br($message);
         if (count($args) === $start) {

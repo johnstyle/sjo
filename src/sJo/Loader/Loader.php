@@ -111,13 +111,13 @@ class Loader
                     $this->event('initView');
 
                 } else {
-                    $this->errorDocument('http403', Lib\I18n::__('Controller %s is not extended to %s.', Router::$controllerClass, '\\sJo\\Controller'));
+                    $this->errorDocument('Http403', Lib\I18n::__('Controller %s is not extended to %s.', Router::$controllerClass, '\\sJo\\Controller'));
                 }
             } else {
-                $this->errorDocument('http404', Lib\I18n::__('Controller %s do not exists.', Router::$controllerClass));
+                $this->errorDocument('Http404', Lib\I18n::__('Controller %s do not exists.', Router::$controllerClass));
             }
         } else {
-            $this->errorDocument('http404', Lib\I18n::__('CONTROLLER is undefined.'));
+            $this->errorDocument('Http404', Lib\I18n::__('CONTROLLER is undefined.'));
         }
 
         return $this;
@@ -137,7 +137,7 @@ class Loader
                         if (Token::has()) {
                             echo json_encode($this->instance->{Router::$method}());
                         } else {
-                            $this->errorDocument('http403', Lib\I18n::__('Warning ! Prohibited queries.'));
+                            $this->errorDocument('Http403', Lib\I18n::__('Warning ! Prohibited queries.'));
                         }
                     }
                     exit;
@@ -150,7 +150,7 @@ class Loader
                             if (Token::has()) {
                                 $render = $this->instance->{Router::$method}();
                             } else {
-                                $this->errorDocument('http403', Lib\I18n::__('Warning ! Prohibited queries.'));
+                                $this->errorDocument('Http403', Lib\I18n::__('Warning ! Prohibited queries.'));
                             }
                         } else {
                             $render = $this->instance->{Router::$method}();
