@@ -10,11 +10,12 @@ class Input extends Dom
         'tagname' => 'input',
         'options' => null,
         'attributes' => array(
-            'type'        => 'text',
-            'placeholder' => null,
-            'autofocus'   => null,
-            'name'        => null,
-            'value'       => null,
+            'type'         => 'text',
+            'placeholder'  => null,
+            'autofocus'    => null,
+            'name'         => null,
+            'value'        => null,
+            'autocomplete' => null
         )
     );
 
@@ -24,6 +25,7 @@ class Input extends Dom
 
             case 'password':
                 $element['attributes']['value'] = null;
+                $element['attributes']['autocomplete'] = 'off';
                 break;
         }
 
