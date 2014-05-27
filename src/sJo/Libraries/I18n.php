@@ -16,6 +16,7 @@ namespace sJo\Libraries;
 
 use sJo\Exception\Exception;
 use sJo\File\Path;
+use sJo\Object\Trace;
 
 /**
  * Gestion du multilanguage
@@ -32,6 +33,8 @@ use sJo\File\Path;
  */
 class I18n
 {
+    use Trace;
+
     /**
      * Liste des répertoires de langue
      *
