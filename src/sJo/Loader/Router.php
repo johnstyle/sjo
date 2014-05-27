@@ -118,7 +118,7 @@ class Router
         }
     }
 
-    public static function ErrorDocument($controller)
+    public static function errorDocument($controller)
     {
         self::reset();
         self::$controller = 'ErrorDocument\\' . $controller;
