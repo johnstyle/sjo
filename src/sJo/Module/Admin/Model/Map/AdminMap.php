@@ -1,6 +1,6 @@
 <?php
 
-namespace sJo\Module\Admin\Model;
+namespace sJo\Module\Admin\Model\Map;
 
 use sJo\Model\MysqlObject;
 
