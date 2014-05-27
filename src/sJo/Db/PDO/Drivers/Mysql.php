@@ -15,6 +15,7 @@
 namespace sJo\Db\PDO\Drivers;
 
 use sJo\Db\PDO\PDOCore;
+use sJo\Db\PDO\PDOException;
 use sJo\Libraries as Lib;
 
 /**
@@ -42,14 +43,16 @@ class Mysql extends PDOCore
         ), $auth);
 
         try {
+
             parent::__construct(
                 'mysql:host=' . $auth['host'] . ';dbname=' . $auth['dbname'] . ';charset=' . $auth['charset'],
                 $auth['login'],
                 $auth['password']
             );
             $this->setAttribute(self::ATTR_ERRMODE, self::ERRMODE_EXCEPTION);
-        } catch (\PDOException $e) {
-            die('ERROR: ' . $e->getMessage());
+
+        } catch (PDOException $e) {
+
         }
     }
 }

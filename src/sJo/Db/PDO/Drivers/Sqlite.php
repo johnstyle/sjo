@@ -15,6 +15,7 @@
 namespace sJo\Db\PDO\Drivers;
 
 use sJo\Db\PDO\PDOCore;
+use sJo\Db\PDO\PDOException;
 
 /**
  * Base de données Sqlite
@@ -36,11 +37,13 @@ class Sqlite extends PDOCore
     public function __construct(array $auth)
     {
         try {
-            parent::__construct('sqlite:' . $auth[0]);
+
+            parent::__construct('sqlite:' . $auth['host']);
             $this->setAttribute(self::ATTR_DEFAULT_FETCH_MODE, self::FETCH_ASSOC);
             $this->setAttribute(self::ATTR_ERRMODE, self::ERRMODE_EXCEPTION);
-        } catch (\PDOException $e) {
-            die('ERROR: ' . $e->getMessage());
+
+        } catch (PDOException $e) {
+
         }
     }
 }

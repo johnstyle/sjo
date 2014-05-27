@@ -53,10 +53,21 @@ trait PDOQuery
     final public function value($key, array $where = null)
     {
         $queryWhere = self::setWhere($where);
+        $querySelect = self::setSelect($key);
 
-        $query = 'SELECT `' . $key . '` FROM `' . $this->table . '`' .  $queryWhere;
+        $query = $querySelect . ' FROM `' . $this->table . '`' .  $queryWhere;
 
         return $this->fetchColumn($query, $where);
+    }
+
+    final public static function setSelect($names)
+    {
+        if (!is_array($names)) {
+
+            $names = array($names);
+        }
+
+        return 'SELECT `' . implode('`, `', $names) . '`';
     }
 
     final public static function setWhere(array &$where = null)
