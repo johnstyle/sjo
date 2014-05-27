@@ -7,7 +7,7 @@ use sJo\Module\Dependencies;
 
 class Loader
 {
-    public function __construct(Component $component)
+    public function __construct()
     {
         Dependencies::check(array(
             'sJo\Db\PDO\Drivers\Mysql'

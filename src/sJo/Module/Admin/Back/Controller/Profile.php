@@ -5,7 +5,6 @@ namespace sJo\Module\Admin\Back\Controller;
 use sJo\Controller\Controller;
 use sJo\Libraries\I18n;
 use sJo\Module\Admin\Model\Admin;
-use sJo\View\Helper;
 
 class Profile extends Controller
 {

@@ -4,7 +4,7 @@ namespace sJo\Image;
 
 abstract class ImageMath
 {
-    public static function resize ($w, $h, $mw, $mh = null)
+    public static function resize ($w, $h, $mw)
     {
         $ratio = ($mw / $w);
 

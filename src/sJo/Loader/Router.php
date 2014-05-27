@@ -40,7 +40,7 @@ class Router
     public static $method;
     public static $module;
 
-    public function __construct(Loader $loader)
+    public function __construct()
     {
         /** Interface */
         self::loadInterface();

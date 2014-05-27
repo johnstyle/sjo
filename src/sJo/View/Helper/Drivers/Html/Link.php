@@ -2,9 +2,7 @@
 
 namespace sJo\View\Helper\Drivers\Html;
 
-use sJo\Loader;
 use sJo\View\Helper\Dom;
-use sJo\Libraries as Lib;
 
 class Link extends Dom
 {

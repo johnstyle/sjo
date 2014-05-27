@@ -15,8 +15,6 @@
 namespace sJo\Db\Elastica;
 
 use Elastica\Client;
-use sJo\Libraries as Lib;
-use sJo\Object\Singleton;
 
 /**
  * Base de données Drivers

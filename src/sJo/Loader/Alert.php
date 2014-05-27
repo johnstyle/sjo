@@ -14,8 +14,6 @@
 
 namespace sJo\Loader;
 
-use sJo\Object\Singleton;
-use sJo\Libraries as Lib;
 use sJo\Request\Request;
 use sJo\Request\Session;
 

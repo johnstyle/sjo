@@ -49,8 +49,6 @@ class ImageAnalyzer extends Image
 
     protected function setRgb ()
     {
-        //echo '|findRgbMain';
-        //$this->findRgbMain();
         echo '|findRgbKmeans';
         $this->findRgbKmeans();
     }

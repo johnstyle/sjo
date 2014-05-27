@@ -13,8 +13,10 @@ abstract class Request
     public static function __callStatic($method, $args = null)
     {
         switch($method) {
+
             case 'env':
-                return new Env($items = null, $args[0]);
+                $items = null;
+                return new Env($items, $args[0]);
                 break;
         }
     }
