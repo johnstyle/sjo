@@ -2,11 +2,11 @@
 
 namespace sJo\Model;
 
-use sJo\Db\PDO\Drivers\Mysql as Db;
-use sJo\Model\Database\Mysql\Action;
+use sJo\Db\PDO\Drivers\Sqlite as Db;
+use sJo\Model\Database\Sqlite\Action;
 use sJo\Model\Database\DatabaseInterface;
 
-abstract class MysqlObject extends Model implements DatabaseInterface
+abstract class SqliteObject extends Model implements DatabaseInterface
 {
     use Action {
         Action::__construct as private __ActionConstruct;

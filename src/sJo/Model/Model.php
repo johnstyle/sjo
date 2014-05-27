@@ -2,12 +2,11 @@
 
 namespace sJo\Model;
 
-use sJo\Model\Database\DatabaseInterface;
 use sJo\Object\Singleton;
 use sJo\Object\Entity;
 use sJo\Model\Database\Map;
 
-abstract class Model implements DatabaseInterface
+abstract class Model
 {
     use Singleton;
     use Entity;

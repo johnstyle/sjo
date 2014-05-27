@@ -11,6 +11,7 @@ trait Event
         $event = '__' . $event;
 
         if (method_exists($this->__instance, $event)) {
+
             return $this->__instance->{$event}($options);
         }
 

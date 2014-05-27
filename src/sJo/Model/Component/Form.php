@@ -230,8 +230,6 @@ trait Form
 
                 if($success && $displayAlert){
 
-                    echo $this->__formHash;exit;
-
                     Alert::set($this->__form['i18n']['actions']['saved'], 'success', $this->__formHash);
                 }
 
