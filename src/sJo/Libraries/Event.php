@@ -45,16 +45,20 @@ abstract class Event
     /**
      * Enregistrement des actions
      *
-     * @param string $name Nom de l'événement
+     * @param string   $name     Nom de l'événement
      * @param callable $callback Action à executer
-     * @param int $priority Priorité de l'action
+     * @param int      $priority Priorité de l'action
+     *
+     * @throws \sJo\Exception\Exception
      * @return void
      */
     public static function register($name, $callback, $priority = 10)
     {
         if (!is_callable($callback)) {
-            Exception::error(I18n::__('The second parameter must be a function'));
+
+            throw new Exception(I18n::__('The second parameter must be a function'));
         }
+
         self::$registered[$name][$priority][] = $callback;
     }
 

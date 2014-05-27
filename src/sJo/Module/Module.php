@@ -63,16 +63,27 @@ class Module
         return realpath(dirname(__FILE__)) . $file;
     }
 
+    /**
+     * @param $module
+     * @param $className
+     *
+     * @return string
+     * @throws \sJo\Exception\Exception
+     */
     public static function getClass($module, $className)
     {
         $class = '\\Module\\' . $module . '\\' . ltrim($className, '\\');
         $defaultClass = '\\sJo' . $class;
 
         if (class_exists($class)) {
+
             if (!get_parent_class($class) == $defaultClass) {
-                Exception::error(Lib\I18n::__('Classe %s is not extended to %s.', $class, $defaultClass));
+
+                throw new Exception(Lib\I18n::__('Classe %s is not extended to %s.', $class, $defaultClass));
             }
+
         } else {
+
             $class = $defaultClass;
         }
 

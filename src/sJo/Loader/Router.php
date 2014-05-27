@@ -58,6 +58,13 @@ class Router
         self::loadModule();
     }
 
+    /**
+     * @param       $method
+     * @param array $args
+     *
+     * @return mixed
+     * @throws \sJo\Exception\Exception
+     */
     public static function __callStatic($method, array $args = null)
     {
         if (preg_match("#^(link)([A-Z][a-z]+)$#", $method, $match)) {
@@ -68,8 +75,7 @@ class Router
             }
         }
 
-        Exception::error(Lib\I18n::__('Unknow method %s', __CLASS__ . '::' . $method));
-        return false;
+        throw new Exception(Lib\I18n::__('Unknow method %s', __CLASS__ . '::' . $method));
     }
 
     public static function defaultInterface($interface)

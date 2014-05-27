@@ -24,11 +24,18 @@ class Dependencies
 {
     private static $requiredClasses = array();
 
+    /**
+     * @param $classes
+     *
+     * @throws \sJo\Exception\Exception
+     */
     public static function check($classes)
     {
         foreach($classes as $class) {
+
             if(!in_array($class, self::$requiredClasses)) {
-                Exception::error(Lib\I18n::__('Class %s is required.', $class));
+
+                throw new Exception(Lib\I18n::__('Class %s is required.', $class));
             }
         }
     }

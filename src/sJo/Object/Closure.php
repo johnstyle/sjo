@@ -39,12 +39,22 @@ class Closure
         return $this;
     }
 
+    /**
+     * @param $method
+     * @param $args
+     *
+     * @return mixed
+     * @throws \sJo\Exception\Exception
+     */
     function __call($method, $args)
     {
         if (isset($this->methods[$method])) {
+
             return call_user_func_array($this->methods[$method], $args);
+
         } else {
-            Exception::error(I18n::__('Unknow method %s', $method));
+
+            throw new Exception(I18n::__('Unknow method %s', $method));
         }
     }
 

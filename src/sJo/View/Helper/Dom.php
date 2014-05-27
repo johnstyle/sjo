@@ -279,7 +279,7 @@ abstract class Dom
 
         } else {
 
-            Exception::error(
+            throw new Exception(
                 I18n::__('helper %s do not exists.', $filename . '.php')
             );
         }

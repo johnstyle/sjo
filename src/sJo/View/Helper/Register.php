@@ -49,13 +49,24 @@ trait Register
         return false;
     }
 
+    /**
+     * @param null $name
+     * @param bool $exception
+     *
+     * @return bool
+     * @throws \sJo\Exception\Exception
+     */
     private static function isRegistered($name = null, $exception = true)
     {
         if (isset(self::$registry[$name])) {
+
             return true;
+
         } elseif($exception) {
-            Exception::error(I18n::__('%s element %s is nor registered.', __CLASS__, $name));
+
+            throw new Exception(I18n::__('%s element %s is nor registered.', __CLASS__, $name));
         }
+
         return false;
     }
 

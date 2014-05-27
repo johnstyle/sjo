@@ -25,28 +25,4 @@ namespace sJo\Exception;
  */
 class Exception extends \Exception
 {
-    /**
-     * Constructeur
-     *
-     * @param null $msg
-     * @param int $code
-     * @return \sJo\Exception\Exception
-     */
-    public function __construct($msg = null, $code = 0)
-    {
-        parent::__construct($msg, $code);
-    }
-
-    public function showError()
-    {
-        die('<div style="color:red">' . $this->getMessage() . '</div>');
-    }
-
-    public static function error($msg = null, $code = 0)
-    {
-        $Exception = new static ($msg, $code);
-        $Exception->showError();
-
-        return $Exception;
-    }
 }

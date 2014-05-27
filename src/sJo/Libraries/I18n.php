@@ -57,7 +57,8 @@ class I18n
         putenv('LC_ALL=' . $language);
 
         if(setlocale(LC_ALL, $language) != $language) {
-            Exception::error('I18n locale ' . $language . ' do not exists.');
+
+            throw new Exception('I18n locale ' . $language . ' do not exists.');
         }
     }
 
@@ -66,18 +67,24 @@ class I18n
      *
      * @param $domain
      * @param $directory
+     *
+     * @throws \sJo\Exception\Exception
      * @return void
      */
     public function load($domain, $directory)
     {
         if(is_dir($directory)) {
+
             if(!in_array($directory, self::$directories)) {
+
                 self::$directories[] = $directory;
                 bindtextdomain($domain, $directory);
                 bind_textdomain_codeset($domain, SJO_CHARSET);
             }
+
         } else {
-            Exception::error('I18n directory ' . $directory . ' do not exists.');
+
+            throw new Exception('I18n directory ' . $directory . ' do not exists.');
         }
     }
 

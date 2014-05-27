@@ -53,7 +53,8 @@ class Session
         }
 
         if (session_status() === PHP_SESSION_DISABLED) {
-            Exception::error(Lib\I18n::__('PHP sessions are disabled.'));
+
+            throw new Exception(Lib\I18n::__('PHP sessions are disabled.'));
         }
 
         if (session_status() === PHP_SESSION_ACTIVE) {
@@ -61,7 +62,8 @@ class Session
         }
 
         if (ini_get('session.use_cookies') && headers_sent($file, $line)) {
-            Exception::error(Lib\I18n::__(
+
+            throw new Exception(Lib\I18n::__(
                 'Failed to start the session because headers have already been sent by "%s" at line %d.',
                 $file,
                 $line
@@ -69,7 +71,8 @@ class Session
         }
 
         if (!session_start()) {
-            Exception::error(Lib\I18n::__('Failed to start the session.'));
+
+            throw new Exception(Lib\I18n::__('Failed to start the session.'));
         }
 
         self::$reference =& $_SESSION;
