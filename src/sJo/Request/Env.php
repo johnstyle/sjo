@@ -40,8 +40,8 @@ class Env extends Tree
 
             if ($items === null) {
 
-                global $$_VAR;
-                $items =& $$_VAR;
+                global ${$_VAR};
+                $items =& ${$_VAR};
             }
         }
 
