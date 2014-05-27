@@ -4,7 +4,7 @@
     "description": "PHP 5 MVC Framework",
     "keywords": ["PHP 5", "PHP5", "MVC", "Framework", "sJo", "PHPTools"],
     "homepage": "https://github.com/johnstyle/sjo",
-    "license": "GPL v3",
+    "license": "GPL-3.0",
     "authors": [
         {
             "name": "Jonathan Sahm",
