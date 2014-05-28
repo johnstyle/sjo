@@ -83,7 +83,7 @@ class Loader
         $this->module = new Module();
     }
 
-    public static function quickStart()
+    public static function run()
     {
         $Loader = new self ();
         $Loader->init();

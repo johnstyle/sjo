@@ -16,6 +16,7 @@ class Http
 {
     public static function redirect($url = false)
     {
+        http_response_code(301);
         header('Location:' . ($url ? $url : './'));
         exit;
     }
