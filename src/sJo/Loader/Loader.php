@@ -83,13 +83,12 @@ class Loader
         $this->module = new Module();
     }
 
-    public static function run()
+    public function run()
     {
-        $Loader = new self ();
-        $Loader->init();
-        $Loader->display();
+        $this->init();
+        $this->display();
 
-        return $Loader;
+        return $this;
     }
 
     public function init()
